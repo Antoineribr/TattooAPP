@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { Platform } from "react-native";
 
 interface TabBarStore {
   visible: boolean;
@@ -10,6 +11,7 @@ interface TabBarStore {
 export const useTabBarStore = create<TabBarStore>((set) => ({
   visible: true,
   setVisible: (visible) => set({ visible }),
-  muted: false,
+  // Sur web, les navigateurs bloquent l'autoplay avec son : on démarre muet
+  muted: Platform.OS === "web",
   setMuted: (muted) => set({ muted }),
 }));
