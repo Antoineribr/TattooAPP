@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { View, Text, Dimensions, TouchableOpacity, Animated, Pressable } from "react-native";
+import { View, Text, Dimensions, TouchableOpacity, Animated, Pressable, Platform } from "react-native";
 import { Image } from "expo-image";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { LinearGradient } from "expo-linear-gradient";
@@ -12,7 +12,8 @@ import { Tag } from "@/components/ui/Tag";
 import { Ionicons } from "@expo/vector-icons";
 import { useTabBarStore } from "@/store/useTabBarStore";
 
-const { width: W, height: H } = Dimensions.get("screen");
+// Sur web, "screen" = écran physique (faux) ; il faut la fenêtre du navigateur
+const { width: W, height: H } = Dimensions.get(Platform.OS === "web" ? "window" : "screen");
 
 type Slide = { uri: string; type: "image" | "video" };
 
@@ -22,6 +23,15 @@ function VideoSlide({ uri, paused, muted }: { uri: string; paused: boolean; mute
     p.muted = muted;
     p.play();
   });
+
+  // Sur web : playsInline obligatoire sinon iOS Safari force le plein écran
+  useEffect(() => {
+    if (Platform.OS !== "web") return;
+    document.querySelectorAll("video").forEach((v) => {
+      v.playsInline = true;
+      v.setAttribute("playsinline", "");
+    });
+  }, []);
 
   useEffect(() => {
     if (paused) player.pause();

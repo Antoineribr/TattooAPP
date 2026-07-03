@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from "react";
-import { View, Text, ActivityIndicator, Dimensions, FlatList } from "react-native";
+import { View, Text, ActivityIndicator, Dimensions, FlatList, Platform } from "react-native";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useFeed } from "@/lib/hooks/useFeed";
 import { FeedItem } from "@/components/feed/FeedItem";
@@ -10,7 +10,8 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useTabBarStore } from "@/store/useTabBarStore";
 import { PostWithCounts } from "@/types/database";
 
-const { height: H } = Dimensions.get("screen");
+// Sur web, "screen" = écran physique (faux) ; il faut la fenêtre du navigateur
+const { height: H } = Dimensions.get(Platform.OS === "web" ? "window" : "screen");
 
 type AuthContext = "save" | "follow" | "contact" | "project" | "default";
 
@@ -146,6 +147,11 @@ export default function FeedScreen() {
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
         onMomentumScrollBegin={() => { hasScrolled.current = true; }}
+        onScroll={(e) => {
+          // Sur web, onMomentumScrollBegin n'existe pas : on détecte le scroll utilisateur ici
+          if (e.nativeEvent.contentOffset.y > 10) hasScrolled.current = true;
+        }}
+        scrollEventThrottle={100}
         onViewableItemsChanged={onViewableItemsChanged.current}
         viewabilityConfig={viewabilityConfig}
         onRefresh={refresh}
