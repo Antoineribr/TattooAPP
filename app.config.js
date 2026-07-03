@@ -23,6 +23,11 @@ module.exports = ({ config }) => ({
     },
     package: "com.tattooapp.dev",
   },
+  web: {
+    favicon: "./assets/favicon.png",
+    bundler: "metro",
+    output: "static",
+  },
   plugins: ["expo-router", "expo-video"],
   scheme: "tattoo-app",
   extra: {
