@@ -1,3 +1,8 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/((?!_expo|favicon\\.ico|metadata\\.json).*)",
+      "destination": "/index.html"
+    }
+  ]
 }
