@@ -20,10 +20,16 @@ export default function FeedScreen() {
   const { session, profile } = useAuthStore();
   const { setVisible } = useTabBarStore();
   const lastScrollY = useRef(0);
-  const [activeIndex, setActiveIndex] = useState(-1);
+  // Sur web la viewability de FlatList est peu fiable : le 1er post est actif d'office
+  // (pas de risque musique : le son démarre muet sur web)
+  const initialIndex = Platform.OS === "web" ? 0 : -1;
+  const [activeIndex, setActiveIndex] = useState(initialIndex);
   const hasScrolled = useRef(false);
 
   const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
+    // Sur web l'index actif est calculé dans onScroll : la viewability est trop
+    // instable pendant le snap et re-pause les vidéos
+    if (Platform.OS === "web") return;
     if (!hasScrolled.current) return;
     if (viewableItems[0]) setActiveIndex(viewableItems[0].index ?? -1);
     else setActiveIndex(-1);
@@ -32,13 +38,13 @@ export default function FeedScreen() {
 
   useEffect(() => {
     hasScrolled.current = false;
-    setActiveIndex(-1);
+    setActiveIndex(initialIndex);
   }, [session?.user.id]);
 
   useFocusEffect(useCallback(() => {
     return () => {
       setVisible(true);
-      setActiveIndex(-1);
+      setActiveIndex(initialIndex);
       hasScrolled.current = false;
     };
   }, []));
@@ -149,9 +155,12 @@ export default function FeedScreen() {
         onMomentumScrollBegin={() => { hasScrolled.current = true; }}
         onScroll={(e) => {
           // Sur web, onMomentumScrollBegin n'existe pas : on détecte le scroll utilisateur ici
-          if (e.nativeEvent.contentOffset.y > 10) hasScrolled.current = true;
+          const y = e.nativeEvent.contentOffset.y;
+          if (y > 10) hasScrolled.current = true;
+          // et la viewability est peu fiable : le post actif = position de scroll / hauteur
+          if (Platform.OS === "web") setActiveIndex(Math.round(y / H));
         }}
-        scrollEventThrottle={100}
+        scrollEventThrottle={50}
         onViewableItemsChanged={onViewableItemsChanged.current}
         viewabilityConfig={viewabilityConfig}
         onRefresh={refresh}
