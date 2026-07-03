@@ -26,7 +26,7 @@ module.exports = ({ config }) => ({
   web: {
     favicon: "./assets/favicon.png",
     bundler: "metro",
-    output: "static",
+    output: "single",
   },
   plugins: ["expo-router", "expo-video"],
   scheme: "tattoo-app",
