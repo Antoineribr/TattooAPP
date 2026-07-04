@@ -11,6 +11,20 @@ import * as Notifications from "expo-notifications";
 
 const PROTECTED_SEGMENTS = ["(onboarding)", "edit", "chat", "project", "board"];
 
+// Polish web : masquer les scrollbars, bloquer la sélection de texte et le
+// pull-to-refresh navigateur pour un rendu "app" plutôt que "site web"
+if (typeof document !== "undefined") {
+  const style = document.createElement("style");
+  style.textContent = `
+    ::-webkit-scrollbar { display: none; }
+    * { scrollbar-width: none; -webkit-tap-highlight-color: transparent; }
+    body { overscroll-behavior: none; background: #0A0A0B; user-select: none; -webkit-user-select: none; }
+    input, textarea { user-select: text; -webkit-user-select: text; }
+    video { object-fit: cover; }
+  `;
+  document.head.appendChild(style);
+}
+
 export default function RootLayout() {
   const { session, setSession, setProfile, clear } = useAuthStore();
   const segments = useSegments();

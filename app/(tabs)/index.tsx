@@ -42,9 +42,12 @@ export default function FeedScreen() {
   }, [session?.user.id]);
 
   useFocusEffect(useCallback(() => {
+    // Au retour sur le feed : réactiver le post visible (web garde la position de scroll)
+    if (Platform.OS === "web") setActiveIndex(Math.round(lastScrollY.current / H));
     return () => {
+      // En quittant la page : -1 partout pour couper vidéo ET musique
       setVisible(true);
-      setActiveIndex(initialIndex);
+      setActiveIndex(-1);
       hasScrolled.current = false;
     };
   }, []));
@@ -156,6 +159,7 @@ export default function FeedScreen() {
         onScroll={(e) => {
           // Sur web, onMomentumScrollBegin n'existe pas : on détecte le scroll utilisateur ici
           const y = e.nativeEvent.contentOffset.y;
+          lastScrollY.current = y;
           if (y > 10) hasScrolled.current = true;
           // et la viewability est peu fiable : le post actif = position de scroll / hauteur
           if (Platform.OS === "web") setActiveIndex(Math.round(y / H));
