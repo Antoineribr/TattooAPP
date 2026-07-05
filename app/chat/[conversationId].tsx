@@ -233,6 +233,8 @@ export default function ChatScreen() {
                 </Text>
               )}
             </View>
+            {/* Timeline du projet : où en est-on, en un coup d'œil */}
+            <ProjectTimeline status={projectReq.status} />
           </View>
         </View>
       )}
@@ -447,5 +449,50 @@ export default function ChatScreen() {
         </View>
       </BlurView>
     </KeyboardAvoidingView>
+  );
+}
+
+// ─── Timeline de statut projet ─────────────────────────────
+// Étapes principales du parcours (archived = refus, affiché à part)
+const TIMELINE_STEPS: { status: ProjectStatus; label: string }[] = [
+  { status: "new", label: "Envoyé" },
+  { status: "in_discussion", label: "Discussion" },
+  { status: "quote_sent", label: "Devis" },
+  { status: "confirmed", label: "RDV" },
+  { status: "done", label: "Terminé" },
+];
+
+function ProjectTimeline({ status }: { status: ProjectStatus }) {
+  if (status === "archived") return null;
+  // awaiting_reply ≈ envoyé ; deposit_requested ≈ devis accepté, avant RDV
+  const effective: ProjectStatus =
+    status === "awaiting_reply" ? "new" :
+    status === "deposit_requested" ? "quote_sent" : status;
+  const currentIdx = TIMELINE_STEPS.findIndex((s) => s.status === effective);
+  if (currentIdx < 0) return null;
+
+  return (
+    <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
+      {TIMELINE_STEPS.map((step, i) => {
+        const reached = i <= currentIdx;
+        return (
+          <View key={step.status} style={{ flexDirection: "row", alignItems: "center", flex: i < TIMELINE_STEPS.length - 1 ? 1 : 0 }}>
+            <View style={{ alignItems: "center", width: 44 }}>
+              <View style={{
+                width: 10, height: 10, borderRadius: 5,
+                backgroundColor: reached ? "#B8903E" : "rgba(0,0,0,0.12)",
+                borderWidth: i === currentIdx ? 2.5 : 0, borderColor: "rgba(184,144,62,0.3)",
+              }} />
+              <Text style={{ color: reached ? "#B8903E" : "#9A9AA5", fontSize: 9, fontWeight: reached ? "700" : "500", marginTop: 3 }}>
+                {step.label}
+              </Text>
+            </View>
+            {i < TIMELINE_STEPS.length - 1 && (
+              <View style={{ flex: 1, height: 2, borderRadius: 1, backgroundColor: i < currentIdx ? "#B8903E" : "rgba(0,0,0,0.08)", marginHorizontal: -14, marginBottom: 12 }} />
+            )}
+          </View>
+        );
+      })}
+    </View>
   );
 }

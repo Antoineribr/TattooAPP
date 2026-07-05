@@ -129,26 +129,26 @@ export default function ProfileScreen() {
   }
 
   if (loading) return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE", alignItems: "center", justifyContent: "center" }}>
-      <ActivityIndicator color="#B8903E" />
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B", alignItems: "center", justifyContent: "center" }}>
+      <ActivityIndicator color="#C9A24B" />
     </View>
   );
 
   if (!profile) return null;
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#F5F3EE" }} showsVerticalScrollIndicator={false}>
+    <ScrollView style={{ flex: 1, backgroundColor: "#0A0A0B" }} showsVerticalScrollIndicator={false}>
       {/* Header */}
       <View style={{ paddingTop: 56, paddingBottom: 20 }}>
         <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 16, marginBottom: 20 }}>
           <TouchableOpacity onPress={() => router.back()} hitSlop={12}>
-            <Ionicons name="chevron-back" size={26} color="#1A1A1A" />
+            <Ionicons name="chevron-back" size={26} color="#F4F1EA" />
           </TouchableOpacity>
-          <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 16, marginLeft: 8 }}>@{profile.username}</Text>
+          <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 16, marginLeft: 8 }}>@{profile.username}</Text>
           <View style={{ marginLeft: "auto", flexDirection: "row", gap: 8 }}>
             {isOwn ? (
               <TouchableOpacity onPress={() => router.push("/edit/profile")}>
-                <Ionicons name="create-outline" size={22} color="#B8903E" />
+                <Ionicons name="create-outline" size={22} color="#C9A24B" />
               </TouchableOpacity>
             ) : session && !isOwn && (
               <TouchableOpacity onPress={() => {
@@ -185,7 +185,7 @@ export default function ProfileScreen() {
                   ]);
                 }
               }}>
-                <Ionicons name="ellipsis-horizontal" size={22} color="#6B6B7A" />
+                <Ionicons name="ellipsis-horizontal" size={22} color="rgba(244,241,234,0.55)" />
               </TouchableOpacity>
             )}
           </View>
@@ -195,21 +195,21 @@ export default function ProfileScreen() {
           <Avatar uri={profile.avatar_url} name={profile.display_name} size={92} />
 
           {isArtist && (
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 5, marginTop: 10, backgroundColor: "rgba(184,144,62,0.1)", paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20, borderWidth: 1, borderColor: "rgba(201,162,75,0.25)" }}>
-              <Ionicons name="color-palette-outline" size={12} color="#B8903E" />
-              <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "700" }}>Tatoueur·se pro</Text>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 5, marginTop: 10, backgroundColor: "rgba(201,162,75,0.1)", paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20, borderWidth: 1, borderColor: "rgba(201,162,75,0.25)" }}>
+              <Ionicons name="color-palette-outline" size={12} color="#C9A24B" />
+              <Text style={{ color: "#C9A24B", fontSize: 11, fontWeight: "700" }}>Tatoueur·se pro</Text>
             </View>
           )}
 
-          <Text style={{ color: "#1A1A1A", fontWeight: "800", fontSize: 22, marginTop: 8 }}>{profile.display_name}</Text>
+          <Text style={{ color: "#F4F1EA", fontWeight: "800", fontSize: 22, marginTop: 8 }}>{profile.display_name}</Text>
           {profile.city && (
             <View style={{ flexDirection: "row", alignItems: "center", gap: 4, marginTop: 4 }}>
-              <Ionicons name="location-outline" size={13} color="#6B6B7A" />
-              <Text style={{ color: "#6B6B7A", fontSize: 13 }}>{profile.city}</Text>
+              <Ionicons name="location-outline" size={13} color="rgba(244,241,234,0.55)" />
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13 }}>{profile.city}</Text>
             </View>
           )}
           {profile.bio && (
-            <Text style={{ color: "rgba(26,26,26,0.65)", fontSize: 14, textAlign: "center", marginTop: 10, lineHeight: 21, paddingHorizontal: 16 }}>
+            <Text style={{ color: "rgba(244,241,234,0.65)", fontSize: 14, textAlign: "center", marginTop: 10, lineHeight: 21, paddingHorizontal: 16 }}>
               {profile.bio}
             </Text>
           )}
@@ -245,8 +245,8 @@ export default function ProfileScreen() {
           {profile.style_tags?.length > 0 && (
             <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: 6, marginTop: 10 }}>
               {profile.style_tags.map((s) => (
-                <View key={s} style={{ paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20, backgroundColor: "#FFFFFF", borderWidth: 1, borderColor: "rgba(0,0,0,0.1)" }}>
-                  <Text style={{ color: "#6B6B7A", fontSize: 12 }}>{s}</Text>
+                <View key={s} style={{ paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20, backgroundColor: "#17171A", borderWidth: 1, borderColor: "rgba(244,241,234,0.15)" }}>
+                  <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12 }}>{s}</Text>
                 </View>
               ))}
             </View>
@@ -255,25 +255,25 @@ export default function ProfileScreen() {
           {/* Stats */}
           <View style={{ flexDirection: "row", gap: 40, marginTop: 20 }}>
             <View style={{ alignItems: "center" }}>
-              <Text style={{ color: "#1A1A1A", fontWeight: "800", fontSize: 20 }}>{posts.length}</Text>
-              <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 2 }}>posts</Text>
+              <Text style={{ color: "#F4F1EA", fontWeight: "800", fontSize: 20 }}>{posts.length}</Text>
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 2 }}>posts</Text>
             </View>
-            <View style={{ width: 1, backgroundColor: "rgba(0,0,0,0.06)" }} />
+            <View style={{ width: 1, backgroundColor: "rgba(244,241,234,0.08)" }} />
             <View style={{ alignItems: "center" }}>
-              <Text style={{ color: "#1A1A1A", fontWeight: "800", fontSize: 20 }}>{followersCount}</Text>
-              <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 2 }}>abonnés</Text>
+              <Text style={{ color: "#F4F1EA", fontWeight: "800", fontSize: 20 }}>{followersCount}</Text>
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 2 }}>abonnés</Text>
             </View>
             {reviews.length > 0 && (() => {
               const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
               return (
                 <>
-                  <View style={{ width: 1, backgroundColor: "rgba(0,0,0,0.06)" }} />
+                  <View style={{ width: 1, backgroundColor: "rgba(244,241,234,0.08)" }} />
                   <TouchableOpacity style={{ alignItems: "center" }} onPress={() => setTab("avis")}>
                     <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }}>
-                      <Ionicons name="star" size={14} color="#B8903E" />
-                      <Text style={{ color: "#1A1A1A", fontWeight: "800", fontSize: 20 }}>{avg.toFixed(1)}</Text>
+                      <Ionicons name="star" size={14} color="#C9A24B" />
+                      <Text style={{ color: "#F4F1EA", fontWeight: "800", fontSize: 20 }}>{avg.toFixed(1)}</Text>
                     </View>
-                    <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 2 }}>{reviews.length} avis</Text>
+                    <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 2 }}>{reviews.length} avis</Text>
                   </TouchableOpacity>
                 </>
               );
@@ -283,20 +283,27 @@ export default function ProfileScreen() {
           {/* Boutons gestion pro (isOwn + artiste) */}
           {isOwn && isArtist && (
             <View style={{ gap: 8, marginTop: 18, width: "100%" }}>
+              <TouchableOpacity
+                onPress={() => router.push("/pro/requests" as any)}
+                style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: "#C9A24B", borderRadius: 12, paddingVertical: 12 }}
+              >
+                <Ionicons name="color-palette" size={16} color="#0A0A0B" />
+                <Text style={{ color: "#0A0A0B", fontWeight: "800", fontSize: 13 }}>Mes demandes</Text>
+              </TouchableOpacity>
               <View style={{ flexDirection: "row", gap: 8 }}>
                 <TouchableOpacity
                   onPress={() => router.push("/pro/locations")}
-                  style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: "#FFFFFF", borderRadius: 12, paddingVertical: 11, borderWidth: 1.5, borderColor: "rgba(0,0,0,0.08)" }}
+                  style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: "#17171A", borderRadius: 12, paddingVertical: 11, borderWidth: 1.5, borderColor: "rgba(244,241,234,0.1)" }}
                 >
-                  <Ionicons name="location-outline" size={16} color="#B8903E" />
-                  <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 13 }}>Mes lieux</Text>
+                  <Ionicons name="location-outline" size={16} color="#C9A24B" />
+                  <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 13 }}>Mes lieux</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => router.push("/pro/availability")}
-                  style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: "#FFFFFF", borderRadius: 12, paddingVertical: 11, borderWidth: 1.5, borderColor: "rgba(0,0,0,0.08)" }}
+                  style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: "#17171A", borderRadius: 12, paddingVertical: 11, borderWidth: 1.5, borderColor: "rgba(244,241,234,0.1)" }}
                 >
-                  <Ionicons name="time-outline" size={16} color="#B8903E" />
-                  <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 13 }}>Disponibilités</Text>
+                  <Ionicons name="time-outline" size={16} color="#C9A24B" />
+                  <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 13 }}>Disponibilités</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -309,10 +316,10 @@ export default function ProfileScreen() {
               {isArtist && !isCurrentUserArtist && (
                 <TouchableOpacity
                   onPress={handleProject}
-                  style={{ backgroundColor: "#B8903E", borderRadius: 14, paddingVertical: 14, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 8 }}
+                  style={{ backgroundColor: "#C9A24B", borderRadius: 14, paddingVertical: 14, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 8 }}
                 >
                   <Ionicons name="color-palette-outline" size={18} color="#F5F3EE" />
-                  <Text style={{ color: "#F5F3EE", fontWeight: "800", fontSize: 15 }}>Demander un projet</Text>
+                  <Text style={{ color: "#0A0A0B", fontWeight: "800", fontSize: 15 }}>Demander un projet</Text>
                 </TouchableOpacity>
               )}
 
@@ -321,21 +328,21 @@ export default function ProfileScreen() {
                   onPress={handleFollow}
                   style={{
                     flex: 1, paddingVertical: 12, borderRadius: 12, alignItems: "center",
-                    backgroundColor: isFollowing ? "transparent" : "#FFFFFF",
-                    borderWidth: 1.5, borderColor: isFollowing ? "#B8903E" : "rgba(0,0,0,0.1)",
+                    backgroundColor: isFollowing ? "transparent" : "#17171A",
+                    borderWidth: 1.5, borderColor: isFollowing ? "#C9A24B" : "rgba(244,241,234,0.15)",
                   }}
                 >
-                  <Text style={{ color: isFollowing ? "#B8903E" : "#1A1A1A", fontWeight: "700", fontSize: 14 }}>
+                  <Text style={{ color: isFollowing ? "#C9A24B" : "#F4F1EA", fontWeight: "700", fontSize: 14 }}>
                     {isFollowing ? "Abonné·e" : "Suivre"}
                   </Text>
                 </TouchableOpacity>
                 {!isCurrentUserArtist && (
                   <TouchableOpacity
                     onPress={handleMessage}
-                    style={{ flex: 1, paddingVertical: 12, borderRadius: 12, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 6, backgroundColor: "#FFFFFF", borderWidth: 1.5, borderColor: "rgba(0,0,0,0.1)" }}
+                    style={{ flex: 1, paddingVertical: 12, borderRadius: 12, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 6, backgroundColor: "#17171A", borderWidth: 1.5, borderColor: "rgba(244,241,234,0.15)" }}
                   >
-                    <Ionicons name="chatbubble-outline" size={15} color="#1A1A1A" />
-                    <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 14 }}>Message</Text>
+                    <Ionicons name="chatbubble-outline" size={15} color="#F4F1EA" />
+                    <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 14 }}>Message</Text>
                   </TouchableOpacity>
                 )}
               </View>
@@ -349,8 +356,8 @@ export default function ProfileScreen() {
                 onPress={() => Linking.openURL(`https://instagram.com/${profile.instagram_handle}`)}
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
               >
-                <Ionicons name="logo-instagram" size={15} color="#6B6B7A" />
-                <Text style={{ color: "#6B6B7A", fontSize: 13 }}>@{profile.instagram_handle}</Text>
+                <Ionicons name="logo-instagram" size={15} color="rgba(244,241,234,0.55)" />
+                <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13 }}>@{profile.instagram_handle}</Text>
               </TouchableOpacity>
             )}
             {(profile as any).booking_url && (
@@ -358,8 +365,8 @@ export default function ProfileScreen() {
                 onPress={() => Linking.openURL((profile as any).booking_url)}
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
               >
-                <Ionicons name="calendar-outline" size={15} color="#6B6B7A" />
-                <Text style={{ color: "#6B6B7A", fontSize: 13 }}>Réserver</Text>
+                <Ionicons name="calendar-outline" size={15} color="rgba(244,241,234,0.55)" />
+                <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13 }}>Réserver</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -367,14 +374,14 @@ export default function ProfileScreen() {
       </View>
 
       {/* Tabs */}
-      <View style={{ flexDirection: "row", borderBottomWidth: 1, borderBottomColor: "#FFFFFF", marginBottom: 2 }}>
+      <View style={{ flexDirection: "row", borderBottomWidth: 1, borderBottomColor: "rgba(244,241,234,0.08)", marginBottom: 2 }}>
         {([["posts", "Publications"], ["flash", "Flashs"], ["avis", "Avis"], ["about", "À propos"]] as const).map(([key, label]) => (
           <TouchableOpacity
             key={key}
             onPress={() => setTab(key)}
-            style={{ flex: 1, paddingVertical: 14, alignItems: "center", borderBottomWidth: 2, borderBottomColor: tab === key ? "#B8903E" : "transparent" }}
+            style={{ flex: 1, paddingVertical: 14, alignItems: "center", borderBottomWidth: 2, borderBottomColor: tab === key ? "#C9A24B" : "transparent" }}
           >
-            <Text style={{ color: tab === key ? "#B8903E" : "#6B6B7A", fontWeight: "600", fontSize: 14 }}>{label}</Text>
+            <Text style={{ color: tab === key ? "#C9A24B" : "#6B6B7A", fontWeight: "600", fontSize: 14 }}>{label}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -399,8 +406,8 @@ export default function ProfileScreen() {
           ))}
           {!posts.length && (
             <View style={{ width: "100%", paddingTop: 60, alignItems: "center" }}>
-              <Ionicons name="images-outline" size={52} color="rgba(0,0,0,0.1)" />
-              <Text style={{ color: "#6B6B7A", fontSize: 15, marginTop: 16, textAlign: "center" }}>
+              <Ionicons name="images-outline" size={52} color="rgba(244,241,234,0.15)" />
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 15, marginTop: 16, textAlign: "center" }}>
                 {isOwn ? "Tu n'as pas encore publié." : "Aucune publication."}
               </Text>
             </View>
@@ -415,24 +422,24 @@ export default function ProfileScreen() {
           {reviews.length > 0 && (() => {
             const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
             return (
-              <View style={{ backgroundColor: "#FFFFFF", borderRadius: 16, padding: 16, flexDirection: "row", alignItems: "center", gap: 16, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)" }}>
+              <View style={{ backgroundColor: "#17171A", borderRadius: 16, padding: 16, flexDirection: "row", alignItems: "center", gap: 16, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)" }}>
                 <View style={{ alignItems: "center" }}>
-                  <Text style={{ color: "#1A1A1A", fontSize: 40, fontWeight: "800", lineHeight: 44 }}>{avg.toFixed(1)}</Text>
+                  <Text style={{ color: "#F4F1EA", fontSize: 40, fontWeight: "800", lineHeight: 44 }}>{avg.toFixed(1)}</Text>
                   <View style={{ flexDirection: "row", gap: 2, marginTop: 4 }}>
                     {[1,2,3,4,5].map((s) => (
-                      <Ionicons key={s} name={s <= Math.round(avg) ? "star" : "star-outline"} size={14} color="#B8903E" />
+                      <Ionicons key={s} name={s <= Math.round(avg) ? "star" : "star-outline"} size={14} color="#C9A24B" />
                     ))}
                   </View>
-                  <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 4 }}>{reviews.length} avis</Text>
+                  <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 4 }}>{reviews.length} avis</Text>
                 </View>
                 <View style={{ flex: 1, gap: 4 }}>
                   {[5,4,3,2,1].map((s) => {
                     const count = reviews.filter((r) => r.rating === s).length;
                     return (
                       <View key={s} style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-                        <Text style={{ color: "#6B6B7A", fontSize: 11, width: 10 }}>{s}</Text>
-                        <View style={{ flex: 1, height: 5, backgroundColor: "rgba(0,0,0,0.06)", borderRadius: 3 }}>
-                          <View style={{ width: `${reviews.length ? (count / reviews.length) * 100 : 0}%`, height: "100%", backgroundColor: "#B8903E", borderRadius: 3 }} />
+                        <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 11, width: 10 }}>{s}</Text>
+                        <View style={{ flex: 1, height: 5, backgroundColor: "rgba(244,241,234,0.08)", borderRadius: 3 }}>
+                          <View style={{ width: `${reviews.length ? (count / reviews.length) * 100 : 0}%`, height: "100%", backgroundColor: "#C9A24B", borderRadius: 3 }} />
                         </View>
                       </View>
                     );
@@ -446,39 +453,39 @@ export default function ProfileScreen() {
           {canReview && !isOwn && (
             <TouchableOpacity
               onPress={() => setShowReview(true)}
-              style={{ backgroundColor: "#B8903E", borderRadius: 14, paddingVertical: 14, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 8 }}
+              style={{ backgroundColor: "#C9A24B", borderRadius: 14, paddingVertical: 14, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 8 }}
             >
-              <Ionicons name="star-outline" size={16} color="#FFF" />
-              <Text style={{ color: "#FFF", fontWeight: "800", fontSize: 15 }}>Laisser un avis</Text>
+              <Ionicons name="star-outline" size={16} color="#0A0A0B" />
+              <Text style={{ color: "#0A0A0B", fontWeight: "800", fontSize: 15 }}>Laisser un avis</Text>
             </TouchableOpacity>
           )}
 
           {/* Liste des avis */}
           {reviews.length === 0 ? (
             <View style={{ alignItems: "center", paddingTop: 32 }}>
-              <Ionicons name="star-outline" size={40} color="rgba(0,0,0,0.1)" />
-              <Text style={{ color: "#6B6B7A", fontSize: 15, marginTop: 12, textAlign: "center" }}>Aucun avis pour l'instant</Text>
-              {canReview && !isOwn && <Text style={{ color: "#B8903E", fontSize: 13, marginTop: 6, textAlign: "center" }}>Sois le premier à laisser un avis !</Text>}
+              <Ionicons name="star-outline" size={40} color="rgba(244,241,234,0.15)" />
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 15, marginTop: 12, textAlign: "center" }}>Aucun avis pour l'instant</Text>
+              {canReview && !isOwn && <Text style={{ color: "#C9A24B", fontSize: 13, marginTop: 6, textAlign: "center" }}>Sois le premier à laisser un avis !</Text>}
             </View>
           ) : (
             <View style={{ gap: 12 }}>
               {reviews.map((r) => (
-                <View key={r.id} style={{ backgroundColor: "#FFFFFF", borderRadius: 16, padding: 16, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)" }}>
+                <View key={r.id} style={{ backgroundColor: "#17171A", borderRadius: 16, padding: 16, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)" }}>
                   <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 8 }}>
                     <Avatar uri={r.client?.avatar_url} name={r.client?.display_name ?? "?"} size={34} />
                     <View style={{ flex: 1 }}>
-                      <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 14 }}>{r.client?.display_name ?? "Client"}</Text>
+                      <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 14 }}>{r.client?.display_name ?? "Client"}</Text>
                       <View style={{ flexDirection: "row", gap: 2, marginTop: 2 }}>
                         {[1,2,3,4,5].map((s) => (
-                          <Ionicons key={s} name={s <= r.rating ? "star" : "star-outline"} size={12} color="#B8903E" />
+                          <Ionicons key={s} name={s <= r.rating ? "star" : "star-outline"} size={12} color="#C9A24B" />
                         ))}
                       </View>
                     </View>
-                    <Text style={{ color: "#9A9AA5", fontSize: 11 }}>
+                    <Text style={{ color: "rgba(244,241,234,0.4)", fontSize: 11 }}>
                       {new Date(r.created_at).toLocaleDateString("fr-FR", { month: "short", year: "numeric" })}
                     </Text>
                   </View>
-                  {r.body && <Text style={{ color: "#1A1A1A", fontSize: 14, lineHeight: 20 }}>{r.body}</Text>}
+                  {r.body && <Text style={{ color: "#F4F1EA", fontSize: 14, lineHeight: 20 }}>{r.body}</Text>}
                 </View>
               ))}
             </View>
@@ -504,8 +511,8 @@ export default function ProfileScreen() {
         <View>
           {flashPosts.length === 0 ? (
             <View style={{ alignItems: "center", paddingVertical: 48 }}>
-              <Ionicons name="flash-outline" size={40} color="rgba(0,0,0,0.1)" />
-              <Text style={{ color: "#6B6B7A", fontSize: 15, marginTop: 12, textAlign: "center" }}>
+              <Ionicons name="flash-outline" size={40} color="rgba(244,241,234,0.15)" />
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 15, marginTop: 12, textAlign: "center" }}>
                 Aucun flash disponible pour le moment
               </Text>
             </View>
@@ -518,12 +525,12 @@ export default function ProfileScreen() {
                   style={{ width: "33.33%", aspectRatio: 1, position: "relative" }}
                 >
                   <Image source={{ uri: p.thumbnail_url ?? p.media_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" />
-                  <View style={{ position: "absolute", top: 6, left: 6, backgroundColor: "#B8903E", borderRadius: 8, paddingHorizontal: 6, paddingVertical: 2 }}>
-                    <Text style={{ color: "#F5F3EE", fontSize: 10, fontWeight: "800" }}>FLASH</Text>
+                  <View style={{ position: "absolute", top: 6, left: 6, backgroundColor: "#C9A24B", borderRadius: 8, paddingHorizontal: 6, paddingVertical: 2 }}>
+                    <Text style={{ color: "#0A0A0B", fontSize: 10, fontWeight: "800" }}>FLASH</Text>
                   </View>
                   {p.price_min != null && (
                     <View style={{ position: "absolute", bottom: 6, right: 6, backgroundColor: "rgba(245,243,238,0.8)", borderRadius: 8, paddingHorizontal: 6, paddingVertical: 2 }}>
-                      <Text style={{ color: "#1A1A1A", fontSize: 11, fontWeight: "700" }}>{p.price_min}€</Text>
+                      <Text style={{ color: "#F4F1EA", fontSize: 11, fontWeight: "700" }}>{p.price_min}€</Text>
                     </View>
                   )}
                 </TouchableOpacity>
@@ -553,7 +560,7 @@ export default function ProfileScreen() {
           {(profile as any).booking_url && <AboutRow icon="calendar-outline" label="Réservation" value="Voir le lien" />}
           {!(profile.bio || profile.city || profile.instagram_handle) && (
             <View style={{ alignItems: "center", paddingTop: 40 }}>
-              <Text style={{ color: "#6B6B7A", textAlign: "center" }}>Aucune info renseignée.</Text>
+              <Text style={{ color: "rgba(244,241,234,0.55)", textAlign: "center" }}>Aucune info renseignée.</Text>
             </View>
           )}
         </View>
@@ -581,12 +588,12 @@ export default function ProfileScreen() {
 function AboutRow({ icon, label, value }: { icon: any; label: string; value: string }) {
   return (
     <View style={{ flexDirection: "row", alignItems: "flex-start", gap: 12 }}>
-      <View style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: "#FFFFFF", alignItems: "center", justifyContent: "center", marginTop: 2 }}>
-        <Ionicons name={icon} size={17} color="#6B6B7A" />
+      <View style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: "#17171A", alignItems: "center", justifyContent: "center", marginTop: 2 }}>
+        <Ionicons name={icon} size={17} color="rgba(244,241,234,0.55)" />
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={{ color: "#6B6B7A", fontSize: 12, fontWeight: "600", letterSpacing: 0.5, marginBottom: 2 }}>{label}</Text>
-        <Text style={{ color: "#1A1A1A", fontSize: 15, lineHeight: 22 }}>{value}</Text>
+        <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, fontWeight: "600", letterSpacing: 0.5, marginBottom: 2 }}>{label}</Text>
+        <Text style={{ color: "#F4F1EA", fontSize: 15, lineHeight: 22 }}>{value}</Text>
       </View>
     </View>
   );

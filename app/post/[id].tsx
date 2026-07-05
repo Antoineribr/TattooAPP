@@ -86,8 +86,8 @@ export default function PostDetailScreen() {
   }
 
   if (loading) return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE", alignItems: "center", justifyContent: "center" }}>
-      <ActivityIndicator color="#B8903E" />
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B", alignItems: "center", justifyContent: "center" }}>
+      <ActivityIndicator color="#C9A24B" />
     </View>
   );
   if (!post) return null;
@@ -98,11 +98,11 @@ export default function PostDetailScreen() {
     `${post.price_min}€ – ${post.price_max}€`;
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#F5F3EE" }} showsVerticalScrollIndicator={false}>
+    <ScrollView style={{ flex: 1, backgroundColor: "#0A0A0B" }} showsVerticalScrollIndicator={false}>
       {/* Header */}
       <View style={{ paddingTop: 56, paddingHorizontal: 16, paddingBottom: 12, flexDirection: "row", alignItems: "center" }}>
         <TouchableOpacity onPress={() => router.back()} hitSlop={12}>
-          <Ionicons name="chevron-back" size={26} color="#1A1A1A" />
+          <Ionicons name="chevron-back" size={26} color="#F4F1EA" />
         </TouchableOpacity>
         <View style={{ flex: 1 }} />
         <TouchableOpacity
@@ -114,7 +114,7 @@ export default function PostDetailScreen() {
             { text: "Annuler", style: "cancel" },
           ])}
         >
-          <Ionicons name="ellipsis-horizontal" size={22} color="#6B6B7A" />
+          <Ionicons name="ellipsis-horizontal" size={22} color="rgba(244,241,234,0.55)" />
         </TouchableOpacity>
       </View>
 
@@ -138,27 +138,27 @@ export default function PostDetailScreen() {
         >
           <Avatar uri={post.avatar_url} name={post.display_name} size={46} />
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 16 }}>{post.display_name}</Text>
+            <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 16 }}>{post.display_name}</Text>
             {post.artist_city && (
               <View style={{ flexDirection: "row", alignItems: "center", gap: 4, marginTop: 2 }}>
-                <Ionicons name="location-outline" size={12} color="#6B6B7A" />
-                <Text style={{ color: "#6B6B7A", fontSize: 13 }}>{post.artist_city}</Text>
+                <Ionicons name="location-outline" size={12} color="rgba(244,241,234,0.55)" />
+                <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13 }}>{post.artist_city}</Text>
               </View>
             )}
           </View>
-          <TouchableOpacity onPress={handleFollow} style={{ paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: post.is_following ? "transparent" : "#B8903E", borderWidth: 1, borderColor: "#B8903E" }}>
-            <Text style={{ color: post.is_following ? "#B8903E" : "#F5F3EE", fontWeight: "700", fontSize: 13 }}>
+          <TouchableOpacity onPress={handleFollow} style={{ paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: post.is_following ? "transparent" : "#C9A24B", borderWidth: 1, borderColor: "#C9A24B" }}>
+            <Text style={{ color: post.is_following ? "#C9A24B" : "#0A0A0B", fontWeight: "700", fontSize: 13 }}>
               {post.is_following ? "Abonné·e" : "Suivre"}
             </Text>
           </TouchableOpacity>
         </TouchableOpacity>
 
         {/* Titre & caption */}
-        {post.title && <Text style={{ color: "#1A1A1A", fontSize: 20, fontWeight: "800", marginBottom: 6 }}>{post.title}</Text>}
-        {post.caption && <Text style={{ color: "rgba(26,26,26,0.7)", fontSize: 15, lineHeight: 22, marginBottom: 16 }}>{post.caption}</Text>}
+        {post.title && <Text style={{ color: "#F4F1EA", fontSize: 20, fontWeight: "800", marginBottom: 6 }}>{post.title}</Text>}
+        {post.caption && <Text style={{ color: "rgba(244,241,234,0.7)", fontSize: 15, lineHeight: 22, marginBottom: 16 }}>{post.caption}</Text>}
 
         {/* Infos tatouage */}
-        <View style={{ backgroundColor: "#FFFFFF", borderRadius: 14, padding: 16, gap: 12, marginBottom: 16 }}>
+        <View style={{ backgroundColor: "#17171A", borderRadius: 14, padding: 16, gap: 12, marginBottom: 16, borderWidth: 1, borderColor: "rgba(244,241,234,0.08)" }}>
           {post.availability_type && (
             <InfoRow icon="information-circle-outline" value={AVAILABILITY_LABELS[post.availability_type] ?? post.availability_type} gold />
           )}
@@ -172,8 +172,8 @@ export default function PostDetailScreen() {
         {post.style_tags?.length > 0 && (
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 20 }}>
             {post.style_tags.map((t) => (
-              <View key={t} style={{ paddingHorizontal: 12, paddingVertical: 5, borderRadius: 20, backgroundColor: "rgba(0,0,0,0.04)", borderWidth: 0.5, borderColor: "rgba(0,0,0,0.1)" }}>
-                <Text style={{ color: "#1A1A1A", fontSize: 13 }}>{t}</Text>
+              <View key={t} style={{ paddingHorizontal: 12, paddingVertical: 5, borderRadius: 20, backgroundColor: "rgba(244,241,234,0.06)", borderWidth: 0.5, borderColor: "rgba(244,241,234,0.15)" }}>
+                <Text style={{ color: "rgba(244,241,234,0.8)", fontSize: 13 }}>{t}</Text>
               </View>
             ))}
           </View>
@@ -181,31 +181,31 @@ export default function PostDetailScreen() {
 
         {/* Actions */}
         <View style={{ flexDirection: "row", gap: 10, marginBottom: 12 }}>
-          <TouchableOpacity onPress={handleLike} style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: "#FFFFFF", borderRadius: 12, paddingVertical: 13, borderWidth: 1, borderColor: post.is_liked ? "#B8903E" : "rgba(0,0,0,0.1)" }}>
-            <Ionicons name={post.is_liked ? "heart" : "heart-outline"} size={18} color={post.is_liked ? "#B8903E" : "#1A1A1A"} />
-            <Text style={{ color: post.is_liked ? "#B8903E" : "#1A1A1A", fontWeight: "600" }}>{post.likes_count}</Text>
+          <TouchableOpacity onPress={handleLike} style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: "#17171A", borderRadius: 12, paddingVertical: 13, borderWidth: 1, borderColor: post.is_liked ? "#C9A24B" : "rgba(244,241,234,0.12)" }}>
+            <Ionicons name={post.is_liked ? "heart" : "heart-outline"} size={18} color={post.is_liked ? "#C9A24B" : "#F4F1EA"} />
+            <Text style={{ color: post.is_liked ? "#C9A24B" : "#F4F1EA", fontWeight: "600" }}>J'aime</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleSave} style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: "#FFFFFF", borderRadius: 12, paddingVertical: 13, borderWidth: 1, borderColor: post.is_saved ? "#B8903E" : "rgba(0,0,0,0.1)" }}>
-            <Ionicons name={post.is_saved ? "bookmark" : "bookmark-outline"} size={18} color={post.is_saved ? "#B8903E" : "#1A1A1A"} />
-            <Text style={{ color: post.is_saved ? "#B8903E" : "#1A1A1A", fontWeight: "600" }}>Sauver</Text>
+          <TouchableOpacity onPress={handleSave} style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: "#17171A", borderRadius: 12, paddingVertical: 13, borderWidth: 1, borderColor: post.is_saved ? "#C9A24B" : "rgba(244,241,234,0.12)" }}>
+            <Ionicons name={post.is_saved ? "bookmark" : "bookmark-outline"} size={18} color={post.is_saved ? "#C9A24B" : "#F4F1EA"} />
+            <Text style={{ color: post.is_saved ? "#C9A24B" : "#F4F1EA", fontWeight: "600" }}>Sauver</Text>
           </TouchableOpacity>
         </View>
 
         {/* CTA principal */}
         <TouchableOpacity
           onPress={handleProject}
-          style={{ backgroundColor: "#B8903E", borderRadius: 14, paddingVertical: 16, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 10 }}
+          style={{ backgroundColor: "#C9A24B", borderRadius: 14, paddingVertical: 16, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 10 }}
         >
-          <Ionicons name="color-palette-outline" size={20} color="#F5F3EE" />
-          <Text style={{ color: "#F5F3EE", fontWeight: "800", fontSize: 16 }}>Demander un projet</Text>
+          <Ionicons name="color-palette-outline" size={20} color="#0A0A0B" />
+          <Text style={{ color: "#0A0A0B", fontWeight: "800", fontSize: 16 }}>Demander un projet</Text>
         </TouchableOpacity>
 
         {/* Voir profil */}
         <TouchableOpacity
           onPress={() => router.push(`/profile/${post.artist_id}`)}
-          style={{ marginTop: 12, paddingVertical: 14, alignItems: "center", borderRadius: 14, borderWidth: 1.5, borderColor: "rgba(0,0,0,0.1)" }}
+          style={{ marginTop: 12, paddingVertical: 14, alignItems: "center", borderRadius: 14, borderWidth: 1.5, borderColor: "rgba(244,241,234,0.15)" }}
         >
-          <Text style={{ color: "#1A1A1A", fontWeight: "600" }}>Voir le profil</Text>
+          <Text style={{ color: "#F4F1EA", fontWeight: "600" }}>Voir le profil</Text>
         </TouchableOpacity>
       </View>
 
@@ -223,8 +223,8 @@ export default function PostDetailScreen() {
 function InfoRow({ icon, value, gold }: { icon: any; value: string; gold?: boolean }) {
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-      <Ionicons name={icon} size={16} color={gold ? "#B8903E" : "#6B6B7A"} />
-      <Text style={{ color: gold ? "#B8903E" : "#1A1A1A", fontSize: 14, fontWeight: gold ? "700" : "400" }}>{value}</Text>
+      <Ionicons name={icon} size={16} color={gold ? "#C9A24B" : "rgba(244,241,234,0.55)"} />
+      <Text style={{ color: gold ? "#C9A24B" : "#F4F1EA", fontSize: 14, fontWeight: gold ? "700" : "400" }}>{value}</Text>
     </View>
   );
 }

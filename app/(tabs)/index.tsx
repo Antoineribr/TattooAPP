@@ -4,6 +4,7 @@ import { useRouter, useFocusEffect } from "expo-router";
 import { useFeed } from "@/lib/hooks/useFeed";
 import { FeedItem } from "@/components/feed/FeedItem";
 import { AuthPrompt } from "@/components/ui/AuthPrompt";
+import { WelcomeIntro } from "@/components/ui/WelcomeIntro";
 import { BoardPicker } from "@/components/ui/BoardPicker";
 import { toggleLike, toggleSave, toggleFollow, getOrCreateConversation } from "@/lib/api";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -188,6 +189,8 @@ export default function FeedScreen() {
         onClose={() => setBoardPicker({ visible: false, postId: "" })}
         onSaved={() => setBoardPicker({ visible: false, postId: "" })}
       />
+
+      <WelcomeIntro />
     </View>
   );
 }

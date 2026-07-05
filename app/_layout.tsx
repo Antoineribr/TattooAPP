@@ -131,6 +131,8 @@ export default function RootLayout() {
         <Stack.Screen name="notifications" />
         <Stack.Screen name="pro/locations" />
         <Stack.Screen name="pro/availability" />
+        <Stack.Screen name="pro/requests" />
+        <Stack.Screen name="legal/[slug]" />
         <Stack.Screen name="pro/post-actions/[postId]" />
       </Stack>
     </>

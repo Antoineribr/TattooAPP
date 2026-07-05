@@ -9,9 +9,9 @@ export const APP_CONFIG = {
     tiktok: "",
   },
   legal: {
-    privacyUrl: "https://tattoo-app-zeta.vercel.app/confidentialite",
-    termsUrl: "https://tattoo-app-zeta.vercel.app/cgu",
-    cookiesUrl: "https://tattoo-app-zeta.vercel.app/cookies",
+    privacyUrl: "https://tattoo-app-zeta.vercel.app/legal/confidentialite",
+    termsUrl: "https://tattoo-app-zeta.vercel.app/legal/cgu",
+    cookiesUrl: "https://tattoo-app-zeta.vercel.app/legal/confidentialite",
   },
   colors: {
     gold: "#B8903E",

@@ -57,6 +57,8 @@ function ClientMap() {
   const [search, setSearch] = useState("");
   const [styleFilter, setStyleFilter] = useState("");
   const [dispoOnly, setDispoOnly] = useState(false);
+  const [viewMode, setViewMode] = useState<"map" | "list">("map");
+  const [ratings, setRatings] = useState<Record<string, { avg: number; count: number }>>({});
   const [selected, setSelected] = useState<ArtistRow | null>(null);
   const [mapReady, setMapReady] = useState(false);
 
@@ -90,6 +92,16 @@ function ClientMap() {
       .eq("status", "open");
     const availIds = new Set((availRows ?? []).map((r: any) => r.artist_id));
     setAvailableNow(allArtists.filter((a) => availIds.has(a.id)));
+
+    // Notes moyennes pour la vue liste
+    const { data: revRows } = await supabase.from("reviews").select("artist_id, rating");
+    const byArtist: Record<string, { avg: number; count: number }> = {};
+    (revRows ?? []).forEach((r: any) => {
+      const cur = byArtist[r.artist_id] ?? { avg: 0, count: 0 };
+      byArtist[r.artist_id] = { avg: cur.avg + r.rating, count: cur.count + 1 };
+    });
+    Object.keys(byArtist).forEach((k) => { byArtist[k].avg = byArtist[k].avg / byArtist[k].count; });
+    setRatings(byArtist);
 
     setLoading(false);
   }
@@ -263,8 +275,21 @@ function ClientMap() {
     <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
       {/* Header */}
       <View style={{ paddingTop: 56, paddingHorizontal: 16, paddingBottom: 10, backgroundColor: "#F5F3EE" }}>
-        <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Trouver</Text>
-        <Text style={{ color: "#1A1A1A", fontSize: 20, fontWeight: "800", marginBottom: 10 }}>Tatoueurs près de toi</Text>
+        <View style={{ flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 10 }}>
+          <View>
+            <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Trouver</Text>
+            <Text style={{ color: "#1A1A1A", fontSize: 20, fontWeight: "800" }}>Tatoueurs près de toi</Text>
+          </View>
+          {/* Toggle carte / liste */}
+          <View style={{ flexDirection: "row", backgroundColor: "rgba(0,0,0,0.05)", borderRadius: 10, padding: 3 }}>
+            {([["map", "map-outline"], ["list", "list-outline"]] as const).map(([mode, icon]) => (
+              <TouchableOpacity key={mode} onPress={() => setViewMode(mode)}
+                style={{ paddingHorizontal: 12, paddingVertical: 7, borderRadius: 8, backgroundColor: viewMode === mode ? "#FFFFFF" : "transparent" }}>
+                <Ionicons name={icon as any} size={16} color={viewMode === mode ? "#B8903E" : "#6B6B7A"} />
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
 
         <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#FFFFFF", borderRadius: 14, paddingHorizontal: 14, paddingVertical: 10, gap: 8, borderWidth: 1, borderColor: "rgba(0,0,0,0.08)", marginBottom: 8 }}>
           <Ionicons name="search" size={16} color="#6B6B7A" />
@@ -322,8 +347,66 @@ function ClientMap() {
         </ScrollView>
       </View>
 
+      {/* Vue liste : triée par distance, avec note et prix */}
+      {viewMode === "list" && (
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 16, paddingBottom: 110, gap: 10 }}>
+          {[...filtered].sort((a, b) => {
+            const ref = userCoords ?? { lat: 48.8566, lng: 2.3522 };
+            return haversineKm(ref.lat, ref.lng, a.lat!, a.lng!) - haversineKm(ref.lat, ref.lng, b.lat!, b.lng!);
+          }).map((a) => {
+            const ref = userCoords ?? { lat: 48.8566, lng: 2.3522 };
+            const km = Math.round(haversineKm(ref.lat, ref.lng, a.lat!, a.lng!));
+            const rating = ratings[a.id];
+            const dispo = availableNow.some((x) => x.id === a.id);
+            return (
+              <TouchableOpacity key={a.id} onPress={() => router.push(`/profile/${a.id}`)}
+                style={{ backgroundColor: "#FFFFFF", borderRadius: 16, padding: 14, flexDirection: "row", alignItems: "center", gap: 12, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)" }}>
+                <View style={{ position: "relative" }}>
+                  <Avatar uri={a.avatar_url} name={a.display_name} size={54} />
+                  {dispo && <View style={{ position: "absolute", bottom: 0, right: 0, width: 13, height: 13, borderRadius: 7, backgroundColor: "#4CAF50", borderWidth: 2, borderColor: "#F5F3EE" }} />}
+                </View>
+                <View style={{ flex: 1 }}>
+                  <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                    <Text style={{ color: "#1A1A1A", fontWeight: "800", fontSize: 15 }}>{a.display_name}</Text>
+                    {a.is_verified && <Ionicons name="checkmark-circle" size={13} color="#B8903E" />}
+                  </View>
+                  <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 2 }}>
+                    {a.city}{km > 0 ? ` · ${km} km` : ""}
+                  </Text>
+                  {a.style_tags?.length > 0 && (
+                    <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "600", marginTop: 3 }} numberOfLines={1}>
+                      {a.style_tags.slice(0, 3).join(" · ")}
+                    </Text>
+                  )}
+                </View>
+                <View style={{ alignItems: "flex-end", gap: 4 }}>
+                  {rating && (
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }}>
+                      <Ionicons name="star" size={12} color="#B8903E" />
+                      <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 13 }}>{rating.avg.toFixed(1)}</Text>
+                      <Text style={{ color: "#9A9AA5", fontSize: 11 }}>({rating.count})</Text>
+                    </View>
+                  )}
+                  {a.starting_price != null && (
+                    <Text style={{ color: "#6B6B7A", fontSize: 12 }}>dès {a.starting_price}€</Text>
+                  )}
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+          {filtered.length === 0 && !loading && (
+            <View style={{ alignItems: "center", paddingTop: 60 }}>
+              <Ionicons name="search-outline" size={44} color="rgba(0,0,0,0.1)" />
+              <Text style={{ color: "#6B6B7A", fontSize: 14, marginTop: 12, textAlign: "center" }}>
+                Aucun tatoueur ne correspond à ces filtres.
+              </Text>
+            </View>
+          )}
+        </ScrollView>
+      )}
+
       {/* Map */}
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, display: viewMode === "map" ? "flex" : "none" }}>
         {isWeb ? (
           <iframe
             ref={webViewRef as any}
@@ -460,6 +543,18 @@ function ArtistStats() {
             </View>
           ))}
         </View>
+
+        {/* Accès direct aux demandes : le cœur de l'outil pro */}
+        <TouchableOpacity onPress={() => router.push("/pro/requests" as any)} style={{ backgroundColor: "#1A1A1A", borderRadius: 16, padding: 16, marginBottom: 20, flexDirection: "row", alignItems: "center", gap: 12 }}>
+          <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: "rgba(201,162,75,0.2)", alignItems: "center", justifyContent: "center" }}>
+            <Ionicons name="color-palette" size={20} color="#C9A24B" />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: "#F4F1EA", fontWeight: "800", fontSize: 15 }}>Mes demandes de projets</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 2 }}>{stats?.requests_count ?? 0} demande{(stats?.requests_count ?? 0) > 1 ? "s" : ""} · triées par statut</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={18} color="rgba(244,241,234,0.4)" />
+        </TouchableOpacity>
 
         {stats?.requests_count > 0 && (
           <View style={{ backgroundColor: "#FFFFFF", borderRadius: 16, padding: 16, marginBottom: 20, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)" }}>
