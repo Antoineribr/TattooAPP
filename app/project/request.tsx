@@ -12,7 +12,7 @@ import { supabase } from "@/lib/supabase";
 import { createProjectRequest } from "@/lib/api";
 import { useAuthStore } from "@/store/useAuthStore";
 import { SIZE_LABELS, SizeCategory } from "@/types/database";
-import { BODY_PLACEMENTS_FULL } from "@/lib/config";
+import { BODY_PLACEMENTS_FULL, STYLES_LIST } from "@/lib/config";
 
 const { width: W } = Dimensions.get("window");
 
@@ -33,9 +33,11 @@ export default function ProjectRequestScreen() {
   const [placementSearch, setPlacementSearch] = useState("");
   const [sizeCategory, setSizeCategory] = useState<SizeCategory | "">("");
   const [colorPref, setColorPref] = useState<"color" | "black_grey" | "any">("any");
+  const [desiredStyle, setDesiredStyle] = useState("");
   const [budgetMin, setBudgetMin] = useState("");
   const [budgetMax, setBudgetMax] = useState("");
   const [desiredDate, setDesiredDate] = useState("");
+  const [city, setCity] = useState(profile?.city ?? "");
   const [sending, setSending] = useState(false);
 
   async function pickImages() {
@@ -78,10 +80,11 @@ export default function ProjectRequestScreen() {
         body_placement: bodyPlacement || undefined,
         size_category: (sizeCategory as SizeCategory) || undefined,
         color_preference: colorPref,
+        desired_style: desiredStyle || undefined,
         budget_min: budgetMin ? parseInt(budgetMin) : undefined,
         budget_max: budgetMax ? parseInt(budgetMax) : undefined,
         desired_date: desiredDate || undefined,
-        city: profile?.city ?? undefined,
+        city: city.trim() || undefined,
         reference_urls: refUrls,
       });
       router.replace(`/chat/${conversationId}`);
@@ -92,10 +95,13 @@ export default function ProjectRequestScreen() {
     }
   }
 
+  // Une demande qualifiée = description sérieuse + budget : c'est ce qui fait
+  // gagner du temps au tatoueur et crédibilise la plateforme
+  const hasBudget = requestType === "question" || !!(budgetMin.trim() || budgetMax.trim());
   const canGoNext = [
     true, // type toujours valide
-    description.trim().length > 0,
-    true, // infos optionnelles
+    description.trim().length >= 20,
+    hasBudget,
     true,
   ][step];
 
@@ -185,8 +191,10 @@ export default function ProjectRequestScreen() {
               }}
             />
 
-            <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 8, marginBottom: 20 }}>
-              {description.length}/500 caractères
+            <Text style={{ color: description.trim().length >= 20 ? "#6B6B7A" : "#B8903E", fontSize: 12, marginTop: 8, marginBottom: 20 }}>
+              {description.trim().length < 20
+                ? `Encore ${20 - description.trim().length} caractères pour une demande sérieuse`
+                : `${description.length}/500 caractères`}
             </Text>
 
             {/* Photos de référence */}
@@ -222,7 +230,9 @@ export default function ProjectRequestScreen() {
         {step === 2 && (
           <View>
             <Text style={{ color: "#1A1A1A", fontSize: 20, fontWeight: "800", marginBottom: 4 }}>Informations</Text>
-            <Text style={{ color: "#6B6B7A", fontSize: 14, marginBottom: 20 }}>Tout est optionnel mais aide le tatoueur à mieux estimer.</Text>
+            <Text style={{ color: "#6B6B7A", fontSize: 14, marginBottom: 20 }}>
+              {requestType === "question" ? "Tout est optionnel pour une simple question." : "Le budget est requis : il permet au tatoueur de te répondre sérieusement."}
+            </Text>
 
             <FieldLabel label="Emplacement du corps" />
             {/* Recherche */}
@@ -304,7 +314,20 @@ export default function ProjectRequestScreen() {
               ))}
             </View>
 
-            <FieldLabel label="Budget estimé (€)" />
+            <FieldLabel label="Style souhaité" />
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 20 }}>
+              {STYLES_LIST.map((s) => (
+                <TouchableOpacity
+                  key={s}
+                  onPress={() => setDesiredStyle(desiredStyle === s ? "" : s)}
+                  style={{ paddingHorizontal: 13, paddingVertical: 7, borderRadius: 20, backgroundColor: desiredStyle === s ? "#B8903E" : "#FFFFFF", borderWidth: 1, borderColor: desiredStyle === s ? "#B8903E" : "rgba(0,0,0,0.1)" }}
+                >
+                  <Text style={{ color: desiredStyle === s ? "#F5F3EE" : "#1A1A1A", fontSize: 13, fontWeight: "600" }}>{s}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            <FieldLabel label={requestType === "question" ? "Budget estimé (€)" : "Budget estimé (€) — requis"} />
             <View style={{ flexDirection: "row", gap: 10, marginBottom: 20 }}>
               <TextInput value={budgetMin} onChangeText={setBudgetMin} placeholder="Min" placeholderTextColor="rgba(0,0,0,0.18)" keyboardType="number-pad"
                 style={{ flex: 1, backgroundColor: "#FFFFFF", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: "#1A1A1A", fontSize: 15, borderWidth: 1, borderColor: "rgba(0,0,0,0.1)" }} />
@@ -314,6 +337,10 @@ export default function ProjectRequestScreen() {
 
             <FieldLabel label="Période souhaitée" />
             <TextInput value={desiredDate} onChangeText={setDesiredDate} placeholder="Ex : mars 2026, après Pâques…" placeholderTextColor="rgba(0,0,0,0.18)"
+              style={{ backgroundColor: "#FFFFFF", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: "#1A1A1A", fontSize: 15, borderWidth: 1, borderColor: "rgba(0,0,0,0.1)", marginBottom: 20 }} />
+
+            <FieldLabel label="Ta ville" />
+            <TextInput value={city} onChangeText={setCity} placeholder="Ex : Paris, Lyon…" placeholderTextColor="rgba(0,0,0,0.18)"
               style={{ backgroundColor: "#FFFFFF", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: "#1A1A1A", fontSize: 15, borderWidth: 1, borderColor: "rgba(0,0,0,0.1)", marginBottom: 20 }} />
           </View>
         )}
@@ -328,6 +355,8 @@ export default function ProjectRequestScreen() {
             <SummaryRow label="Description" value={description || "—"} />
             {bodyPlacement && <SummaryRow label="Emplacement" value={bodyPlacement} />}
             {sizeCategory && <SummaryRow label="Taille" value={SIZE_LABELS[sizeCategory as SizeCategory]} />}
+            {desiredStyle && <SummaryRow label="Style" value={desiredStyle} />}
+            {city.trim() && <SummaryRow label="Ville" value={city.trim()} />}
             <SummaryRow label="Couleur" value={{ any: "Indifférent", black_grey: "Noir & gris", color: "Couleur" }[colorPref]} />
             {(budgetMin || budgetMax) && <SummaryRow label="Budget" value={`${budgetMin || "?"}€ – ${budgetMax || "?"}€`} />}
             {desiredDate && <SummaryRow label="Période" value={desiredDate} />}

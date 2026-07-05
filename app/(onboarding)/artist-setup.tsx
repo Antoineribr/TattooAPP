@@ -72,13 +72,14 @@ export default function ArtistSetupScreen() {
       let avatarUrl: string | null = null;
 
       if (avatarUri) {
+        // Bucket "posts" avec préfixe avatars/ (même convention que edit/profile)
         const ext = avatarUri.split(".").pop() ?? "jpg";
-        const path = `${session.user.id}/avatar.${ext}`;
+        const path = `avatars/${session.user.id}.${ext}`;
         const resp = await fetch(avatarUri);
         const blob = await resp.blob();
-        const { error: upErr } = await supabase.storage.from("avatars").upload(path, blob, { upsert: true, contentType: `image/${ext}` });
+        const { error: upErr } = await supabase.storage.from("posts").upload(path, blob, { upsert: true, contentType: `image/${ext}` });
         if (!upErr) {
-          const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(path);
+          const { data: urlData } = supabase.storage.from("posts").getPublicUrl(path);
           avatarUrl = urlData.publicUrl;
         }
       }

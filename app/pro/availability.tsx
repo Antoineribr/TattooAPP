@@ -12,6 +12,7 @@ const STATUS_ICONS: Record<ArtistAvailabilityStatus, string> = {
   full: "close-circle-outline",
   flash_only: "flash-outline",
   guest_spot_soon: "airplane-outline",
+  paused: "pause-circle-outline",
 };
 
 const STATUS_COLORS: Record<ArtistAvailabilityStatus, string> = {
@@ -20,6 +21,7 @@ const STATUS_COLORS: Record<ArtistAvailabilityStatus, string> = {
   full: "#E74C3C",
   flash_only: "#C9A24B",
   guest_spot_soon: "#4B9AC9",
+  paused: "#9A9AA5",
 };
 
 export default function AvailabilityScreen() {

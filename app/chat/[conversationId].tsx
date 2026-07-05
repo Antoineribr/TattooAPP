@@ -87,6 +87,16 @@ export default function ChatScreen() {
     }
     if (msgsRes.data) setMessages(msgsRes.data as Message[]);
     setLoading(false);
+
+    // Marquer comme lus les messages reçus (pour les badges "non lu")
+    if (uid) {
+      supabase.from("messages")
+        .update({ read_at: new Date().toISOString() })
+        .eq("conversation_id", conversationId)
+        .neq("sender_id", uid)
+        .is("read_at", null)
+        .then(() => {});
+    }
   }
 
   useEffect(() => {

@@ -8,7 +8,7 @@ export type SizeCategory = "small" | "medium" | "large" | "sleeve" | "back";
 export type ProjectStatus = "new" | "awaiting_reply" | "in_discussion" | "quote_sent" | "deposit_requested" | "confirmed" | "done" | "archived";
 export type RequestType = "flash" | "custom" | "question";
 export type ArtistLocationType = "studio" | "home" | "guest_spot";
-export type ArtistAvailabilityStatus = "open" | "waitlist" | "full" | "flash_only" | "guest_spot_soon";
+export type ArtistAvailabilityStatus = "open" | "waitlist" | "full" | "flash_only" | "guest_spot_soon" | "paused";
 export type ReportReason = "spam" | "disrespectful" | "inappropriate" | "fake" | "stolen_content" | "scam" | "fraudulent_request" | "other";
 export type ContactType = "adapt_tattoo" | "custom_project" | "question";
 
@@ -268,4 +268,14 @@ export const AVAILABILITY_STATUS_LABELS: Record<ArtistAvailabilityStatus, string
   full: "Complet actuellement",
   flash_only: "Flashs uniquement",
   guest_spot_soon: "Guest spot prochainement",
+  paused: "En pause",
+};
+
+export const AVAILABILITY_STATUS_COLORS: Record<ArtistAvailabilityStatus, string> = {
+  open: "#27AE60",
+  waitlist: "#FF8C42",
+  full: "#E74C3C",
+  flash_only: "#C9A24B",
+  guest_spot_soon: "#4B9AC9",
+  paused: "#9A9AA5",
 };

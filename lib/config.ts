@@ -1,15 +1,17 @@
 export const APP_CONFIG = {
-  brandName: "APP_NAME",
+  brandName: "INK",
   tagline: "Trouve ton tatoueur.",
-  supportEmail: "support@app-name.fr",
+  supportEmail: "antoine.ribeiro02@gmail.com",
+  // Site web public (déployé sur Vercel) — utilisé pour les liens de partage
+  webUrl: "https://tattoo-app-zeta.vercel.app",
   social: {
     instagram: "",
     tiktok: "",
   },
   legal: {
-    privacyUrl: "https://app-name.fr/confidentialite",
-    termsUrl: "https://app-name.fr/cgu",
-    cookiesUrl: "https://app-name.fr/cookies",
+    privacyUrl: "https://tattoo-app-zeta.vercel.app/confidentialite",
+    termsUrl: "https://tattoo-app-zeta.vercel.app/cgu",
+    cookiesUrl: "https://tattoo-app-zeta.vercel.app/cookies",
   },
   colors: {
     gold: "#B8903E",
@@ -92,4 +94,5 @@ export const AVAILABILITY_LABELS: Record<string, string> = {
   full: "Complet actuellement",
   flash_only: "Flashs uniquement",
   guest_spot_soon: "Guest spot prochainement",
+  paused: "En pause",
 };

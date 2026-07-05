@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "@/lib/supabase";
@@ -8,20 +8,37 @@ import { useAuthStore } from "@/store/useAuthStore";
 export default function RoleScreen() {
   const { session, setProfile } = useAuthStore();
   const router = useRouter();
-  const [selected, setSelected] = useState<"client" | "artist" | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showInvite, setShowInvite] = useState(false);
+  const [inviteCode, setInviteCode] = useState("");
+  const [inviteError, setInviteError] = useState("");
 
-  async function chooseRole(role: "client" | "artist") {
-    if (!session) return;
-    setSelected(role);
-    setLoading(true);
-    await supabase.from("profiles").update({ role }).eq("id", session.user.id);
-    const { data } = await supabase.from("profiles").select("*").eq("id", session.user.id).single();
+  async function refreshProfile() {
+    const { data } = await supabase.from("profiles").select("*").eq("id", session!.user.id).single();
     if (data) setProfile(data as any);
-    setLoading(false);
+  }
 
-    if (role === "client") router.replace("/(onboarding)/styles");
-    else router.replace("/(onboarding)/artist-setup");
+  async function chooseClient() {
+    if (!session) return;
+    setLoading(true);
+    await supabase.from("profiles").update({ role: "client" }).eq("id", session.user.id);
+    await refreshProfile();
+    setLoading(false);
+    router.replace("/(onboarding)/styles");
+  }
+
+  async function submitInviteCode() {
+    if (!session || !inviteCode.trim()) return;
+    setInviteError("");
+    setLoading(true);
+    const { data: ok, error } = await supabase.rpc("claim_artist_invite", { invite_code: inviteCode });
+    setLoading(false);
+    if (error || !ok) {
+      setInviteError("Code invalide ou expiré. Vérifie le code reçu ou contacte-nous.");
+      return;
+    }
+    await refreshProfile();
+    router.replace("/(onboarding)/artist-setup");
   }
 
   return (
@@ -34,11 +51,12 @@ export default function RoleScreen() {
         </Text>
 
         <TouchableOpacity
-          onPress={() => chooseRole("client")}
+          onPress={chooseClient}
+          disabled={loading}
           style={{
-            backgroundColor: selected === "client" ? "rgba(184,144,62,0.12)" : "#FFFFFF",
+            backgroundColor: "#FFFFFF",
             borderRadius: 16, padding: 20, marginBottom: 14,
-            borderWidth: 1.5, borderColor: selected === "client" ? "#B8903E" : "transparent",
+            borderWidth: 1.5, borderColor: "transparent",
             flexDirection: "row", alignItems: "center", gap: 16,
           }}
         >
@@ -49,15 +67,16 @@ export default function RoleScreen() {
             <Text style={{ color: "#1A1A1A", fontWeight: "800", fontSize: 17 }}>Je cherche un tatoueur</Text>
             <Text style={{ color: "#6B6B7A", fontSize: 13, marginTop: 3 }}>Inspiration, découverte et projets</Text>
           </View>
-          {selected === "client" && <Ionicons name="checkmark-circle" size={24} color="#B8903E" />}
+          {loading && !showInvite ? <ActivityIndicator color="#B8903E" /> : <Ionicons name="chevron-forward" size={20} color="rgba(0,0,0,0.2)" />}
         </TouchableOpacity>
 
+        {/* Tatoueur : uniquement sur invitation — qualité du réseau garantie */}
         <TouchableOpacity
-          onPress={() => chooseRole("artist")}
+          onPress={() => setShowInvite((v) => !v)}
           style={{
-            backgroundColor: selected === "artist" ? "rgba(184,144,62,0.12)" : "#FFFFFF",
-            borderRadius: 16, padding: 20, marginBottom: 14,
-            borderWidth: 1.5, borderColor: selected === "artist" ? "#B8903E" : "transparent",
+            backgroundColor: showInvite ? "rgba(184,144,62,0.12)" : "#FFFFFF",
+            borderRadius: 16, padding: 20,
+            borderWidth: 1.5, borderColor: showInvite ? "#B8903E" : "transparent",
             flexDirection: "row", alignItems: "center", gap: 16,
           }}
         >
@@ -66,10 +85,40 @@ export default function RoleScreen() {
           </View>
           <View style={{ flex: 1 }}>
             <Text style={{ color: "#1A1A1A", fontWeight: "800", fontSize: 17 }}>Je suis tatoueur·se</Text>
-            <Text style={{ color: "#6B6B7A", fontSize: 13, marginTop: 3 }}>Partage ton travail et reçois des demandes</Text>
+            <Text style={{ color: "#6B6B7A", fontSize: 13, marginTop: 3 }}>Accès sur invitation avec un code</Text>
           </View>
-          {selected === "artist" && <Ionicons name="checkmark-circle" size={24} color="#B8903E" />}
+          <Ionicons name={showInvite ? "chevron-up" : "chevron-forward"} size={20} color="rgba(0,0,0,0.2)" />
         </TouchableOpacity>
+
+        {showInvite && (
+          <View style={{ marginTop: 14 }}>
+            <TextInput
+              value={inviteCode}
+              onChangeText={(t) => { setInviteCode(t); setInviteError(""); }}
+              placeholder="Code d'invitation (ex : A1B2C3D4)"
+              placeholderTextColor="rgba(0,0,0,0.2)"
+              autoCapitalize="characters"
+              autoCorrect={false}
+              style={{ backgroundColor: "#FFFFFF", borderRadius: 14, paddingHorizontal: 16, paddingVertical: 14, color: "#1A1A1A", fontSize: 16, letterSpacing: 2, fontWeight: "700", borderWidth: 1, borderColor: inviteError ? "#D93535" : "rgba(0,0,0,0.1)", textAlign: "center" }}
+            />
+            {inviteError ? (
+              <Text style={{ color: "#D93535", fontSize: 13, marginTop: 8, textAlign: "center" }}>{inviteError}</Text>
+            ) : (
+              <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 8, textAlign: "center" }}>
+                INK est sur invitation pour les artistes : chaque profil est vérifié.
+              </Text>
+            )}
+            <TouchableOpacity
+              onPress={submitInviteCode}
+              disabled={loading || !inviteCode.trim()}
+              style={{ marginTop: 12, backgroundColor: inviteCode.trim() ? "#B8903E" : "rgba(0,0,0,0.06)", borderRadius: 14, paddingVertical: 15, alignItems: "center" }}
+            >
+              {loading ? <ActivityIndicator color="#F5F3EE" /> : (
+                <Text style={{ color: inviteCode.trim() ? "#F5F3EE" : "rgba(0,0,0,0.2)", fontWeight: "800", fontSize: 15 }}>Activer mon compte artiste</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );

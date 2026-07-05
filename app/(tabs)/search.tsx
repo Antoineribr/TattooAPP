@@ -56,6 +56,7 @@ function ClientMap() {
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [search, setSearch] = useState("");
   const [styleFilter, setStyleFilter] = useState("");
+  const [dispoOnly, setDispoOnly] = useState(false);
   const [selected, setSelected] = useState<ArtistRow | null>(null);
   const [mapReady, setMapReady] = useState(false);
 
@@ -93,10 +94,12 @@ function ClientMap() {
     setLoading(false);
   }
 
+  const availIds = new Set(availableNow.map((a) => a.id));
   const filtered = artists.filter((a) => {
     const matchStyle = !styleFilter || a.style_tags?.includes(styleFilter);
     const matchSearch = !search || a.display_name.toLowerCase().includes(search.toLowerCase()) || (a.city ?? "").toLowerCase().includes(search.toLowerCase());
-    return matchStyle && matchSearch;
+    const matchDispo = !dispoOnly || availIds.has(a.id);
+    return matchStyle && matchSearch && matchDispo;
   });
 
   // Envoie les markers à la WebView quand les données changent
@@ -303,6 +306,12 @@ function ClientMap() {
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={{ flexDirection: "row", gap: 8, paddingRight: 16 }}>
+            {/* Filtre disponibilité en tête : le critère n°1 pour un client */}
+            <TouchableOpacity onPress={() => setDispoOnly(!dispoOnly)}
+              style={{ flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, backgroundColor: dispoOnly ? "#27AE60" : "#FFFFFF", borderWidth: 1, borderColor: dispoOnly ? "#27AE60" : "rgba(0,0,0,0.1)" }}>
+              <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: dispoOnly ? "#FFFFFF" : "#27AE60" }} />
+              <Text style={{ color: dispoOnly ? "#FFFFFF" : "#1A1A1A", fontSize: 12, fontWeight: "600" }}>Dispo</Text>
+            </TouchableOpacity>
             {STYLES.map((s) => (
               <TouchableOpacity key={s} onPress={() => setStyleFilter(styleFilter === s ? "" : s)}
                 style={{ paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, backgroundColor: styleFilter === s ? "#B8903E" : "#FFFFFF", borderWidth: 1, borderColor: styleFilter === s ? "#B8903E" : "rgba(0,0,0,0.1)" }}>

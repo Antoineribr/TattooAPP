@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Share } from "react-native";
+import { View, Text, TouchableOpacity, Share } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { PostWithCounts } from "@/types/database";
 import { Animated } from "react-native";
@@ -18,8 +18,8 @@ export function ActionColumn({ post, onLike, onSave, onFollow, onMessage, onProj
   async function handleShare() {
     try {
       await Share.share({
-        message: `Découvre ce tatouage sur ${APP_CONFIG.brandName} : ${APP_CONFIG.legal.termsUrl.replace("/cgu", "")}/post/${post.id}`,
-        url: `https://app-name.fr/post/${post.id}`,
+        message: `Découvre ce tatouage sur ${APP_CONFIG.brandName} : ${APP_CONFIG.webUrl}/post/${post.id}`,
+        url: `${APP_CONFIG.webUrl}/post/${post.id}`,
       });
     } catch {}
   }
@@ -48,11 +48,12 @@ export function ActionColumn({ post, onLike, onSave, onFollow, onMessage, onProj
         <Ionicons name="chatbubble-outline" size={26} color="#F4F1EA" />
       </TouchableOpacity>
 
-      {/* Demander un projet */}
+      {/* Demander un projet — CTA principal, avec label explicite */}
       {onProject && (
         <TouchableOpacity onPress={onProject} activeOpacity={0.7} style={{ alignItems: "center", marginTop: 4 }}>
-          <View style={{ backgroundColor: "#C9A24B", borderRadius: 20, paddingHorizontal: 14, paddingVertical: 7, flexDirection: "row", alignItems: "center", gap: 5 }}>
+          <View style={{ backgroundColor: "#C9A24B", borderRadius: 20, paddingHorizontal: 12, paddingVertical: 7, flexDirection: "row", alignItems: "center", gap: 5 }}>
             <Ionicons name="color-palette-outline" size={14} color="#0A0A0B" />
+            <Text style={{ color: "#0A0A0B", fontSize: 12, fontWeight: "800" }}>Projet</Text>
           </View>
         </TouchableOpacity>
       )}

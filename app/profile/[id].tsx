@@ -10,8 +10,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import { supabase } from "@/lib/supabase";
 import { toggleFollow, getOrCreateConversation } from "@/lib/api";
 import { useAuthStore } from "@/store/useAuthStore";
-import { Profile, PostWithCounts } from "@/types/database";
-import { CommentsSheet } from "@/components/ui/CommentsSheet";
+import {
+  Profile, PostWithCounts, ArtistAvailability, ArtistLocation,
+  AVAILABILITY_STATUS_LABELS, AVAILABILITY_STATUS_COLORS,
+} from "@/types/database";
 import { Avatar } from "@/components/ui/Avatar";
 import { AuthPrompt } from "@/components/ui/AuthPrompt";
 import { ReportSheet } from "@/components/ui/ReportSheet";
@@ -34,16 +36,18 @@ export default function ProfileScreen() {
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<Tab>("posts");
   const flashPosts = posts.filter((p) => p.availability_type === "flash_available");
-  const [commentsPostId, setCommentsPostId] = useState<string | null>(null);
   const [authPrompt, setAuthPrompt] = useState<"follow" | "contact" | "project" | null>(null);
   const [showReport, setShowReport] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
   const [reviews, setReviews] = useState<any[]>([]);
   const [showReview, setShowReview] = useState(false);
   const [canReview, setCanReview] = useState<string | null>(null); // project_request_id si éligible
+  const [availability, setAvailability] = useState<ArtistAvailability[]>([]);
+  const [locations, setLocations] = useState<ArtistLocation[]>([]);
 
   const isOwn = session?.user.id === id;
-  const isCurrentUserArtist = profile?.role === "artist";
+  // Le rôle de l'utilisateur CONNECTÉ (pas celui du profil consulté)
+  const isCurrentUserArtist = myProfile?.role === "artist";
   const isArtist = profile?.role === "artist";
 
   useEffect(() => { if (id) loadProfile(); }, [id]);
@@ -61,13 +65,18 @@ export default function ProfileScreen() {
     setFollowersCount(fCount ?? 0);
     setIsFollowing(!!followData);
 
-    // Charger les avis
-    const { data: revData } = await supabase
-      .from("reviews")
-      .select("*, client:profiles!reviews_client_id_fkey(display_name, avatar_url)")
-      .eq("artist_id", id)
-      .order("created_at", { ascending: false });
+    // Charger les avis + disponibilités + lieux (guest spots)
+    const [{ data: revData }, { data: availData }, { data: locData }] = await Promise.all([
+      supabase.from("reviews")
+        .select("*, client:profiles!reviews_client_id_fkey(display_name, avatar_url)")
+        .eq("artist_id", id)
+        .order("created_at", { ascending: false }),
+      supabase.from("artist_availability").select("*").eq("artist_id", id),
+      supabase.from("artist_locations").select("*").eq("artist_id", id).order("created_at"),
+    ]);
     setReviews(revData ?? []);
+    setAvailability(availData ?? []);
+    setLocations(locData ?? []);
 
     // Vérifier si l'utilisateur connecté peut laisser un avis (projet terminé)
     if (session && session.user.id !== id) {
@@ -204,6 +213,33 @@ export default function ProfileScreen() {
               {profile.bio}
             </Text>
           )}
+
+          {/* Disponibilité — l'info que le client cherche en premier */}
+          {isArtist && availability.length > 0 && (
+            <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: 6, marginTop: 12 }}>
+              {availability.map((av) => {
+                const color = AVAILABILITY_STATUS_COLORS[av.status] ?? "#6B6B7A";
+                return (
+                  <View key={av.id} style={{ flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 20, backgroundColor: `${color}16`, borderWidth: 1, borderColor: `${color}44` }}>
+                    <View style={{ width: 7, height: 7, borderRadius: 4, backgroundColor: color }} />
+                    <Text style={{ color, fontSize: 12, fontWeight: "700" }}>{AVAILABILITY_STATUS_LABELS[av.status] ?? av.status}</Text>
+                  </View>
+                );
+              })}
+            </View>
+          )}
+
+          {/* Guest spots à venir */}
+          {isArtist && locations.filter((l) => l.type === "guest_spot" && l.guest_spot_end && new Date(l.guest_spot_end) >= new Date()).map((l) => (
+            <View key={l.id} style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 8, backgroundColor: "rgba(75,154,201,0.1)", paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: "rgba(75,154,201,0.25)" }}>
+              <Ionicons name="airplane-outline" size={13} color="#4B9AC9" />
+              <Text style={{ color: "#4B9AC9", fontSize: 12, fontWeight: "700" }}>
+                Guest spot à {l.city}
+                {l.guest_spot_start ? ` · ${new Date(l.guest_spot_start).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}` : ""}
+                {l.guest_spot_end ? ` → ${new Date(l.guest_spot_end).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}` : ""}
+              </Text>
+            </View>
+          ))}
 
           {/* Styles */}
           {profile.style_tags?.length > 0 && (
@@ -502,6 +538,14 @@ export default function ProfileScreen() {
         <View style={{ padding: 20, gap: 16 }}>
           {profile.bio && <AboutRow icon="document-text-outline" label="Bio" value={profile.bio} />}
           {profile.city && <AboutRow icon="location-outline" label="Ville" value={profile.city} />}
+          {locations.filter((l) => l.type !== "guest_spot").map((l) => (
+            <AboutRow
+              key={l.id}
+              icon={l.type === "studio" ? "business-outline" : "home-outline"}
+              label={l.type === "studio" ? "Studio" : "À domicile"}
+              value={`${l.studio_name ? `${l.studio_name} · ` : ""}${l.city}${l.is_address_public && l.address ? ` — ${l.address}` : ""}`}
+            />
+          ))}
           {profile.style_tags?.length > 0 && <AboutRow icon="color-palette-outline" label="Styles" value={profile.style_tags.join(", ")} />}
           {(profile as any).years_experience && <AboutRow icon="time-outline" label="Expérience" value={`${(profile as any).years_experience} ans`} />}
           {(profile as any).starting_price && <AboutRow icon="pricetag-outline" label="À partir de" value={`${(profile as any).starting_price}€`} />}

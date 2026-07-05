@@ -175,6 +175,8 @@ export default function AdminScreen() {
             </View>
           )}
 
+          {tab === "artists" && <InviteSection />}
+
           {(tab === "artists" || tab === "clients") && (
             <View style={{ padding: 16, gap: 10 }}>
               <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "rgba(255,255,255,0.9)", borderRadius: 14, paddingHorizontal: 14, paddingVertical: 11, gap: 8, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.08)" }}>
@@ -232,6 +234,70 @@ export default function AdminScreen() {
           <View style={{ height: 60 }} />
         </ScrollView>
       )}
+    </View>
+  );
+}
+
+// ─── Invitations tatoueurs ────────────────────────────────
+function InviteSection() {
+  const [invites, setInvites] = useState<any[]>([]);
+  const [creating, setCreating] = useState(false);
+  const [lastCode, setLastCode] = useState<string | null>(null);
+
+  useEffect(() => { fetchInvites(); }, []);
+
+  async function fetchInvites() {
+    const { data } = await supabase
+      .from("artist_invites")
+      .select("code, used_by, used_at, expires_at, created_at")
+      .order("created_at", { ascending: false })
+      .limit(10);
+    setInvites(data ?? []);
+  }
+
+  async function generate() {
+    setCreating(true);
+    const { data, error } = await supabase.rpc("create_artist_invite");
+    setCreating(false);
+    if (error) { Alert.alert("Erreur", error.message); return; }
+    setLastCode(data as string);
+    fetchInvites();
+  }
+
+  const pending = invites.filter((i) => !i.used_by);
+
+  return (
+    <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+      <View style={{ backgroundColor: "#FFFFFF", borderRadius: 16, padding: 16, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)" }}>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
+          <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 15 }}>Inviter un tatoueur</Text>
+          <TouchableOpacity onPress={generate} disabled={creating} style={{ backgroundColor: GOLD, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8 }}>
+            {creating ? <ActivityIndicator color="#FFF" size="small" /> : <Text style={{ color: "#FFF", fontWeight: "700", fontSize: 13 }}>Générer un code</Text>}
+          </TouchableOpacity>
+        </View>
+        <Text style={{ color: "#6B6B7A", fontSize: 12, marginBottom: 10 }}>
+          Envoie le code au tatoueur : il crée son compte puis entre le code pour activer son profil pro.
+        </Text>
+        {lastCode && (
+          <View style={{ backgroundColor: "rgba(184,144,62,0.1)", borderRadius: 12, padding: 14, alignItems: "center", marginBottom: 10, borderWidth: 1, borderColor: "rgba(184,144,62,0.25)" }}>
+            <Text style={{ color: GOLD, fontSize: 24, fontWeight: "800", letterSpacing: 4 }}>{lastCode}</Text>
+            <Text style={{ color: "#6B6B7A", fontSize: 11, marginTop: 4 }}>Valable 30 jours · usage unique</Text>
+          </View>
+        )}
+        {pending.length > 0 && (
+          <View style={{ gap: 6 }}>
+            <Text style={{ color: "#6B6B7A", fontSize: 12, fontWeight: "600" }}>{pending.length} code{pending.length > 1 ? "s" : ""} en attente</Text>
+            {pending.map((i) => (
+              <View key={i.code} style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingVertical: 6, borderBottomWidth: 0.5, borderBottomColor: "rgba(0,0,0,0.05)" }}>
+                <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 14, letterSpacing: 2 }}>{i.code}</Text>
+                <Text style={{ color: "#9A9AA5", fontSize: 11 }}>
+                  expire le {new Date(i.expires_at).toLocaleDateString("fr-FR")}
+                </Text>
+              </View>
+            ))}
+          </View>
+        )}
+      </View>
     </View>
   );
 }

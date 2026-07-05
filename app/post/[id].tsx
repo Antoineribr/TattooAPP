@@ -8,7 +8,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "@/lib/supabase";
 import { toggleLike, toggleSave, toggleFollow } from "@/lib/api";
 import { useAuthStore } from "@/store/useAuthStore";
-import { CommentsSheet } from "@/components/ui/CommentsSheet";
 import { PostWithCounts, SIZE_LABELS, SizeCategory } from "@/types/database";
 import { Avatar } from "@/components/ui/Avatar";
 import { AuthPrompt } from "@/components/ui/AuthPrompt";
@@ -27,7 +26,6 @@ export default function PostDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { session } = useAuthStore();
   const router = useRouter();
-  const [commentsOpen, setCommentsOpen] = useState(false);
 
   const [post, setPost] = useState<PostWithCounts | null>(null);
   const [loading, setLoading] = useState(true);
@@ -216,23 +214,8 @@ export default function PostDetailScreen() {
       {authPrompt && <AuthPrompt visible context={authPrompt} onClose={() => setAuthPrompt(null)} />}
       <BoardPicker visible={showBoardPicker} postId={post.id} onClose={() => setShowBoardPicker(false)} onSaved={() => setShowBoardPicker(false)} />
 
-      {/* Bouton commentaires */}
-      <TouchableOpacity
-        onPress={() => setCommentsOpen(true)}
-        style={{ flexDirection: "row", alignItems: "center", gap: 8, marginHorizontal: 20, marginBottom: 16, backgroundColor: "#FFFFFF", borderRadius: 14, paddingHorizontal: 16, paddingVertical: 14, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)", shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 3 }}
-      >
-        <Ionicons name="chatbubble-outline" size={20} color="#6B6B7A" />
-        <Text style={{ color: "#6B6B7A", fontSize: 14 }}>
-          {post.comments_count ? `${post.comments_count} commentaire${post.comments_count > 1 ? "s" : ""}` : "Ajouter un commentaire"}
-        </Text>
-      </TouchableOpacity>
-
-      <CommentsSheet
-        visible={commentsOpen}
-        postId={post.id}
-        commentsEnabled={post.comments_enabled}
-        onClose={() => setCommentsOpen(false)}
-      />
+      {/* Pas de commentaires publics : INK privilégie la mise en relation directe.
+          Le contact se fait via message privé ou demande de projet. */}
     </ScrollView>
   );
 }
