@@ -15,6 +15,17 @@ import { useTabBarStore } from "@/store/useTabBarStore";
 // Sur web, "screen" = écran physique (faux) ; il faut la fenêtre du navigateur
 const { width: W, height: H } = Dimensions.get(Platform.OS === "web" ? "window" : "screen");
 
+// Une seule musique à la fois dans tout le feed : le son du post actif
+// remplace toujours le précédent (sinon les pistes se chevauchent au swipe)
+let globalSound: Audio.Sound | null = null;
+async function stopGlobalSound() {
+  const s = globalSound;
+  globalSound = null;
+  if (!s) return;
+  try { await s.stopAsync(); } catch {}
+  try { await s.unloadAsync(); } catch {}
+}
+
 type Slide = { uri: string; type: "image" | "video" };
 
 function VideoSlide({ uri, paused, muted }: { uri: string; paused: boolean; muted: boolean }) {
@@ -64,31 +75,35 @@ export function FeedItem({ post, isActive = false, onLike, onSave, onFollow, onM
   const { muted, setMuted } = useTabBarStore();
 
   useEffect(() => {
-    if (!post.music_url || !isActive) {
-      // Si on n'est plus actif, on décharge immédiatement
-      if (soundRef.current) {
-        soundRef.current.unloadAsync();
-        soundRef.current = null;
-      }
-      return;
-    }
+    if (!post.music_url || !isActive) return;
 
     let cancelled = false;
+    let mySound: Audio.Sound | null = null;
     Audio.setAudioModeAsync({ playsInSilentModeIOS: true, staysActiveInBackground: false });
 
-    Audio.Sound.createAsync(
-      { uri: post.music_url },
-      { shouldPlay: !isPaused, isLooping: true, volume: muted ? 0 : 0.7 }
-    ).then(({ sound: s }) => {
-      if (cancelled) { s.unloadAsync(); return; }
-      soundRef.current = s;
-    });
+    (async () => {
+      // Couper d'abord la musique du post précédent
+      await stopGlobalSound();
+      if (cancelled) return;
+      try {
+        const { sound: s } = await Audio.Sound.createAsync(
+          { uri: post.music_url! },
+          { shouldPlay: !isPaused, isLooping: true, volume: muted ? 0 : 0.7 }
+        );
+        if (cancelled) { try { await s.stopAsync(); } catch {} s.unloadAsync(); return; }
+        mySound = s;
+        globalSound = s;
+        soundRef.current = s;
+      } catch {}
+    })();
 
     return () => {
       cancelled = true;
-      if (soundRef.current) {
-        soundRef.current.unloadAsync();
-        soundRef.current = null;
+      if (mySound) {
+        try { mySound.stopAsync(); } catch {}
+        mySound.unloadAsync();
+        if (globalSound === mySound) globalSound = null;
+        if (soundRef.current === mySound) soundRef.current = null;
       }
     };
   }, [post.music_url, isActive]);
