@@ -25,15 +25,13 @@ export default function SignInScreen() {
       style={{ flex: 1, backgroundColor: "#F5F3EE" }}
     >
       <View style={{ flex: 1, justifyContent: "center", paddingHorizontal: 24 }}>
-        {/* Bouton fermer si on peut revenir en arrière */}
-        {router.canGoBack() && (
-          <TouchableOpacity
-            onPress={() => router.back()}
-            style={{ position: "absolute", top: 56, left: 20, zIndex: 10, padding: 8 }}
-          >
-            <Text style={{ color: "#6B6B7A", fontSize: 15 }}>✕ Fermer</Text>
-          </TouchableOpacity>
-        )}
+        {/* Toujours proposer une sortie : retour arrière si possible, sinon feed */}
+        <TouchableOpacity
+          onPress={() => (router.canGoBack() ? router.back() : router.replace("/(tabs)"))}
+          style={{ position: "absolute", top: 56, left: 20, zIndex: 10, padding: 8 }}
+        >
+          <Text style={{ color: "#6B6B7A", fontSize: 15 }}>✕ Fermer</Text>
+        </TouchableOpacity>
         <Text style={{ color: "#B8903E", fontSize: 40, fontWeight: "800", letterSpacing: 6, textAlign: "center", marginBottom: 6 }}>INK</Text>
         <Text style={{ color: "#6B6B7A", fontSize: 14, textAlign: "center", marginBottom: 36 }}>Découvre les meilleurs tatoueurs</Text>
 
