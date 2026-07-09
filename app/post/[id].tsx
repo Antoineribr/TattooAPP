@@ -3,6 +3,7 @@ import {
   Alert, View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Dimensions,
 } from "react-native";
 import { Image } from "expo-image";
+import { useVideoPlayer, VideoView } from "expo-video";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "@/lib/supabase";
@@ -15,12 +16,33 @@ import { BoardPicker } from "@/components/ui/BoardPicker";
 
 const { width: W } = Dimensions.get("window");
 
+type MediaItem = { uri: string; type: "image" | "video" };
+
 const AVAILABILITY_LABELS: Record<string, string> = {
   flash_available: "⚡ Flash disponible",
   flash_done: "✓ Flash déjà tatoué",
   custom: "✏️ Personnalisable",
   commission: "🎨 Projet sur mesure",
 };
+
+function PostVideo({ uri }: { uri: string }) {
+  const player = useVideoPlayer(uri, (p) => {
+    // Le démarrage muet permet l’autoplay web ; les contrôles laissent
+    // ensuite la main à la personne qui regarde.
+    p.loop = true;
+    p.muted = true;
+    p.play();
+  });
+
+  return (
+    <VideoView
+      player={player}
+      style={{ width: W, height: W, backgroundColor: "#0A0A0B" }}
+      contentFit="cover"
+      nativeControls
+    />
+  );
+}
 
 export default function PostDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -92,7 +114,10 @@ export default function PostDetailScreen() {
   );
   if (!post) return null;
 
-  const allMedias = [post.media_url, ...(post.media_urls ?? [])].filter(Boolean);
+  const allMedias: MediaItem[] = [
+    ...(post.media_url ? [{ uri: post.media_url, type: post.media_type === "video" ? "video" as const : "image" as const }] : []),
+    ...(post.media_urls ?? []).map((uri) => ({ uri, type: "image" as const })),
+  ];
   const price = post.price_type === "on_quote" ? "Sur devis" :
     post.price_type === "fixed" ? `${post.price_min}€` :
     `${post.price_min}€ – ${post.price_max}€`;
@@ -120,11 +145,19 @@ export default function PostDetailScreen() {
 
       {/* Media */}
       {allMedias.length === 1 ? (
-        <Image source={{ uri: allMedias[0] }} style={{ width: W, height: W }} contentFit="cover" />
+        allMedias[0].type === "video" ? (
+          <PostVideo uri={allMedias[0].uri} />
+        ) : (
+          <Image source={{ uri: allMedias[0].uri }} style={{ width: W, height: W }} contentFit="cover" />
+        )
       ) : (
         <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>
-          {allMedias.map((uri, i) => (
-            <Image key={i} source={{ uri }} style={{ width: W, height: W }} contentFit="cover" />
+          {allMedias.map((media, i) => (
+            media.type === "video" ? (
+              <PostVideo key={`video-${i}`} uri={media.uri} />
+            ) : (
+              <Image key={`image-${i}`} source={{ uri: media.uri }} style={{ width: W, height: W }} contentFit="cover" />
+            )
           ))}
         </ScrollView>
       )}
