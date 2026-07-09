@@ -28,6 +28,12 @@ async function stopGlobalSound() {
 
 type Slide = { uri: string; type: "image" | "video" };
 
+const VIDEO_FILE_PATTERN = /\.(mp4|webm|mov|m4v)(?:[?#]|$)/i;
+
+function getMediaType(uri: string): Slide["type"] {
+  return VIDEO_FILE_PATTERN.test(uri) ? "video" : "image";
+}
+
 function VideoSlide({ uri, paused, muted }: { uri: string; paused: boolean; muted: boolean }) {
   const player = useVideoPlayer(uri, (p) => {
     p.loop = true;
@@ -75,26 +81,36 @@ export function FeedItem({ post, isActive = false, onLike, onSave, onFollow, onM
   const { muted, setMuted } = useTabBarStore();
 
   useEffect(() => {
-    if (!post.music_url || !isActive) return;
+    // Les navigateurs bloquent l'autoplay avec son. On charge donc la musique
+    // après l'action explicite « activer le son », puis à chaque changement de post.
+    if (!post.music_url || !isActive || muted) return;
 
     let cancelled = false;
     let mySound: Audio.Sound | null = null;
     Audio.setAudioModeAsync({ playsInSilentModeIOS: true, staysActiveInBackground: false });
 
     (async () => {
-      // Couper d'abord la musique du post précédent
       await stopGlobalSound();
       if (cancelled) return;
+
       try {
         const { sound: s } = await Audio.Sound.createAsync(
           { uri: post.music_url! },
-          { shouldPlay: !isPaused, isLooping: true, volume: muted ? 0 : 0.7 }
+          { shouldPlay: !isPaused, isLooping: true, volume: 0.7 },
         );
-        if (cancelled) { try { await s.stopAsync(); } catch {} s.unloadAsync(); return; }
+        if (cancelled) {
+          try { await s.stopAsync(); } catch {}
+          await s.unloadAsync();
+          return;
+        }
         mySound = s;
         globalSound = s;
         soundRef.current = s;
-      } catch {}
+      } catch (error) {
+        // Ne pas masquer le problème pendant le développement : une URL audio
+        // invalide ou refusée par le navigateur doit rester visible dans la console.
+        if (__DEV__) console.warn("Lecture audio impossible", error);
+      }
     })();
 
     return () => {
@@ -106,7 +122,7 @@ export function FeedItem({ post, isActive = false, onLike, onSave, onFollow, onM
         if (soundRef.current === mySound) soundRef.current = null;
       }
     };
-  }, [post.music_url, isActive]);
+  }, [post.music_url, isActive, muted]);
 
   useEffect(() => {
     if (!soundRef.current) return;
@@ -119,8 +135,11 @@ export function FeedItem({ post, isActive = false, onLike, onSave, onFollow, onM
   }, [muted]);
 
   const slides: Slide[] = [
-    { uri: post.media_url, type: post.media_type },
-    ...(post.media_urls ?? []).map((uri) => ({ uri, type: "image" as const })),
+    {
+      uri: post.media_url,
+      type: post.media_type === "video" ? "video" : getMediaType(post.media_url),
+    },
+    ...(post.media_urls ?? []).map((uri) => ({ uri, type: getMediaType(uri) })),
   ];
   const hasMultiple = slides.length > 1;
   const current = slides[slideIndex];
@@ -206,6 +225,8 @@ export function FeedItem({ post, isActive = false, onLike, onSave, onFollow, onM
       {/* Bouton mute — haut droite */}
       <TouchableOpacity
         onPress={() => setMuted(!muted)}
+        accessibilityRole="button"
+        accessibilityLabel={muted ? "Activer le son" : "Couper le son"}
         style={{
           position: "absolute", top: 52, right: 16,
           width: 34, height: 34, borderRadius: 17,
