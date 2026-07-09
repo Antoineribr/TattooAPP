@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { View, Text, Dimensions, TouchableOpacity, Animated, Pressable, Platform } from "react-native";
 import { Image } from "expo-image";
 import { useVideoPlayer, VideoView } from "expo-video";
@@ -72,51 +72,90 @@ export function FeedItem({ post, isActive = false, onLike, onSave, onFollow, onM
   const [isPaused, setIsPaused] = useState(false);
   const likeScale = useRef(new Animated.Value(1)).current;
   const soundRef = useRef<Audio.Sound | null>(null);
+  const soundLoadingRef = useRef(false);
+  const soundLoadIdRef = useRef(0);
+  const [audioError, setAudioError] = useState(false);
   const { muted, setMuted } = useTabBarStore();
 
-  useEffect(() => {
-    if (!post.music_url || !isActive) return;
+  const releaseLocalSound = useCallback(() => {
+    soundLoadIdRef.current += 1;
+    const sound = soundRef.current;
+    soundRef.current = null;
+    if (!sound) return;
+    if (globalSound === sound) globalSound = null;
+    void sound.stopAsync().catch(() => {});
+    void sound.unloadAsync().catch(() => {});
+  }, []);
 
-    let cancelled = false;
-    let mySound: Audio.Sound | null = null;
-    Audio.setAudioModeAsync({ playsInSilentModeIOS: true, staysActiveInBackground: false });
+  const startOrResumeSound = useCallback(() => {
+    if (!post.music_url || !isActive || isPaused) return;
 
-    (async () => {
-      // Couper d'abord la musique du post précédent
-      await stopGlobalSound();
-      if (cancelled) return;
-      try {
-        const { sound: s } = await Audio.Sound.createAsync(
-          { uri: post.music_url! },
-          { shouldPlay: !isPaused, isLooping: true, volume: muted ? 0 : 0.7 }
-        );
-        if (cancelled) { try { await s.stopAsync(); } catch {} s.unloadAsync(); return; }
-        mySound = s;
-        globalSound = s;
-        soundRef.current = s;
-      } catch {}
-    })();
+    const existingSound = soundRef.current;
+    if (existingSound) {
+      setAudioError(false);
+      void existingSound.setVolumeAsync(0.7);
+      void existingSound.playAsync().catch(() => setAudioError(true));
+      return;
+    }
 
-    return () => {
-      cancelled = true;
-      if (mySound) {
-        try { mySound.stopAsync(); } catch {}
-        mySound.unloadAsync();
-        if (globalSound === mySound) globalSound = null;
-        if (soundRef.current === mySound) soundRef.current = null;
+    if (soundLoadingRef.current) return;
+    soundLoadingRef.current = true;
+    const requestId = ++soundLoadIdRef.current;
+    setAudioError(false);
+
+    // Sur le web, cet appel est aussi lancé directement depuis le clic sur
+    // le bouton son : le navigateur le considère alors comme une action voulue.
+    void Audio.setAudioModeAsync({ playsInSilentModeIOS: true, staysActiveInBackground: false }).catch(() => {});
+    void stopGlobalSound();
+
+    Audio.Sound.createAsync(
+      { uri: post.music_url },
+      { shouldPlay: true, isLooping: true, volume: 0.7 }
+    ).then(({ sound }) => {
+      if (requestId !== soundLoadIdRef.current) {
+        void sound.stopAsync().catch(() => {});
+        void sound.unloadAsync().catch(() => {});
+        return;
       }
-    };
-  }, [post.music_url, isActive]);
+      soundRef.current = sound;
+      globalSound = sound;
+    }).catch(() => {
+      if (requestId === soundLoadIdRef.current) setAudioError(true);
+    }).finally(() => {
+      soundLoadingRef.current = false;
+    });
+  }, [post.music_url, isActive, isPaused]);
 
   useEffect(() => {
-    if (!soundRef.current) return;
-    if (isPaused) soundRef.current.pauseAsync();
-    else soundRef.current.playAsync();
-  }, [isPaused]);
+    if (!isActive || !post.music_url) {
+      releaseLocalSound();
+      return;
+    }
+    // Chrome et Safari bloquent un lancement audio au chargement.
+    // Sur web, on attend que la personne active explicitement le son.
+    if (Platform.OS === "web" && muted) return;
+    startOrResumeSound();
+  }, [post.music_url, isActive, muted, startOrResumeSound, releaseLocalSound]);
 
   useEffect(() => {
-    soundRef.current?.setVolumeAsync(muted ? 0 : 0.7);
+    const sound = soundRef.current;
+    if (!sound) return;
+    if (isPaused) void sound.pauseAsync().catch(() => {});
+    else if (!muted) void sound.playAsync().catch(() => setAudioError(true));
+  }, [isPaused, muted]);
+
+  useEffect(() => {
+    const sound = soundRef.current;
+    if (sound) void sound.setVolumeAsync(muted ? 0 : 0.7).catch(() => setAudioError(true));
   }, [muted]);
+
+  useEffect(() => () => releaseLocalSound(), [releaseLocalSound]);
+
+  function handleSoundPress() {
+    const nextMuted = !muted;
+    setMuted(nextMuted);
+    if (!nextMuted) startOrResumeSound();
+  }
 
   const slides: Slide[] = [
     { uri: post.media_url, type: post.media_type },
@@ -205,7 +244,9 @@ export function FeedItem({ post, isActive = false, onLike, onSave, onFollow, onM
 
       {/* Bouton mute — haut droite */}
       <TouchableOpacity
-        onPress={() => setMuted(!muted)}
+        onPress={handleSoundPress}
+        accessibilityRole="button"
+        accessibilityLabel={muted ? "Activer le son de la publication" : "Couper le son de la publication"}
         style={{
           position: "absolute", top: 52, right: 16,
           width: 34, height: 34, borderRadius: 17,
@@ -228,6 +269,18 @@ export function FeedItem({ post, isActive = false, onLike, onSave, onFollow, onM
           <Ionicons name="musical-notes" size={11} color="#C9A24B" />
           <Text style={{ color: "rgba(244,241,234,0.85)", fontSize: 11, fontWeight: "500" }} numberOfLines={1}>
             {post.music_name}
+          </Text>
+        </View>
+      )}
+
+      {audioError && !muted && post.music_name && (
+        <View style={{
+          position: "absolute", top: hasMultiple ? 92 : 82, left: 16,
+          backgroundColor: "rgba(10,10,11,0.7)", borderRadius: 10,
+          paddingHorizontal: 10, paddingVertical: 6,
+        }}>
+          <Text style={{ color: "#F4F1EA", fontSize: 11 }}>
+            Impossible de lancer l’extrait. Réessaie.
           </Text>
         </View>
       )}
