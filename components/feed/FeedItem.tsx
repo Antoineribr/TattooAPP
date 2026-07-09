@@ -29,31 +29,63 @@ async function stopGlobalSound() {
 type Slide = { uri: string; type: "image" | "video" };
 
 function VideoSlide({ uri, paused, muted }: { uri: string; paused: boolean; muted: boolean }) {
+  const containerRef = useRef<View>(null);
   const player = useVideoPlayer(uri, (p) => {
     p.loop = true;
     p.muted = muted;
     p.play();
   });
 
-  // Sur web : playsInline obligatoire sinon iOS Safari force le plein écran
-  useEffect(() => {
-    if (Platform.OS !== "web") return;
-    document.querySelectorAll("video").forEach((v) => {
-      v.playsInline = true;
-      v.setAttribute("playsinline", "");
-    });
-  }, []);
+  // Web : l'élément <video> réel de CE slide (player.playing d'expo-video
+  // reflète l'intention, pas l'état DOM — on ne peut pas s'y fier)
+  function domVideo(): HTMLVideoElement | null {
+    if (Platform.OS !== "web") return null;
+    return (containerRef.current as any)?.querySelector?.("video") ?? null;
+  }
 
   useEffect(() => {
-    if (paused) player.pause();
-    else player.play();
+    if (paused) {
+      player.pause();
+      // Web : la synchro interne d'expo-video peut relancer un élément hors
+      // écran — on force la pause tant que le slide est inactif
+      if (Platform.OS === "web") {
+        domVideo()?.pause();
+        const enforcer = setInterval(() => {
+          const el = domVideo();
+          if (el && !el.paused) el.pause();
+        }, 800);
+        return () => clearInterval(enforcer);
+      }
+      return;
+    }
+    player.play();
+    // Web : keepalive tant que le slide est actif. Deux raisons :
+    // 1) au montage du 1er post, play() part avant que le <video> soit dans le DOM ;
+    // 2) la synchro interne d'expo-video propage les "pause" d'éléments fantômes
+    //    (démontés par la virtualisation) vers la vidéo visible.
+    // On relance donc l'élément DOM dès qu'il se met en pause à tort.
+    if (Platform.OS === "web") {
+      const keepalive = setInterval(() => {
+        const el = domVideo();
+        if (!el) return;
+        if (el.playsInline !== true) { el.playsInline = true; el.setAttribute("playsinline", ""); }
+        if (el.paused) { el.muted = muted; el.play().catch(() => {}); }
+      }, 500);
+      return () => clearInterval(keepalive);
+    }
   }, [paused]);
 
   useEffect(() => {
     player.muted = muted;
+    const el = domVideo();
+    if (el) el.muted = muted;
   }, [muted]);
 
-  return <VideoView player={player} style={{ width: W, height: H }} contentFit="cover" nativeControls={false} />;
+  return (
+    <View ref={containerRef} style={{ width: W, height: H }}>
+      <VideoView player={player} style={{ width: W, height: H }} contentFit="cover" nativeControls={false} />
+    </View>
+  );
 }
 
 interface Props {

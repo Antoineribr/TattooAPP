@@ -162,8 +162,13 @@ export default function FeedScreen() {
           const y = e.nativeEvent.contentOffset.y;
           lastScrollY.current = y;
           if (y > 10) hasScrolled.current = true;
-          // et la viewability est peu fiable : le post actif = position de scroll / hauteur
-          if (Platform.OS === "web") setActiveIndex(Math.round(y / H));
+          if (Platform.OS === "web") {
+            // La viewability est peu fiable : le post actif = position de scroll / hauteur
+            setActiveIndex(Math.round(y / H));
+            // Et onEndReached ne se déclenche pas : pagination manuelle à 2 écrans de la fin
+            const { contentSize, layoutMeasurement } = e.nativeEvent;
+            if (contentSize && layoutMeasurement && y + layoutMeasurement.height * 2 >= contentSize.height) loadMore();
+          }
         }}
         scrollEventThrottle={50}
         onViewableItemsChanged={onViewableItemsChanged.current}

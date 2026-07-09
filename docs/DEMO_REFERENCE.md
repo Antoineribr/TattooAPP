@@ -19,7 +19,7 @@ Ce post cumule **vidéo + musique** : il teste les deux pipelines d'un coup.
 
 ⚠️ L'ordre du feed dépend du contexte — il n'y a PAS de position fixe :
 
-- **Visiteur anonyme sans géolocalisation** : feed chronologique (`created_at DESC` sur `posts_with_counts`) — voir `lib/hooks/useFeed.ts`, branche "guest". Position actuelle du post de référence : **#30** (elle recule à chaque nouveau post ; les 24 posts des 8 artistes ajoutés le 09/07 sont devant).
+- **Visiteur anonyme sans géolocalisation** : feed chronologique (`created_at DESC` sur `posts_with_counts`) — voir `lib/hooks/useFeed.ts`, branche "guest". Position actuelle du post de référence : **#1** (les `created_at` des posts démo ont été rééchelonnés le 10/07 pour que le feed s'ouvre sur des vidéos ; les posts des 8 artistes ajoutés le 09/07 sont maintenant répartis dans l'historique).
 - **Utilisateur connecté ou géolocalisé** : ordre décidé par la fonction Postgres `get_personalized_feed` (⚠️ ne pas modifier).
 
 Pour retrouver la position à tout moment :
