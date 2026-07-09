@@ -9,8 +9,8 @@
 | `id` | `b1000000-0000-0000-0000-000000000003` |
 | `media_type` | `video` |
 | `media_url` | `https://videos.pexels.com/video-files/8334935/8334935-hd_720_1366_25fps.mp4` (HTTP 200, `video/mp4`, ~2,3 Mo, vérifié le 2026-07-10) |
-| `music_name` | `Machine Hum — Lo-fi` |
-| `music_url` | SoundHelix (libre de droits, HTTP 200 `audio/mpeg`) |
+| `music_name` | `Blinding Lights - The Weeknd` |
+| `music_url` | Preview officielle 30 s de l'API iTunes Search (HTTP 200 `audio/x-m4p`) |
 | Artiste | Maya Noir (`maya@ink.demo`) |
 
 Ce post cumule **vidéo + musique** : il teste les deux pipelines d'un coup.
@@ -41,7 +41,7 @@ Pour tester la vidéo sans scroller : ouvrir directement `/post/b1000000-0000-00
 
 ## Musiques
 
-Toutes les `music_url` sont libres de droits depuis le 2026-07-10 : SoundHelix (m4a/mp3) et Pixabay. Les 37 previews iTunes (noms d'artistes réels) ont été remplacées par des titres instrumentaux fictifs. Répartition déterministe par hash de l'id du post.
+Les `music_url` sont des **previews officielles 30 s de l'API iTunes Search** (`audio-ssl.itunes.apple.com`), le même mécanisme que le MusicPicker de l'app (`components/publish/MusicPicker.tsx` interroge `itunes.apple.com/search` et stocke le `previewUrl`). Choix produit assumé : streaming direct depuis le CDN Apple, jamais re-hébergé, extraits ≤ 30 s fournis par Apple à cet effet. Point de vigilance avant lancement commercial : ce n'est pas une licence d'exploitation musicale — prévoir un catalogue licencié à ce moment-là. Exception : `4d264bbf-…` garde son mp3 Pixabay (« Cinematic »).
 
 ## Comptes démo
 
