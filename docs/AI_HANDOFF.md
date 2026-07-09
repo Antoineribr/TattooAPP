@@ -45,9 +45,11 @@ Ce fichier est la source de vérité entre les assistants et Antoine. Il complè
 ## Dernière intervention
 
 - 2026-07-10 — Codex
-  - Initialisation du présent protocole sur `codex/ai-handoff`.
-  - Aucun changement de schéma, de données, de policy, de médias ou de production.
-  - Prochaine action : fusionner ce fichier, puis rebaser et revoir les PRs #1 et #2 avant tout merge.
+  - Branche `codex/ink-video-audio-repair`, basée sur `codex/ai-handoff`.
+  - `app/post/[id].tsx` : les posts `media_type = 'video'` utilisent désormais `VideoView` au lieu d’être rendus comme une image ; les carrousels existants restent images-only.
+  - `components/feed/FeedItem.tsx` : sur web, la piste est créée/reprise à l’activation explicite du bouton son ; le lecteur tente de reprendre la lecture et affiche un retour visible en cas d’échec.
+  - Aucun changement de schéma, de données, de policy, de médias Supabase ou de production.
+  - Prochaine action : vérifier le build et le preview Vercel de la PR, en particulier le post vidéo de référence et l’activation du son.
 
 ## Questions / blocages actifs
 
