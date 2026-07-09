@@ -34,7 +34,10 @@ export function WelcomeIntro() {
 
   return (
     <Modal visible transparent animationType="fade">
-      <View style={{ flex: 1, backgroundColor: "rgba(10,10,11,0.92)", justifyContent: "center", paddingHorizontal: 28 }}>
+      <View
+        accessibilityViewIsModal
+        style={{ flex: 1, backgroundColor: "rgba(10,10,11,0.92)", justifyContent: "center", paddingHorizontal: 28 }}
+      >
         <Text style={{ color: "#C9A24B", fontSize: 38, fontWeight: "800", letterSpacing: 8, textAlign: "center" }}>INK</Text>
         <Text style={{ color: "#F4F1EA", fontSize: 21, fontWeight: "800", textAlign: "center", marginTop: 18, lineHeight: 30 }}>
           Trouve le bon tatoueur.{"\n"}Pas juste de l'inspiration.
@@ -58,10 +61,20 @@ export function WelcomeIntro() {
           ))}
         </View>
 
-        <TouchableOpacity onPress={dismiss} style={{ marginTop: 40, backgroundColor: "#C9A24B", borderRadius: 14, paddingVertical: 16, alignItems: "center" }}>
+        <TouchableOpacity
+          onPress={dismiss}
+          accessibilityRole="button"
+          accessibilityLabel="Explorer le feed"
+          style={{ marginTop: 40, backgroundColor: "#C9A24B", borderRadius: 14, paddingVertical: 16, alignItems: "center" }}
+        >
           <Text style={{ color: "#0A0A0B", fontWeight: "800", fontSize: 16 }}>Explorer le feed</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={signUp} style={{ marginTop: 12, paddingVertical: 12, alignItems: "center" }}>
+        <TouchableOpacity
+          onPress={signUp}
+          accessibilityRole="button"
+          accessibilityLabel="Créer un compte"
+          style={{ marginTop: 12, paddingVertical: 12, alignItems: "center" }}
+        >
           <Text style={{ color: "rgba(244,241,234,0.7)", fontSize: 14 }}>Créer un compte</Text>
         </TouchableOpacity>
       </View>
