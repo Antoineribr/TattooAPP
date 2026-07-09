@@ -49,7 +49,8 @@ Ce fichier est la source de vérité entre les assistants et Antoine. Il complè
   - `app/post/[id].tsx` : les posts `media_type = 'video'` utilisent désormais `VideoView` au lieu d’être rendus comme une image ; les carrousels existants restent images-only.
   - `components/feed/FeedItem.tsx` : sur web, la piste est créée/reprise à l’activation explicite du bouton son ; le lecteur tente de reprendre la lecture et affiche un retour visible en cas d’échec.
   - Aucun changement de schéma, de données, de policy, de médias Supabase ou de production.
-  - Prochaine action : vérifier le build et le preview Vercel de la PR, en particulier le post vidéo de référence et l’activation du son.
+  - Vérification : le déploiement Vercel de la branche est en état `READY` (build réussi). La page de preview est protégée par Vercel dans Chrome ; aucune URL d’accès temporaire n’a été créée.
+  - Prochaine action : test manuel du post vidéo de référence et du bouton son depuis le preview, puis revue/merge de la PR.
 
 ## Questions / blocages actifs
 
