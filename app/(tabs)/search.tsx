@@ -77,13 +77,20 @@ function ClientMap() {
 
   async function fetchArtists() {
     setLoading(true);
-    const { data } = await supabase
-      .from("profiles")
-      .select("id, display_name, avatar_url, city, lat, lng, style_tags, is_verified, starting_price")
-      .eq("role", "artist")
-      .not("lat", "is", null)
-      .not("lng", "is", null);
-    const allArtists = (data ?? []) as ArtistRow[];
+    const [{ data }, { data: postRows }] = await Promise.all([
+      supabase
+        .from("profiles")
+        .select("id, display_name, avatar_url, city, lat, lng, style_tags, is_verified, starting_price")
+        .eq("role", "artist")
+        .not("lat", "is", null)
+        .not("lng", "is", null),
+      // Un artiste sans publication n'apparaît ni sur la carte ni dans la liste :
+      // un profil vide décrédibilise la découverte. Il redevient visible
+      // automatiquement dès sa première publication.
+      supabase.from("posts").select("artist_id").eq("status", "published"),
+    ]);
+    const artistsWithPosts = new Set((postRows ?? []).map((r: any) => r.artist_id));
+    const allArtists = ((data ?? []) as ArtistRow[]).filter((a) => artistsWithPosts.has(a.id));
     setArtists(allArtists);
 
     // Artistes dispo maintenant

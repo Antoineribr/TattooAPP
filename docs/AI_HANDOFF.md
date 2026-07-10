@@ -30,3 +30,30 @@
 
 - Vérifier la preview Vercel de la pull request sur ordinateur et téléphone avant fusion.
 - Claude doit lire ce fichier avant toute nouvelle intervention et le mettre à jour ensuite.
+
+---
+
+## Intervention Claude — 2026-07-10 (branche `agent/hide-empty-artists`)
+
+- Base : `agent/mobile-feed-shell` (cette branche doit être mergée après la PR de Codex).
+- Décision d'Antoine appliquée : pas de contenu générique de remplacement.
+
+### Changements
+
+- `app/(tabs)/search.tsx` : les artistes sans publication (`status='published'`)
+  n'apparaissent plus sur la carte ni dans la liste ni dans « Dispo maintenant ».
+  Réactivation automatique dès leur première publication — aucun flag en base.
+  Les 8 profils démo sans portfolio restent accessibles par URL directe.
+- `supabase/seed_demo.sql` : régénéré depuis la base distante (v3) — reflète
+  exactement les 23 posts actuels (10 vidéos + 13 photos tattoo), 28 comptes,
+  dispos, lieux, avis, interactions.
+
+### Vérifications
+
+- TypeScript : OK. Export web : OK. Recherche vérifiée en preview (voir PR).
+
+### Prochaine action
+
+- Antoine : valider la preview de la PR #5 (`agent/mobile-feed-shell`) puis merger.
+- Merger ensuite `agent/hide-empty-artists` (PR de suivi, basée dessus).
+- Ne PAS merger sans l'accord explicite d'Antoine.
