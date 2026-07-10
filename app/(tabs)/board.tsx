@@ -11,8 +11,9 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { getBoards, createBoard, renameBoard, deleteBoard } from "@/lib/api";
 import { Board } from "@/types/database";
 import { AuthPrompt } from "@/components/ui/AuthPrompt";
+import { getAppViewport } from "@/lib/layout";
 
-const { width: W } = Dimensions.get("window");
+const { width: W } = getAppViewport(Dimensions.get("window"));
 
 export default function BoardScreen() {
   const { session } = useAuthStore();
