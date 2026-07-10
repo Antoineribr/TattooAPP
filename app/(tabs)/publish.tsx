@@ -11,8 +11,9 @@ import { supabase } from "@/lib/supabase";
 import { useAuthStore } from "@/store/useAuthStore";
 import { SIZE_LABELS, SizeCategory } from "@/types/database";
 import { STYLES_LIST } from "@/lib/config";
+import { getAppViewport } from "@/lib/layout";
 
-const { width: W } = Dimensions.get("window");
+const { width: W } = getAppViewport(Dimensions.get("window"));
 
 type MediaAsset = { uri: string; type: "image" | "video" };
 

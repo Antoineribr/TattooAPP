@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from "react";
-import { View, Text, ActivityIndicator, Dimensions, FlatList, Platform } from "react-native";
+import { View, Text, ActivityIndicator, FlatList, Platform } from "react-native";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useFeed } from "@/lib/hooks/useFeed";
 import { FeedItem } from "@/components/feed/FeedItem";
@@ -10,13 +10,12 @@ import { toggleLike, toggleSave, toggleFollow, getOrCreateConversation } from "@
 import { useAuthStore } from "@/store/useAuthStore";
 import { useTabBarStore } from "@/store/useTabBarStore";
 import { PostWithCounts } from "@/types/database";
-
-// Sur web, "screen" = écran physique (faux) ; il faut la fenêtre du navigateur
-const { height: H } = Dimensions.get(Platform.OS === "web" ? "window" : "screen");
+import { useAppViewport } from "@/lib/layout";
 
 type AuthContext = "save" | "follow" | "contact" | "project" | "default";
 
 export default function FeedScreen() {
+  const { width: W, height: H } = useAppViewport();
   const { posts, loading, refreshing, refresh, loadMore, updatePost } = useFeed();
   const { session, profile } = useAuthStore();
   const { setVisible } = useTabBarStore();
@@ -51,7 +50,7 @@ export default function FeedScreen() {
       setActiveIndex(-1);
       hasScrolled.current = false;
     };
-  }, []));
+  }, [H, setVisible]));
 
   const isArtist = profile?.role === "artist";
   const router = useRouter();
@@ -133,8 +132,9 @@ export default function FeedScreen() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
+    <View style={{ width: W, height: H, alignSelf: "center", backgroundColor: "#F5F3EE" }}>
       <FlatList
+        style={{ width: W, height: H }}
         data={posts}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (

@@ -9,8 +9,9 @@ import * as ImagePicker from "expo-image-picker";
 import { Image } from "expo-image";
 import { supabase } from "@/lib/supabase";
 import { useAuthStore } from "@/store/useAuthStore";
+import { getAppViewport } from "@/lib/layout";
 
-const { width: W } = Dimensions.get("window");
+const { width: W } = getAppViewport(Dimensions.get("window"));
 
 const STYLES = [
   "Blackwork", "Fine line", "Réalisme", "Japonais", "Watercolor",

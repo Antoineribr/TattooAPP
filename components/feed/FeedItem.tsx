@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { View, Text, Dimensions, TouchableOpacity, Animated, Pressable, Platform } from "react-native";
+import { View, Text, TouchableOpacity, Animated, Pressable, Platform } from "react-native";
 import { Image } from "expo-image";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { LinearGradient } from "expo-linear-gradient";
@@ -11,9 +11,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Tag } from "@/components/ui/Tag";
 import { Ionicons } from "@expo/vector-icons";
 import { useTabBarStore } from "@/store/useTabBarStore";
-
-// Sur web, "screen" = écran physique (faux) ; il faut la fenêtre du navigateur
-const { width: W, height: H } = Dimensions.get(Platform.OS === "web" ? "window" : "screen");
+import { useAppViewport } from "@/lib/layout";
 
 // Une seule musique à la fois dans tout le feed : le son du post actif
 // remplace toujours le précédent (sinon les pistes se chevauchent au swipe)
@@ -28,7 +26,7 @@ async function stopGlobalSound() {
 
 type Slide = { uri: string; type: "image" | "video" };
 
-function VideoSlide({ uri, paused, muted }: { uri: string; paused: boolean; muted: boolean }) {
+function VideoSlide({ uri, paused, muted, width, height }: { uri: string; paused: boolean; muted: boolean; width: number; height: number }) {
   const containerRef = useRef<View>(null);
   const player = useVideoPlayer(uri, (p) => {
     p.loop = true;
@@ -82,8 +80,8 @@ function VideoSlide({ uri, paused, muted }: { uri: string; paused: boolean; mute
   }, [muted]);
 
   return (
-    <View ref={containerRef} style={{ width: W, height: H }}>
-      <VideoView player={player} style={{ width: W, height: H }} contentFit="cover" nativeControls={false} />
+    <View ref={containerRef} style={{ width, height }}>
+      <VideoView player={player} style={{ width, height }} contentFit="cover" nativeControls={false} />
     </View>
   );
 }
@@ -99,6 +97,7 @@ interface Props {
 }
 
 export function FeedItem({ post, isActive = false, onLike, onSave, onFollow, onMessage, onProject }: Props) {
+  const { width: W, height: H } = useAppViewport();
   const router = useRouter();
   const [slideIndex, setSlideIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -193,7 +192,7 @@ export function FeedItem({ post, isActive = false, onLike, onSave, onFollow, onM
     <View style={{ width: W, height: H, backgroundColor: "#0A0A0B" }}>
       {/* Média */}
       {isVideo ? (
-        <VideoSlide uri={current.uri} paused={isPaused || !isActive} muted={muted} />
+        <VideoSlide uri={current.uri} paused={isPaused || !isActive} muted={muted} width={W} height={H} />
       ) : (
         <Image
           source={{ uri: current.uri }}
