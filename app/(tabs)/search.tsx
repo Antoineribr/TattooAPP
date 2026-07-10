@@ -15,8 +15,9 @@ import { getArtistStats } from "@/lib/api";
 import { Avatar } from "@/components/ui/Avatar";
 import { Image } from "expo-image";
 import { PROJECT_STATUS_LABELS, ProjectStatus } from "@/types/database";
+import { getAppViewport } from "@/lib/layout";
 
-const { width: W, height: H } = Dimensions.get("window");
+const { width: W, height: H } = getAppViewport(Dimensions.get("window"));
 
 function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number) {
   const R = 6371;
