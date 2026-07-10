@@ -12,8 +12,9 @@ import { PostWithCounts, SIZE_LABELS, SizeCategory } from "@/types/database";
 import { Avatar } from "@/components/ui/Avatar";
 import { AuthPrompt } from "@/components/ui/AuthPrompt";
 import { BoardPicker } from "@/components/ui/BoardPicker";
+import { getAppViewport } from "@/lib/layout";
 
-const { width: W } = Dimensions.get("window");
+const { width: W } = getAppViewport(Dimensions.get("window"));
 
 const AVAILABILITY_LABELS: Record<string, string> = {
   flash_available: "⚡ Flash disponible",
