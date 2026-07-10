@@ -49,6 +49,7 @@ export function CustomTabBar({ state, navigation, isArtist }: BottomTabBarProps 
           {tabs.map((tab) => {
             const focused = currentRouteName === tab.name;
             const route = state.routes.find((r) => r.name === tab.name);
+            const tabLabel = tab.isPlus ? "Créer une publication" : (tab.label ?? tab.name);
             if (!route) return null;
 
             function onPress() {
@@ -58,7 +59,15 @@ export function CustomTabBar({ state, navigation, isArtist }: BottomTabBarProps 
 
             if (tab.isPlus) {
               return (
-                <TouchableOpacity key={tab.name} onPress={onPress} style={{ flex: 1, alignItems: "center", justifyContent: "center" }} activeOpacity={0.8}>
+                <TouchableOpacity
+                  key={tab.name}
+                  onPress={onPress}
+                  accessibilityRole="tab"
+                  accessibilityLabel={tabLabel}
+                  accessibilityState={{ selected: focused }}
+                  style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+                  activeOpacity={0.8}
+                >
                   <View style={{ width: 46, height: 46, borderRadius: 23, backgroundColor: GOLD, alignItems: "center", justifyContent: "center", shadowColor: GOLD, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.45, shadowRadius: 8 }}>
                     <Ionicons name="add" size={28} color="#FFF" />
                   </View>
@@ -67,7 +76,15 @@ export function CustomTabBar({ state, navigation, isArtist }: BottomTabBarProps 
             }
 
             return (
-              <TouchableOpacity key={tab.name} onPress={onPress} style={{ flex: 1, alignItems: "center", justifyContent: "center", gap: 3, paddingTop: 8 }} activeOpacity={0.7}>
+              <TouchableOpacity
+                key={tab.name}
+                onPress={onPress}
+                accessibilityRole="tab"
+                accessibilityLabel={tabLabel}
+                accessibilityState={{ selected: focused }}
+                style={{ flex: 1, alignItems: "center", justifyContent: "center", gap: 3, paddingTop: 8 }}
+                activeOpacity={0.7}
+              >
                 <Ionicons name={(focused ? tab.iconActive : tab.icon) as any} size={22} color={focused ? (onFeed ? GOLD_FEED : GOLD) : (onFeed ? OFF_FEED : OFF)} />
                 <Text numberOfLines={1} style={{ fontSize: 10, fontWeight: focused ? "700" : "400", color: focused ? GOLD : OFF }}>
                   {tab.label}
