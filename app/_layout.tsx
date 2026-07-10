@@ -14,15 +14,41 @@ const PROTECTED_SEGMENTS = ["(onboarding)", "edit", "chat", "project", "board"];
 // Polish web : masquer les scrollbars, bloquer la sélection de texte et le
 // pull-to-refresh navigateur pour un rendu "app" plutôt que "site web"
 if (typeof document !== "undefined") {
-  const style = document.createElement("style");
-  style.textContent = `
+  const styleId = "ink-mobile-web-shell";
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = `
     ::-webkit-scrollbar { display: none; }
     * { scrollbar-width: none; -webkit-tap-highlight-color: transparent; }
-    body { overscroll-behavior: none; background: #0A0A0B; user-select: none; -webkit-user-select: none; }
+    html, body, #root { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overscroll-behavior: none;
+      background: radial-gradient(circle at top, #29251d 0%, #111113 52%, #080809 100%);
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    #root { position: relative; background: #0A0A0B; overflow: hidden; }
+    @media (min-width: 700px) {
+      #root {
+        width: min(430px, 56.25vh);
+        width: min(430px, 56.25dvh);
+        height: min(764px, 100vh);
+        height: min(764px, 100dvh);
+        flex: none;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 28px;
+        box-shadow: 0 28px 80px rgba(0,0,0,0.58);
+      }
+    }
     input, textarea { user-select: text; -webkit-user-select: text; }
     video { object-fit: cover; }
   `;
-  document.head.appendChild(style);
+    document.head.appendChild(style);
+  }
 }
 
 export default function RootLayout() {
