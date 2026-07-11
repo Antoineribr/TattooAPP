@@ -80,3 +80,34 @@ Retours d'Antoine sur la preview de la coque téléphone :
 Vérifié en preview : coque 430px arrondie sur le feed, plein écran sur
 Recherche, écran d'invitation + barre d'onglets sur Boards visiteur,
 photo entière sur fond flou.
+
+---
+
+## Intervention Codex — 2026-07-11 (reprise de la lightbox Claude)
+
+- Branche : `agent/hide-empty-artists` (PR #6), toujours non mergée.
+- Les trois modifications locales inachevées de Claude ont été récupérées.
+
+### Changements
+
+- **Lightbox desktop robuste** : le feed utilise désormais un vrai `Modal`
+  plein écran, indépendant du conteneur Expo qui le coinçait dans un angle.
+- L'arrière-plan représente une page de découverte tattoo floutée. Un clic sur
+  cet arrière-plan, sur le bouton `×` ou la touche Échap renvoie vers Recherche.
+- La barre d'onglets mobile est masquée uniquement dans cette lightbox desktop.
+  Sur téléphone, le feed reste plein écran avec sa navigation native.
+- **Présentation INK** : déplacée au niveau du layout des onglets pour que son
+  délai survive aux changements de page. Sur ordinateur elle apparaît après
+  60 secondes sous forme de carte compacte ; sur téléphone elle reste une
+  feuille mobile native. Elle ne bloque plus l'arrivée sur le site desktop.
+
+### Vérifications
+
+- TypeScript : OK (`tsc --noEmit`).
+- Export Web Expo : OK (`npm run build:web`).
+- Diff Git : OK (`git diff --check`).
+
+### Prochaine action
+
+- Contrôler la nouvelle preview Vercel de la PR #6 sur desktop et téléphone.
+- Ne rien merger sans validation explicite d'Antoine ; ordre inchangé : #5 puis #6.
