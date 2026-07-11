@@ -1,7 +1,6 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from "react";
-import { View, Text, ActivityIndicator, FlatList, Platform, Pressable, useWindowDimensions } from "react-native";
+import { View, Text, ActivityIndicator, FlatList, Platform } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from "@expo/vector-icons";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useFeed } from "@/lib/hooks/useFeed";
 import { FeedItem } from "@/components/feed/FeedItem";
@@ -17,7 +16,6 @@ type AuthContext = "save" | "follow" | "contact" | "project" | "default";
 
 export default function FeedScreen() {
   const { width: W, height: H, isDesktopWeb } = useAppViewport();
-  const { width: windowWidth } = useWindowDimensions();
   const { posts, loading, refreshing, refresh, loadMore, updatePost } = useFeed();
   const { session, profile } = useAuthStore();
   const { setVisible } = useTabBarStore();
@@ -209,95 +207,13 @@ export default function FeedScreen() {
   );
 
   if (isDesktopWeb) {
-    const compactNavigation = windowWidth < 1080;
-    const navigationWidth = compactNavigation ? 88 : 238;
-    const desktopTabs = [
-      ["index", "Feed", "play-circle-outline"],
-      ["search", "Recherche", "search-outline"],
-      ["board", "Boards", "bookmark-outline"],
-      ["messages", "Messages", "chatbubble-outline"],
-      ["profile", "Profil", "person-outline"],
-    ] as const;
-
     return (
       <LinearGradient
         colors={["#171513", "#0D0D0F", "#070708"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={{ flex: 1, flexDirection: "row" }}
+        style={{ flex: 1 }}
       >
-        <View
-          style={{
-            width: navigationWidth,
-            height: "100%",
-            borderRightWidth: 1,
-            borderRightColor: "rgba(255,255,255,0.08)",
-            backgroundColor: "rgba(9,9,11,0.76)",
-            paddingHorizontal: compactNavigation ? 14 : 22,
-            paddingVertical: 24,
-          }}
-        >
-          <Text
-            style={{
-              color: "#C9A24B",
-              fontSize: compactNavigation ? 19 : 24,
-              fontWeight: "900",
-              letterSpacing: compactNavigation ? 3 : 7,
-              textAlign: compactNavigation ? "center" : "left",
-              marginBottom: 34,
-            }}
-          >
-            INK
-          </Text>
-
-          <View style={{ gap: 10 }}>
-            {desktopTabs.map(([route, label, icon]) => {
-              const selected = route === "index";
-              return (
-                <Pressable
-                  key={route}
-                  onPress={() => {
-                    if (!selected) router.replace(`/(tabs)/${route}` as any);
-                  }}
-                  accessibilityRole="button"
-                  accessibilityLabel={label}
-                  accessibilityState={{ selected }}
-                  style={{
-                    height: 50,
-                    borderRadius: 15,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: compactNavigation ? "center" : "flex-start",
-                    paddingHorizontal: compactNavigation ? 0 : 14,
-                    gap: 13,
-                    backgroundColor: selected ? "rgba(201,162,75,0.15)" : "transparent",
-                  }}
-                >
-                  <Ionicons name={icon} size={23} color={selected ? "#D5AE52" : "rgba(244,241,234,0.68)"} />
-                  {!compactNavigation && (
-                    <Text style={{ color: selected ? "#F4F1EA" : "rgba(244,241,234,0.68)", fontSize: 15, fontWeight: selected ? "800" : "600" }}>
-                      {label}
-                    </Text>
-                  )}
-                </Pressable>
-              );
-            })}
-          </View>
-
-          <View style={{ flex: 1 }} />
-          <Pressable
-            onPress={() => router.push(session ? "/(tabs)/profile" : "/(auth)/sign-in")}
-            accessibilityRole="button"
-            accessibilityLabel={session ? "Ouvrir mon profil" : "Se connecter"}
-            style={{ height: 48, borderRadius: 14, backgroundColor: "#C9A24B", alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 9 }}
-          >
-            <Ionicons name={session ? "person" : "log-in-outline"} size={19} color="#0A0A0B" />
-            {!compactNavigation && (
-              <Text style={{ color: "#0A0A0B", fontWeight: "800", fontSize: 14 }}>{session ? "Mon profil" : "Se connecter"}</Text>
-            )}
-          </Pressable>
-        </View>
-
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
           <View
             style={{
