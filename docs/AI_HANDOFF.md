@@ -134,3 +134,16 @@ photo entière sur fond flou.
 - Desktop : barre latérale INK avec Feed, Recherche, Boards, Messages, Profil et
   connexion ; le feed au format téléphone reste centré dans la page.
 - Mobile : aucun changement, navigation d'application plein écran conservée.
+
+### Unification de la direction artistique — 2026-07-11
+
+- Retour Antoine : la navigation sombre du Feed et la Recherche beige donnaient
+  l'impression de changer de site.
+- La sidebar noir/or a été déplacée dans le layout global des onglets : elle est
+  désormais identique et persistante sur Feed, Recherche, Boards, Messages,
+  Profil et Publier/Statistiques pour les artistes.
+- Le Feed ne possède plus sa propre navigation locale.
+- Recherche adopte le fond sombre, les titres clairs, les champs et filtres
+  sombres avec accents or. La carte reste claire pour conserver sa lisibilité,
+  mais elle est présentée dans un cadre INK arrondi et bordé.
+- Mobile conserve exclusivement la barre d'onglets native en bas.
