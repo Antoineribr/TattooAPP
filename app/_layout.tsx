@@ -35,19 +35,10 @@ if (typeof document !== "undefined") {
       -webkit-user-select: none;
     }
     #root { position: relative; background: #0A0A0B; overflow: hidden; }
-    /* Coque téléphone : UNIQUEMENT quand le feed est affiché (classe posée
-       par l'écran feed au focus). Le reste de l'app est plein écran. */
+    /* Sur ordinateur, le feed est une lightbox : sa barre d'onglets mobile
+       disparaît. Les autres pages gardent leur navigation complète. */
     @media (min-width: 700px) {
-      body.ink-feed-shell #root {
-        width: min(430px, 56.25vh);
-        width: min(430px, 56.25dvh);
-        height: min(764px, 100vh);
-        height: min(764px, 100dvh);
-        flex: none;
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 28px;
-        box-shadow: 0 28px 80px rgba(0,0,0,0.58);
-      }
+      body.ink-feed-shell #ink-tabbar { display: none; }
     }
     input, textarea { user-select: text; -webkit-user-select: text; }
     video { object-fit: cover; }
