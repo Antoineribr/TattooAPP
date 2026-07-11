@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from "react";
 import { View, Text, ActivityIndicator, FlatList, Platform, Pressable, Modal } from "react-native";
-import { Image } from "expo-image";
+import { BlurView } from "expo-blur";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useFeed } from "@/lib/hooks/useFeed";
 import { FeedItem } from "@/components/feed/FeedItem";
@@ -11,6 +11,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useTabBarStore } from "@/store/useTabBarStore";
 import { PostWithCounts } from "@/types/database";
 import { useAppViewport } from "@/lib/layout";
+import SearchScreen from "./search";
 
 type AuthContext = "save" | "follow" | "contact" | "project" | "default";
 
@@ -24,6 +25,7 @@ export default function FeedScreen() {
   // (pas de risque musique : le son démarre muet sur web)
   const initialIndex = Platform.OS === "web" ? 0 : -1;
   const [activeIndex, setActiveIndex] = useState(initialIndex);
+  const [screenFocused, setScreenFocused] = useState(true);
   const hasScrolled = useRef(false);
 
   const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
@@ -42,6 +44,7 @@ export default function FeedScreen() {
   }, [session?.user.id]);
 
   useFocusEffect(useCallback(() => {
+    setScreenFocused(true);
     // Au retour sur le feed : réactiver le post visible (web garde la position de scroll)
     if (Platform.OS === "web") {
       setActiveIndex(Math.round(lastScrollY.current / H));
@@ -51,6 +54,7 @@ export default function FeedScreen() {
     return () => {
       // En quittant la page : -1 partout pour couper vidéo ET musique
       setVisible(true);
+      setScreenFocused(false);
       setActiveIndex(-1);
       hasScrolled.current = false;
       if (Platform.OS === "web" && typeof document !== "undefined") {
@@ -62,6 +66,7 @@ export default function FeedScreen() {
   const isArtist = profile?.role === "artist";
   const router = useRouter();
   const exitDesktopFeed = useCallback(() => {
+    setScreenFocused(false);
     router.replace("/(tabs)/search" as any);
   }, [router]);
 
@@ -221,38 +226,30 @@ export default function FeedScreen() {
   if (isDesktopWeb) {
     return (
       <>
+        <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
+          <SearchScreen />
+        </View>
         <Modal
-          visible
+          visible={screenFocused}
           transparent
           animationType="fade"
           onRequestClose={exitDesktopFeed}
           accessibilityViewIsModal
         >
-          <View style={{ flex: 1, backgroundColor: "#0A0A0B" }}>
+          <View style={{ flex: 1 }}>
+            <BlurView
+              intensity={28}
+              tint="dark"
+              pointerEvents="none"
+              style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
+            />
             <Pressable
               onPress={exitDesktopFeed}
               accessibilityRole="button"
               accessibilityLabel="Fermer le feed et revenir à la recherche"
               style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
             >
-              <View style={{ flex: 1, padding: 28, opacity: 0.82 }}>
-                <View style={{ height: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 18 }}>
-                  <Text style={{ color: "#C9A24B", fontSize: 26, fontWeight: "900", letterSpacing: 7 }}>INK</Text>
-                  <Text style={{ color: "rgba(244,241,234,0.72)", fontSize: 14, fontWeight: "700" }}>Découvrir · Artistes · Projets</Text>
-                </View>
-                <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap", gap: 8, overflow: "hidden" }}>
-                  {posts.slice(0, 18).map((post) => (
-                    <Image
-                      key={post.id}
-                      source={{ uri: post.thumbnail_url ?? post.media_url }}
-                      style={{ width: "16%", minWidth: 150, flexGrow: 1, aspectRatio: 0.82, borderRadius: 16 }}
-                      contentFit="cover"
-                      blurRadius={18}
-                    />
-                  ))}
-                </View>
-              </View>
-              <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(7,7,9,0.68)" }} />
+              <View style={{ flex: 1, backgroundColor: "rgba(7,7,9,0.56)" }} />
             </Pressable>
 
             <View pointerEvents="box-none" style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: 18 }}>
