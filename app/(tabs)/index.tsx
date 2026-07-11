@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from "react";
-import { View, Text, ActivityIndicator, FlatList, Platform, Pressable, Modal } from "react-native";
-import { BlurView } from "expo-blur";
+import { View, Text, ActivityIndicator, FlatList, Platform, Pressable, useWindowDimensions } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useFeed } from "@/lib/hooks/useFeed";
 import { FeedItem } from "@/components/feed/FeedItem";
@@ -11,12 +12,12 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useTabBarStore } from "@/store/useTabBarStore";
 import { PostWithCounts } from "@/types/database";
 import { useAppViewport } from "@/lib/layout";
-import SearchScreen from "./search";
 
 type AuthContext = "save" | "follow" | "contact" | "project" | "default";
 
 export default function FeedScreen() {
   const { width: W, height: H, isDesktopWeb } = useAppViewport();
+  const { width: windowWidth } = useWindowDimensions();
   const { posts, loading, refreshing, refresh, loadMore, updatePost } = useFeed();
   const { session, profile } = useAuthStore();
   const { setVisible } = useTabBarStore();
@@ -25,7 +26,6 @@ export default function FeedScreen() {
   // (pas de risque musique : le son démarre muet sur web)
   const initialIndex = Platform.OS === "web" ? 0 : -1;
   const [activeIndex, setActiveIndex] = useState(initialIndex);
-  const [screenFocused, setScreenFocused] = useState(true);
   const hasScrolled = useRef(false);
 
   const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
@@ -44,7 +44,6 @@ export default function FeedScreen() {
   }, [session?.user.id]);
 
   useFocusEffect(useCallback(() => {
-    setScreenFocused(true);
     // Au retour sur le feed : réactiver le post visible (web garde la position de scroll)
     if (Platform.OS === "web") {
       setActiveIndex(Math.round(lastScrollY.current / H));
@@ -54,7 +53,6 @@ export default function FeedScreen() {
     return () => {
       // En quittant la page : -1 partout pour couper vidéo ET musique
       setVisible(true);
-      setScreenFocused(false);
       setActiveIndex(-1);
       hasScrolled.current = false;
       if (Platform.OS === "web" && typeof document !== "undefined") {
@@ -65,19 +63,6 @@ export default function FeedScreen() {
 
   const isArtist = profile?.role === "artist";
   const router = useRouter();
-  const exitDesktopFeed = useCallback(() => {
-    setScreenFocused(false);
-    router.replace("/(tabs)/search" as any);
-  }, [router]);
-
-  useEffect(() => {
-    if (!isDesktopWeb || typeof document === "undefined") return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") exitDesktopFeed();
-    };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [exitDesktopFeed, isDesktopWeb]);
 
   const [authPrompt, setAuthPrompt] = useState<{ visible: boolean; context: AuthContext; pendingAction?: any }>({ visible: false, context: "default" });
   const [boardPicker, setBoardPicker] = useState<{ visible: boolean; postId: string }>({ visible: false, postId: "" });
@@ -224,66 +209,117 @@ export default function FeedScreen() {
   );
 
   if (isDesktopWeb) {
+    const compactNavigation = windowWidth < 1080;
+    const navigationWidth = compactNavigation ? 88 : 238;
+    const desktopTabs = [
+      ["index", "Feed", "play-circle-outline"],
+      ["search", "Recherche", "search-outline"],
+      ["board", "Boards", "bookmark-outline"],
+      ["messages", "Messages", "chatbubble-outline"],
+      ["profile", "Profil", "person-outline"],
+    ] as const;
+
     return (
-      <>
-        <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
-          <SearchScreen />
-        </View>
-        <Modal
-          visible={screenFocused}
-          transparent
-          animationType="fade"
-          onRequestClose={exitDesktopFeed}
-          accessibilityViewIsModal
+      <LinearGradient
+        colors={["#171513", "#0D0D0F", "#070708"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={{ flex: 1, flexDirection: "row" }}
+      >
+        <View
+          style={{
+            width: navigationWidth,
+            height: "100%",
+            borderRightWidth: 1,
+            borderRightColor: "rgba(255,255,255,0.08)",
+            backgroundColor: "rgba(9,9,11,0.76)",
+            paddingHorizontal: compactNavigation ? 14 : 22,
+            paddingVertical: 24,
+          }}
         >
-          <View style={{ flex: 1 }}>
-            <BlurView
-              intensity={28}
-              tint="dark"
-              pointerEvents="none"
-              style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
-            />
-            <Pressable
-              onPress={exitDesktopFeed}
-              accessibilityRole="button"
-              accessibilityLabel="Fermer le feed et revenir à la recherche"
-              style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
-            >
-              <View style={{ flex: 1, backgroundColor: "rgba(7,7,9,0.56)" }} />
-            </Pressable>
+          <Text
+            style={{
+              color: "#C9A24B",
+              fontSize: compactNavigation ? 19 : 24,
+              fontWeight: "900",
+              letterSpacing: compactNavigation ? 3 : 7,
+              textAlign: compactNavigation ? "center" : "left",
+              marginBottom: 34,
+            }}
+          >
+            INK
+          </Text>
 
-            <View pointerEvents="box-none" style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: 18 }}>
-              <View
-                style={{
-                  width: W,
-                  height: H,
-                  borderRadius: 28,
-                  overflow: "hidden",
-                  borderWidth: 1,
-                  borderColor: "rgba(255,255,255,0.12)",
-                  backgroundColor: "#0A0A0B",
-                  shadowColor: "#000",
-                  shadowOpacity: 0.72,
-                  shadowRadius: 40,
-                  shadowOffset: { width: 0, height: 24 },
-                }}
-              >
-                {feedList}
-              </View>
-            </View>
-
-            <Pressable
-              onPress={exitDesktopFeed}
-              accessibilityRole="button"
-              accessibilityLabel="Fermer le feed"
-              style={{ position: "absolute", top: 24, right: 28, width: 44, height: 44, borderRadius: 22, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(20,20,22,0.88)", borderWidth: 1, borderColor: "rgba(255,255,255,0.14)" }}
-            >
-              <Text style={{ color: "#F4F1EA", fontSize: 26, lineHeight: 30 }}>×</Text>
-            </Pressable>
+          <View style={{ gap: 10 }}>
+            {desktopTabs.map(([route, label, icon]) => {
+              const selected = route === "index";
+              return (
+                <Pressable
+                  key={route}
+                  onPress={() => {
+                    if (!selected) router.replace(`/(tabs)/${route}` as any);
+                  }}
+                  accessibilityRole="button"
+                  accessibilityLabel={label}
+                  accessibilityState={{ selected }}
+                  style={{
+                    height: 50,
+                    borderRadius: 15,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: compactNavigation ? "center" : "flex-start",
+                    paddingHorizontal: compactNavigation ? 0 : 14,
+                    gap: 13,
+                    backgroundColor: selected ? "rgba(201,162,75,0.15)" : "transparent",
+                  }}
+                >
+                  <Ionicons name={icon} size={23} color={selected ? "#D5AE52" : "rgba(244,241,234,0.68)"} />
+                  {!compactNavigation && (
+                    <Text style={{ color: selected ? "#F4F1EA" : "rgba(244,241,234,0.68)", fontSize: 15, fontWeight: selected ? "800" : "600" }}>
+                      {label}
+                    </Text>
+                  )}
+                </Pressable>
+              );
+            })}
           </View>
-        </Modal>
+
+          <View style={{ flex: 1 }} />
+          <Pressable
+            onPress={() => router.push(session ? "/(tabs)/profile" : "/(auth)/sign-in")}
+            accessibilityRole="button"
+            accessibilityLabel={session ? "Ouvrir mon profil" : "Se connecter"}
+            style={{ height: 48, borderRadius: 14, backgroundColor: "#C9A24B", alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 9 }}
+          >
+            <Ionicons name={session ? "person" : "log-in-outline"} size={19} color="#0A0A0B" />
+            {!compactNavigation && (
+              <Text style={{ color: "#0A0A0B", fontWeight: "800", fontSize: 14 }}>{session ? "Mon profil" : "Se connecter"}</Text>
+            )}
+          </Pressable>
+        </View>
+
+        <View style={{ flex: 1, alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+          <View
+            style={{
+              width: W,
+              height: H,
+              borderRadius: 28,
+              overflow: "hidden",
+              borderWidth: 1,
+              borderColor: "rgba(255,255,255,0.12)",
+              backgroundColor: "#0A0A0B",
+              shadowColor: "#000",
+              shadowOpacity: 0.7,
+              shadowRadius: 42,
+              shadowOffset: { width: 0, height: 22 },
+            }}
+          >
+            {feedList}
+          </View>
+        </View>
+
         {actionModals}
-      </>
+      </LinearGradient>
     );
   }
 
