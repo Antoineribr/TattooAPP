@@ -1,10 +1,10 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from "react";
-import { View, Text, ActivityIndicator, FlatList, Platform } from "react-native";
+import { View, Text, ActivityIndicator, FlatList, Platform, Pressable, Modal } from "react-native";
+import { Image } from "expo-image";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useFeed } from "@/lib/hooks/useFeed";
 import { FeedItem } from "@/components/feed/FeedItem";
 import { AuthPrompt } from "@/components/ui/AuthPrompt";
-import { WelcomeIntro } from "@/components/ui/WelcomeIntro";
 import { BoardPicker } from "@/components/ui/BoardPicker";
 import { toggleLike, toggleSave, toggleFollow, getOrCreateConversation } from "@/lib/api";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -15,7 +15,7 @@ import { useAppViewport } from "@/lib/layout";
 type AuthContext = "save" | "follow" | "contact" | "project" | "default";
 
 export default function FeedScreen() {
-  const { width: W, height: H } = useAppViewport();
+  const { width: W, height: H, isDesktopWeb } = useAppViewport();
   const { posts, loading, refreshing, refresh, loadMore, updatePost } = useFeed();
   const { session, profile } = useAuthStore();
   const { setVisible } = useTabBarStore();
@@ -61,6 +61,18 @@ export default function FeedScreen() {
 
   const isArtist = profile?.role === "artist";
   const router = useRouter();
+  const exitDesktopFeed = useCallback(() => {
+    router.replace("/(tabs)/search" as any);
+  }, [router]);
+
+  useEffect(() => {
+    if (!isDesktopWeb || typeof document === "undefined") return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") exitDesktopFeed();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [exitDesktopFeed, isDesktopWeb]);
 
   const [authPrompt, setAuthPrompt] = useState<{ visible: boolean; context: AuthContext; pendingAction?: any }>({ visible: false, context: "default" });
   const [boardPicker, setBoardPicker] = useState<{ visible: boolean; postId: string }>({ visible: false, postId: "" });
@@ -138,8 +150,7 @@ export default function FeedScreen() {
     });
   }
 
-  return (
-    <View style={{ width: W, height: H, alignSelf: "center", backgroundColor: "#F5F3EE" }}>
+  const feedList = (
       <FlatList
         style={{ width: W, height: H }}
         data={posts}
@@ -187,7 +198,10 @@ export default function FeedScreen() {
         initialNumToRender={1}
         removeClippedSubviews
       />
+  );
 
+  const actionModals = (
+    <>
       <AuthPrompt
         visible={authPrompt.visible}
         context={authPrompt.context}
@@ -201,8 +215,85 @@ export default function FeedScreen() {
         onClose={() => setBoardPicker({ visible: false, postId: "" })}
         onSaved={() => setBoardPicker({ visible: false, postId: "" })}
       />
+    </>
+  );
 
-      <WelcomeIntro />
+  if (isDesktopWeb) {
+    return (
+      <>
+        <Modal
+          visible
+          transparent
+          animationType="fade"
+          onRequestClose={exitDesktopFeed}
+          accessibilityViewIsModal
+        >
+          <View style={{ flex: 1, backgroundColor: "#0A0A0B" }}>
+            <Pressable
+              onPress={exitDesktopFeed}
+              accessibilityRole="button"
+              accessibilityLabel="Fermer le feed et revenir à la recherche"
+              style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
+            >
+              <View style={{ flex: 1, padding: 28, opacity: 0.82 }}>
+                <View style={{ height: 58, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 18 }}>
+                  <Text style={{ color: "#C9A24B", fontSize: 26, fontWeight: "900", letterSpacing: 7 }}>INK</Text>
+                  <Text style={{ color: "rgba(244,241,234,0.72)", fontSize: 14, fontWeight: "700" }}>Découvrir · Artistes · Projets</Text>
+                </View>
+                <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap", gap: 8, overflow: "hidden" }}>
+                  {posts.slice(0, 18).map((post) => (
+                    <Image
+                      key={post.id}
+                      source={{ uri: post.thumbnail_url ?? post.media_url }}
+                      style={{ width: "16%", minWidth: 150, flexGrow: 1, aspectRatio: 0.82, borderRadius: 16 }}
+                      contentFit="cover"
+                      blurRadius={18}
+                    />
+                  ))}
+                </View>
+              </View>
+              <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(7,7,9,0.68)" }} />
+            </Pressable>
+
+            <View pointerEvents="box-none" style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: 18 }}>
+              <View
+                style={{
+                  width: W,
+                  height: H,
+                  borderRadius: 28,
+                  overflow: "hidden",
+                  borderWidth: 1,
+                  borderColor: "rgba(255,255,255,0.12)",
+                  backgroundColor: "#0A0A0B",
+                  shadowColor: "#000",
+                  shadowOpacity: 0.72,
+                  shadowRadius: 40,
+                  shadowOffset: { width: 0, height: 24 },
+                }}
+              >
+                {feedList}
+              </View>
+            </View>
+
+            <Pressable
+              onPress={exitDesktopFeed}
+              accessibilityRole="button"
+              accessibilityLabel="Fermer le feed"
+              style={{ position: "absolute", top: 24, right: 28, width: 44, height: 44, borderRadius: 22, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(20,20,22,0.88)", borderWidth: 1, borderColor: "rgba(255,255,255,0.14)" }}
+            >
+              <Text style={{ color: "#F4F1EA", fontSize: 26, lineHeight: 30 }}>×</Text>
+            </Pressable>
+          </View>
+        </Modal>
+        {actionModals}
+      </>
+    );
+  }
+
+  return (
+    <View style={{ width: W, height: H, alignSelf: "center", backgroundColor: "#F5F3EE" }}>
+      {feedList}
+      {actionModals}
     </View>
   );
 }
