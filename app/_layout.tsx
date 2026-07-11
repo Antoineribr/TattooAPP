@@ -9,20 +9,42 @@ import { registerForPushNotifications, usePushNotificationResponseListener } fro
 import { useRef, useEffect as useEff } from "react";
 import * as Notifications from "expo-notifications";
 
-const PROTECTED_SEGMENTS = ["(onboarding)", "edit", "chat", "project", "board"];
+// "board" volontairement absent : l'ONGLET Boards (segments = ["(tabs)","board"])
+// doit rester accessible aux visiteurs (il a son propre écran d'invitation).
+// Seul le détail d'un board (route racine board/[id]) est protégé, via segments[0].
+const PROTECTED_SEGMENTS = ["(onboarding)", "edit", "chat", "project"];
 
 // Polish web : masquer les scrollbars, bloquer la sélection de texte et le
 // pull-to-refresh navigateur pour un rendu "app" plutôt que "site web"
 if (typeof document !== "undefined") {
-  const style = document.createElement("style");
-  style.textContent = `
+  const styleId = "ink-mobile-web-shell";
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = `
     ::-webkit-scrollbar { display: none; }
     * { scrollbar-width: none; -webkit-tap-highlight-color: transparent; }
-    body { overscroll-behavior: none; background: #0A0A0B; user-select: none; -webkit-user-select: none; }
+    html, body, #root { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overscroll-behavior: none;
+      background: radial-gradient(circle at top, #29251d 0%, #111113 52%, #080809 100%);
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    #root { position: relative; background: #0A0A0B; overflow: hidden; }
+    /* Sur ordinateur, le feed est une lightbox : sa barre d'onglets mobile
+       disparaît. Les autres pages gardent leur navigation complète. */
+    @media (min-width: 700px) {
+      body.ink-feed-shell #ink-tabbar { display: none; }
+    }
     input, textarea { user-select: text; -webkit-user-select: text; }
     video { object-fit: cover; }
   `;
-  document.head.appendChild(style);
+    document.head.appendChild(style);
+  }
 }
 
 export default function RootLayout() {
@@ -51,7 +73,8 @@ export default function RootLayout() {
   useEffect(() => {
     if (!ready) return;
     const inAuthGroup = segments[0] === "(auth)";
-    const inProtected = PROTECTED_SEGMENTS.some((r) => (segments as string[]).includes(r));
+    const inProtected = PROTECTED_SEGMENTS.some((r) => (segments as string[]).includes(r))
+      || segments[0] === "board"; // board/[id] hors tabs uniquement
     if (session && inAuthGroup) {
       // Exécuter la pending action si elle existe
       const { pendingAction, setPendingAction } = useAuthStore.getState();

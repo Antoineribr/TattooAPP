@@ -1,22 +1,21 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from "react";
-import { View, Text, ActivityIndicator, Dimensions, FlatList, Platform } from "react-native";
+import { View, Text, ActivityIndicator, FlatList, Platform } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useFeed } from "@/lib/hooks/useFeed";
 import { FeedItem } from "@/components/feed/FeedItem";
 import { AuthPrompt } from "@/components/ui/AuthPrompt";
-import { WelcomeIntro } from "@/components/ui/WelcomeIntro";
 import { BoardPicker } from "@/components/ui/BoardPicker";
 import { toggleLike, toggleSave, toggleFollow, getOrCreateConversation } from "@/lib/api";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useTabBarStore } from "@/store/useTabBarStore";
 import { PostWithCounts } from "@/types/database";
-
-// Sur web, "screen" = écran physique (faux) ; il faut la fenêtre du navigateur
-const { height: H } = Dimensions.get(Platform.OS === "web" ? "window" : "screen");
+import { useAppViewport } from "@/lib/layout";
 
 type AuthContext = "save" | "follow" | "contact" | "project" | "default";
 
 export default function FeedScreen() {
+  const { width: W, height: H, isDesktopWeb } = useAppViewport();
   const { posts, loading, refreshing, refresh, loadMore, updatePost } = useFeed();
   const { session, profile } = useAuthStore();
   const { setVisible } = useTabBarStore();
@@ -44,14 +43,21 @@ export default function FeedScreen() {
 
   useFocusEffect(useCallback(() => {
     // Au retour sur le feed : réactiver le post visible (web garde la position de scroll)
-    if (Platform.OS === "web") setActiveIndex(Math.round(lastScrollY.current / H));
+    if (Platform.OS === "web") {
+      setActiveIndex(Math.round(lastScrollY.current / H));
+      // Coque téléphone (desktop) : uniquement pendant que le feed est affiché
+      if (typeof document !== "undefined") document.body.classList.add("ink-feed-shell");
+    }
     return () => {
       // En quittant la page : -1 partout pour couper vidéo ET musique
       setVisible(true);
       setActiveIndex(-1);
       hasScrolled.current = false;
+      if (Platform.OS === "web" && typeof document !== "undefined") {
+        document.body.classList.remove("ink-feed-shell");
+      }
     };
-  }, []));
+  }, [H, setVisible]));
 
   const isArtist = profile?.role === "artist";
   const router = useRouter();
@@ -132,9 +138,9 @@ export default function FeedScreen() {
     });
   }
 
-  return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
+  const feedList = (
       <FlatList
+        style={{ width: W, height: H }}
         data={posts}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
@@ -180,7 +186,10 @@ export default function FeedScreen() {
         initialNumToRender={1}
         removeClippedSubviews
       />
+  );
 
+  const actionModals = (
+    <>
       <AuthPrompt
         visible={authPrompt.visible}
         context={authPrompt.context}
@@ -194,8 +203,46 @@ export default function FeedScreen() {
         onClose={() => setBoardPicker({ visible: false, postId: "" })}
         onSaved={() => setBoardPicker({ visible: false, postId: "" })}
       />
+    </>
+  );
 
-      <WelcomeIntro />
+  if (isDesktopWeb) {
+    return (
+      <LinearGradient
+        colors={["#171513", "#0D0D0F", "#070708"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={{ flex: 1 }}
+      >
+        <View style={{ flex: 1, alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+          <View
+            style={{
+              width: W,
+              height: H,
+              borderRadius: 28,
+              overflow: "hidden",
+              borderWidth: 1,
+              borderColor: "rgba(255,255,255,0.12)",
+              backgroundColor: "#0A0A0B",
+              shadowColor: "#000",
+              shadowOpacity: 0.7,
+              shadowRadius: 42,
+              shadowOffset: { width: 0, height: 22 },
+            }}
+          >
+            {feedList}
+          </View>
+        </View>
+
+        {actionModals}
+      </LinearGradient>
+    );
+  }
+
+  return (
+    <View style={{ width: W, height: H, alignSelf: "center", backgroundColor: "#F5F3EE" }}>
+      {feedList}
+      {actionModals}
     </View>
   );
 }

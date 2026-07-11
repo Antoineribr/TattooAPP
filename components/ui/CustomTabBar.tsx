@@ -43,7 +43,7 @@ export function CustomTabBar({ state, navigation, isArtist }: BottomTabBarProps 
   const currentRouteName = state.routes[state.index]?.name;
 
   return (
-    <View style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: TAB_H }}>
+    <View nativeID="ink-tabbar" style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: TAB_H }}>
       <BlurView intensity={onFeed ? 30 : 95} tint={onFeed ? "dark" : "extraLight"} style={{ flex: 1, borderTopWidth: onFeed ? 0 : 0.5, borderTopColor: "rgba(0,0,0,0.09)" }}>
         <View style={{ flex: 1, flexDirection: "row", alignItems: "center", paddingBottom: PB, paddingHorizontal: 4 }}>
           {tabs.map((tab) => {
