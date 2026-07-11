@@ -111,3 +111,14 @@ photo entière sur fond flou.
 
 - Contrôler la nouvelle preview Vercel de la PR #6 sur desktop et téléphone.
 - Ne rien merger sans validation explicite d'Antoine ; ordre inchangé : #5 puis #6.
+
+### Correctif interaction — 2026-07-11
+
+- Cause du blocage : Expo conserve les écrans d'onglets montés. La lightbox
+  restait donc visible même après la navigation vers Recherche.
+- La visibilité est maintenant liée au focus réel de l'onglet Feed et coupée
+  immédiatement avant la navigation.
+- La page visible derrière est désormais le véritable écran Recherche, pas une
+  imitation en grille. Le flou est appliqué au-dessus de cette page réelle.
+- Clic sur le fond, `×` ou Échap : fermeture immédiate puis Recherche pleinement
+  utilisable avec la barre Feed, Recherche, Boards, Messages et Profil.
