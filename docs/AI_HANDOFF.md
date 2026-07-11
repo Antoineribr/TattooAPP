@@ -122,3 +122,15 @@ photo entière sur fond flou.
   imitation en grille. Le flou est appliqué au-dessus de cette page réelle.
 - Clic sur le fond, `×` ou Échap : fermeture immédiate puis Recherche pleinement
   utilisable avec la barre Feed, Recherche, Boards, Messages et Profil.
+
+### Décision produit finale desktop — 2026-07-11
+
+- Antoine a rejeté le modèle lightbox : le fond ne doit être ni Recherche ni
+  une page à fermer.
+- Référence retenue après inspection de Glaura.ai et du feed Web TikTok : une
+  page Feed desktop dédiée, avec navigation persistante et média vertical mis
+  en avant au centre.
+- La lightbox, le flou, la croix et la touche Échap ont été supprimés.
+- Desktop : barre latérale INK avec Feed, Recherche, Boards, Messages, Profil et
+  connexion ; le feed au format téléphone reste centré dans la page.
+- Mobile : aucun changement, navigation d'application plein écran conservée.
