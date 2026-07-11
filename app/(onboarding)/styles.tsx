@@ -3,9 +3,8 @@ import { View, Text, TouchableOpacity, ScrollView, Dimensions, ActivityIndicator
 import { useRouter } from "expo-router";
 import { supabase } from "@/lib/supabase";
 import { useAuthStore } from "@/store/useAuthStore";
-import { getAppViewport } from "@/lib/layout";
 
-const { width: W } = getAppViewport(Dimensions.get("window"));
+const { width: W } = Dimensions.get("window");
 
 const STYLES = [
   { label: "Blackwork", emoji: "🖤", desc: "Encre noire, géométrie, tribal" },

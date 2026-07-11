@@ -43,12 +43,19 @@ export default function FeedScreen() {
 
   useFocusEffect(useCallback(() => {
     // Au retour sur le feed : réactiver le post visible (web garde la position de scroll)
-    if (Platform.OS === "web") setActiveIndex(Math.round(lastScrollY.current / H));
+    if (Platform.OS === "web") {
+      setActiveIndex(Math.round(lastScrollY.current / H));
+      // Coque téléphone (desktop) : uniquement pendant que le feed est affiché
+      if (typeof document !== "undefined") document.body.classList.add("ink-feed-shell");
+    }
     return () => {
       // En quittant la page : -1 partout pour couper vidéo ET musique
       setVisible(true);
       setActiveIndex(-1);
       hasScrolled.current = false;
+      if (Platform.OS === "web" && typeof document !== "undefined") {
+        document.body.classList.remove("ink-feed-shell");
+      }
     };
   }, [H, setVisible]));
 

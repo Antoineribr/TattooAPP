@@ -7,9 +7,8 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { getArtistStats } from "@/lib/api";
 import { supabase } from "@/lib/supabase";
 import { PROJECT_STATUS_LABELS, ProjectStatus } from "@/types/database";
-import { getAppViewport } from "@/lib/layout";
 
-const { width: W } = getAppViewport(Dimensions.get("window"));
+const { width: W } = Dimensions.get("window");
 
 export default function StatsScreen() {
   const { session } = useAuthStore();

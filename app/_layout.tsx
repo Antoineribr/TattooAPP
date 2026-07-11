@@ -9,7 +9,10 @@ import { registerForPushNotifications, usePushNotificationResponseListener } fro
 import { useRef, useEffect as useEff } from "react";
 import * as Notifications from "expo-notifications";
 
-const PROTECTED_SEGMENTS = ["(onboarding)", "edit", "chat", "project", "board"];
+// "board" volontairement absent : l'ONGLET Boards (segments = ["(tabs)","board"])
+// doit rester accessible aux visiteurs (il a son propre écran d'invitation).
+// Seul le détail d'un board (route racine board/[id]) est protégé, via segments[0].
+const PROTECTED_SEGMENTS = ["(onboarding)", "edit", "chat", "project"];
 
 // Polish web : masquer les scrollbars, bloquer la sélection de texte et le
 // pull-to-refresh navigateur pour un rendu "app" plutôt que "site web"
@@ -32,8 +35,10 @@ if (typeof document !== "undefined") {
       -webkit-user-select: none;
     }
     #root { position: relative; background: #0A0A0B; overflow: hidden; }
+    /* Coque téléphone : UNIQUEMENT quand le feed est affiché (classe posée
+       par l'écran feed au focus). Le reste de l'app est plein écran. */
     @media (min-width: 700px) {
-      #root {
+      body.ink-feed-shell #root {
         width: min(430px, 56.25vh);
         width: min(430px, 56.25dvh);
         height: min(764px, 100vh);
@@ -77,7 +82,8 @@ export default function RootLayout() {
   useEffect(() => {
     if (!ready) return;
     const inAuthGroup = segments[0] === "(auth)";
-    const inProtected = PROTECTED_SEGMENTS.some((r) => (segments as string[]).includes(r));
+    const inProtected = PROTECTED_SEGMENTS.some((r) => (segments as string[]).includes(r))
+      || segments[0] === "board"; // board/[id] hors tabs uniquement
     if (session && inAuthGroup) {
       // Exécuter la pending action si elle existe
       const { pendingAction, setPendingAction } = useAuthStore.getState();

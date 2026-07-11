@@ -57,3 +57,26 @@
 - Antoine : valider la preview de la PR #5 (`agent/mobile-feed-shell`) puis merger.
 - Merger ensuite `agent/hide-empty-artists` (PR de suivi, basée dessus).
 - Ne PAS merger sans l'accord explicite d'Antoine.
+
+
+---
+
+## Intervention Claude — 2026-07-10 (suite, même branche `agent/hide-empty-artists`)
+
+Retours d'Antoine sur la preview de la coque téléphone :
+
+- **Photos du feed dézoomées** : `contentFit="contain"` sur fond flou (la même
+  photo en `cover` + blur 50 derrière) — on voit désormais tout le tatouage,
+  jamais recadré. Les vidéos restent en `cover`.
+- **Coque téléphone limitée au feed** : la CSS est gatée par la classe
+  `body.ink-feed-shell`, posée/retirée par l'écran feed au focus/blur.
+  Recherche, boards, messages, profil et écrans secondaires repassent en
+  plein écran (reverts des contraintes de largeur sur les écrans secondaires).
+- **Fix onglet Boards visiteur** : le segment "board" de l'onglet matchait la
+  règle de protection prévue pour la route `board/[id]` → redirection forcée
+  vers la connexion sans barre d'onglets. Corrigé : seul `segments[0]==="board"`
+  (route racine) est protégé. L'onglet montre son écran d'invitation.
+
+Vérifié en preview : coque 430px arrondie sur le feed, plein écran sur
+Recherche, écran d'invitation + barre d'onglets sur Boards visiteur,
+photo entière sur fond flou.

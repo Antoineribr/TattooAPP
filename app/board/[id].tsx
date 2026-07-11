@@ -6,9 +6,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "@/lib/supabase";
 import { getBoardItems } from "@/lib/api";
 import { BoardItem } from "@/types/database";
-import { getAppViewport } from "@/lib/layout";
 
-const { width: W } = getAppViewport(Dimensions.get("window"));
+const { width: W } = Dimensions.get("window");
 const COL = (W - 3) / 3;
 
 export default function BoardDetailScreen() {

@@ -194,12 +194,23 @@ export function FeedItem({ post, isActive = false, onLike, onSave, onFollow, onM
       {isVideo ? (
         <VideoSlide uri={current.uri} paused={isPaused || !isActive} muted={muted} width={W} height={H} />
       ) : (
-        <Image
-          source={{ uri: current.uri }}
-          style={{ width: W, height: H, position: "absolute" }}
-          contentFit="cover"
-          transition={200}
-        />
+        <>
+          {/* Fond : la même photo floutée pour remplir le cadre */}
+          <Image
+            source={{ uri: current.uri }}
+            style={{ width: W, height: H, position: "absolute" }}
+            contentFit="cover"
+            blurRadius={50}
+          />
+          <View style={{ position: "absolute", width: W, height: H, backgroundColor: "rgba(10,10,11,0.35)" }} />
+          {/* La photo entière, jamais recadrée : on doit voir tout le tatouage */}
+          <Image
+            source={{ uri: current.uri }}
+            style={{ width: W, height: H, position: "absolute" }}
+            contentFit="contain"
+            transition={200}
+          />
+        </>
       )}
 
       {/* Zone tap : 1 clic = pause, 2 clics = like */}

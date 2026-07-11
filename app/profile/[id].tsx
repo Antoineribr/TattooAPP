@@ -18,9 +18,8 @@ import { Avatar } from "@/components/ui/Avatar";
 import { AuthPrompt } from "@/components/ui/AuthPrompt";
 import { ReportSheet } from "@/components/ui/ReportSheet";
 import { ReviewSheet } from "@/components/ui/ReviewSheet";
-import { getAppViewport } from "@/lib/layout";
 
-const { width: W } = getAppViewport(Dimensions.get("window"));
+const { width: W } = Dimensions.get("window");
 const GRID_SIZE = (W - 3) / 3;
 
 type Tab = "posts" | "flash" | "avis" | "about";
