@@ -147,3 +147,32 @@ photo entière sur fond flou.
   sombres avec accents or. La carte reste claire pour conserver sa lisibilité,
   mais elle est présentée dans un cadre INK arrondi et bordé.
 - Mobile conserve exclusivement la barre d'onglets native en bas.
+
+---
+
+## Intervention Claude — 2026-07-11 (mise en prod #6 + confiance/SEO/dispo)
+
+Sur consigne explicite d'Antoine ("push ce qui avait été réglé et fais les autres changements") :
+
+### Mis en prod (main a06e85d)
+- Fast-forward de `main` sur `agent/hide-empty-artists` (#6) : desktop nav
+  (sidebar), a11y du WelcomeIntro, nettoyage contenu démo, fixes vidéo/photo/
+  boards, artistes sans portfolio masqués. PR #5/#6 mergées.
+- PR #2, #3, #4 fermées (superséded : vidéo déjà corrigée sur main, handoff déjà présent).
+- Reste ouverte : #1 (dont le SEO patch-web est repris ci-dessous).
+
+### Branche `agent/trust-seo-availability` (nouveau travail, à review)
+Répond à l'audit ChatGPT de la prod :
+- **SEO** (`scripts/patch-web.mjs`) : `lang="fr"`, `<title>` FR, meta description,
+  Open Graph, Twitter card, canonical, theme-color. (reprend/enrichit la #1)
+- **Confiance à l'inscription** (`app/(auth)/sign-up.tsx`) : cases obligatoires
+  « 18 ans ou plus » + acceptation CGU/confidentialité (liens vers /legal/*),
+  bouton désactivé tant que non coché, `accessibilityRole=checkbox`.
+- **Disponibilités datées** (`app/profile/[id].tsx`) : le badge de dispo affiche
+  la note de l'artiste quand elle existe (ex. « Liste d'attente · réouverture sept. »).
+  Les guest spots datés étaient déjà affichés.
+
+### Non fait (à COORDONNER, ne pas foncer)
+- **Landing page publique desktop** (grosse demande de l'audit) : touche le
+  routing racine, territoire desktop de Codex. À se répartir explicitement
+  avant de commencer, pour ne pas refaire la collision du 10/07.

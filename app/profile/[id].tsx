@@ -222,7 +222,10 @@ export default function ProfileScreen() {
                 return (
                   <View key={av.id} style={{ flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 20, backgroundColor: `${color}16`, borderWidth: 1, borderColor: `${color}44` }}>
                     <View style={{ width: 7, height: 7, borderRadius: 4, backgroundColor: color }} />
-                    <Text style={{ color, fontSize: 12, fontWeight: "700" }}>{AVAILABILITY_STATUS_LABELS[av.status] ?? av.status}</Text>
+                    <Text style={{ color, fontSize: 12, fontWeight: "700" }}>
+                      {AVAILABILITY_STATUS_LABELS[av.status] ?? av.status}
+                      {av.note ? ` · ${av.note}` : ""}
+                    </Text>
                   </View>
                 );
               })}

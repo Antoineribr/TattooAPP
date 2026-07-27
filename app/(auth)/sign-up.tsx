@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 import { supabase } from "@/lib/supabase";
 
@@ -10,10 +11,15 @@ export default function SignUpScreen() {
   const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  // Plateforme liée au corps et à des mineurs potentiels : majorité + consentement requis
+  const [isAdult, setIsAdult] = useState(false);
+  const [acceptsTerms, setAcceptsTerms] = useState(false);
 
   async function signUp() {
     setError("");
     if (!displayName.trim()) { setError("Entre ton prénom ou pseudo"); return; }
+    if (!isAdult) { setError("Tu dois avoir 18 ans ou plus pour créer un compte."); return; }
+    if (!acceptsTerms) { setError("Accepte les CGU et la politique de confidentialité pour continuer."); return; }
     setLoading(true);
     const username = displayName.trim().toLowerCase().replace(/\s+/g, "_") + "_" + Math.random().toString(36).slice(2, 6);
     const { error: err } = await supabase.auth.signUp({
@@ -75,10 +81,30 @@ export default function SignUpScreen() {
           />
         </View>
 
+        {/* Majorité + consentement — requis pour une plateforme tattoo */}
+        <View style={{ gap: 12, marginTop: 18 }}>
+          <Checkbox
+            checked={isAdult}
+            onToggle={() => setIsAdult((v) => !v)}
+            label="Je certifie avoir 18 ans ou plus."
+          />
+          <TouchableOpacity onPress={() => setAcceptsTerms((v) => !v)} activeOpacity={0.7} style={{ flexDirection: "row", alignItems: "flex-start", gap: 10 }}>
+            <Box checked={acceptsTerms} />
+            <Text style={{ flex: 1, color: "#6B6B7A", fontSize: 13, lineHeight: 19 }}>
+              J'accepte les{" "}
+              <Text style={{ color: "#B8903E", fontWeight: "600" }} onPress={() => router.push("/legal/cgu" as any)}>CGU</Text>
+              {" "}et la{" "}
+              <Text style={{ color: "#B8903E", fontWeight: "600" }} onPress={() => router.push("/legal/confidentialite" as any)}>politique de confidentialité</Text>.
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         <TouchableOpacity
           onPress={signUp}
           disabled={loading}
-          style={{ backgroundColor: "#B8903E", borderRadius: 14, height: 52, alignItems: "center", justifyContent: "center", marginTop: 20 }}
+          accessibilityRole="button"
+          accessibilityLabel="Créer mon compte"
+          style={{ backgroundColor: (isAdult && acceptsTerms) ? "#B8903E" : "rgba(184,144,62,0.4)", borderRadius: 14, height: 52, alignItems: "center", justifyContent: "center", marginTop: 20 }}
           activeOpacity={0.8}
         >
           <Text style={{ color: "#FFFFFF", fontWeight: "700", fontSize: 16 }}>
@@ -94,5 +120,27 @@ export default function SignUpScreen() {
         </View>
       </View>
     </KeyboardAvoidingView>
+  );
+}
+
+function Box({ checked }: { checked: boolean }) {
+  return (
+    <View style={{
+      width: 22, height: 22, borderRadius: 6, marginTop: 1,
+      borderWidth: 1.5, borderColor: checked ? "#B8903E" : "rgba(0,0,0,0.2)",
+      backgroundColor: checked ? "#B8903E" : "transparent",
+      alignItems: "center", justifyContent: "center",
+    }}>
+      {checked && <Ionicons name="checkmark" size={15} color="#FFFFFF" />}
+    </View>
+  );
+}
+
+function Checkbox({ checked, onToggle, label }: { checked: boolean; onToggle: () => void; label: string }) {
+  return (
+    <TouchableOpacity onPress={onToggle} activeOpacity={0.7} accessibilityRole="checkbox" accessibilityState={{ checked }} style={{ flexDirection: "row", alignItems: "flex-start", gap: 10 }}>
+      <Box checked={checked} />
+      <Text style={{ flex: 1, color: "#6B6B7A", fontSize: 13, lineHeight: 19 }}>{label}</Text>
+    </TouchableOpacity>
   );
 }
