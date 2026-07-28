@@ -71,15 +71,15 @@ export default function FeedScreen() {
   }
 
   if (loading) return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE", alignItems: "center", justifyContent: "center" }}>
-      <ActivityIndicator color="#B8903E" size="large" />
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B", alignItems: "center", justifyContent: "center" }}>
+      <ActivityIndicator color="#C9A24B" size="large" />
     </View>
   );
 
   if (!posts.length) return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE", alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ color: "#B8903E", fontSize: 28, fontWeight: "800", letterSpacing: 2 }}>INK</Text>
-      <Text style={{ color: "#6B6B7A", fontSize: 14, marginTop: 8 }}>Aucun post pour l'instant</Text>
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B", alignItems: "center", justifyContent: "center" }}>
+      <Text style={{ color: "#C9A24B", fontSize: 28, fontWeight: "800", letterSpacing: 2 }}>INK</Text>
+      <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, marginTop: 8 }}>Aucun post pour l'instant</Text>
     </View>
   );
 

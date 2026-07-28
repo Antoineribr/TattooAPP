@@ -2,22 +2,7 @@ import { View, Text, Pressable, useWindowDimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { usePathname, useRouter } from "expo-router";
 import { useAuthStore } from "@/store/useAuthStore";
-
-const CLIENT_TABS = [
-  ["/", "Feed", "play-circle-outline"],
-  ["/search", "Recherche", "search-outline"],
-  ["/board", "Boards", "bookmark-outline"],
-  ["/messages", "Messages", "chatbubble-outline"],
-  ["/profile", "Profil", "person-outline"],
-] as const;
-
-const ARTIST_TABS = [
-  ["/", "Feed", "play-circle-outline"],
-  ["/publish", "Publier", "add-circle-outline"],
-  ["/messages", "Messages", "chatbubble-outline"],
-  ["/search", "Statistiques", "bar-chart-outline"],
-  ["/profile", "Profil", "person-outline"],
-] as const;
+import { CLIENT_TABS, ARTIST_TABS } from "@/lib/tabs";
 
 export function DesktopSidebar({ isArtist }: { isArtist: boolean }) {
   const { width } = useWindowDimensions();
@@ -54,16 +39,16 @@ export function DesktopSidebar({ isArtist }: { isArtist: boolean }) {
       </Text>
 
       <View style={{ gap: 10 }}>
-        {tabs.map(([route, label, icon]) => {
-          const selected = route === "/" ? pathname === "/" : pathname.startsWith(route);
+        {tabs.map((tab) => {
+          const selected = tab.route === "/" ? pathname === "/" : pathname.startsWith(tab.route);
           return (
             <Pressable
-              key={route}
+              key={tab.route}
               onPress={() => {
-                if (!selected) router.replace(`/(tabs)${route === "/" ? "" : route}` as any);
+                if (!selected) router.replace(`/(tabs)${tab.route === "/" ? "" : tab.route}` as any);
               }}
               accessibilityRole="button"
-              accessibilityLabel={label}
+              accessibilityLabel={tab.label}
               accessibilityState={{ selected }}
               style={{
                 height: 50,
@@ -76,10 +61,10 @@ export function DesktopSidebar({ isArtist }: { isArtist: boolean }) {
                 backgroundColor: selected ? "rgba(201,162,75,0.16)" : "transparent",
               }}
             >
-              <Ionicons name={icon} size={23} color={selected ? "#D5AE52" : "rgba(244,241,234,0.62)"} />
+              <Ionicons name={(selected ? tab.iconActive : tab.icon) as any} size={23} color={selected ? "#D5AE52" : "rgba(244,241,234,0.62)"} />
               {!compact && (
                 <Text style={{ color: selected ? "#F4F1EA" : "rgba(244,241,234,0.62)", fontSize: 15, fontWeight: selected ? "800" : "600" }}>
-                  {label}
+                  {tab.label}
                 </Text>
               )}
             </Pressable>

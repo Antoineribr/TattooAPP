@@ -26,31 +26,26 @@ export function ActionColumn({ post, onLike, onSave, onFollow, onMessage, onProj
 
   return (
     <View style={{ position: "absolute", right: 14, bottom: 96, alignItems: "center", gap: 22 }}>
-      {/* Like — pas de compteur visible publiquement */}
-      <TouchableOpacity onPress={onLike} style={{ alignItems: "center" }} activeOpacity={0.7}>
+      <TouchableOpacity onPress={onLike} accessibilityRole="button" accessibilityLabel={post.is_liked ? "Retirer le like" : "Liker"} style={{ alignItems: "center" }} activeOpacity={0.7}>
         <Animated.View style={likeScale ? { transform: [{ scale: likeScale }] } : undefined}>
           <Ionicons name={post.is_liked ? "heart" : "heart-outline"} size={32} color={post.is_liked ? "#C9A24B" : "#F4F1EA"} />
         </Animated.View>
       </TouchableOpacity>
 
-      {/* Save */}
-      <TouchableOpacity onPress={onSave} style={{ alignItems: "center" }} activeOpacity={0.7}>
+      <TouchableOpacity onPress={onSave} accessibilityRole="button" accessibilityLabel={post.is_saved ? "Retirer la sauvegarde" : "Sauvegarder"} style={{ alignItems: "center" }} activeOpacity={0.7}>
         <Ionicons name={post.is_saved ? "bookmark" : "bookmark-outline"} size={28} color={post.is_saved ? "#C9A24B" : "#F4F1EA"} />
       </TouchableOpacity>
 
-      {/* Follow */}
-      <TouchableOpacity onPress={onFollow} style={{ alignItems: "center" }} activeOpacity={0.7}>
+      <TouchableOpacity onPress={onFollow} accessibilityRole="button" accessibilityLabel={post.is_following ? "Se désabonner" : "Suivre l'artiste"} style={{ alignItems: "center" }} activeOpacity={0.7}>
         <Ionicons name={post.is_following ? "person-remove-outline" : "person-add-outline"} size={26} color={post.is_following ? "#C9A24B" : "#F4F1EA"} />
       </TouchableOpacity>
 
-      {/* Message */}
-      <TouchableOpacity onPress={onMessage} style={{ alignItems: "center" }} activeOpacity={0.7}>
+      <TouchableOpacity onPress={onMessage} accessibilityRole="button" accessibilityLabel="Envoyer un message" style={{ alignItems: "center" }} activeOpacity={0.7}>
         <Ionicons name="chatbubble-outline" size={26} color="#F4F1EA" />
       </TouchableOpacity>
 
-      {/* Demander un projet — CTA principal, avec label explicite */}
       {onProject && (
-        <TouchableOpacity onPress={onProject} activeOpacity={0.7} style={{ alignItems: "center", marginTop: 4 }}>
+        <TouchableOpacity onPress={onProject} accessibilityRole="button" accessibilityLabel="Demander un projet" activeOpacity={0.7} style={{ alignItems: "center", marginTop: 4 }}>
           <View style={{ backgroundColor: "#C9A24B", borderRadius: 20, paddingHorizontal: 12, paddingVertical: 7, flexDirection: "row", alignItems: "center", gap: 5 }}>
             <Ionicons name="color-palette-outline" size={14} color="#0A0A0B" />
             <Text style={{ color: "#0A0A0B", fontSize: 12, fontWeight: "800" }}>Projet</Text>
@@ -58,8 +53,7 @@ export function ActionColumn({ post, onLike, onSave, onFollow, onMessage, onProj
         </TouchableOpacity>
       )}
 
-      {/* Partager */}
-      <TouchableOpacity onPress={handleShare} style={{ alignItems: "center" }} activeOpacity={0.7}>
+      <TouchableOpacity onPress={handleShare} accessibilityRole="button" accessibilityLabel="Partager" style={{ alignItems: "center" }} activeOpacity={0.7}>
         <Ionicons name="share-social-outline" size={26} color="#F4F1EA" />
       </TouchableOpacity>
     </View>

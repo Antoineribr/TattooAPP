@@ -1,7 +1,8 @@
 import { useState, useCallback } from "react";
 import {
   View, Text, FlatList, TouchableOpacity, ActivityIndicator,
-  Dimensions, TextInput, Alert, Modal, Pressable, RefreshControl,
+  TextInput, Alert, Modal, Pressable, RefreshControl,
+  useWindowDimensions,
 } from "react-native";
 import { Image } from "expo-image";
 import { useRouter, useFocusEffect } from "expo-router";
@@ -12,9 +13,8 @@ import { getBoards, createBoard, renameBoard, deleteBoard } from "@/lib/api";
 import { Board } from "@/types/database";
 import { AuthPrompt } from "@/components/ui/AuthPrompt";
 
-const { width: W } = Dimensions.get("window");
-
 export default function BoardScreen() {
+  const { width: W } = useWindowDimensions();
   const { session } = useAuthStore();
   const router = useRouter();
   const [boards, setBoards] = useState<Board[]>([]);
@@ -84,22 +84,22 @@ export default function BoardScreen() {
 
   if (!session) {
     return (
-      <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
+      <View style={{ flex: 1, backgroundColor: "#0A0A0B" }}>
         <View style={{ paddingTop: 60, paddingHorizontal: 20, paddingBottom: 24 }}>
-          <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Mon board</Text>
-          <Text style={{ color: "#1A1A1A", fontSize: 24, fontWeight: "800", marginTop: 4 }}>Inspirations</Text>
+          <Text style={{ color: "#C9A24B", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Mon board</Text>
+          <Text style={{ color: "#F4F1EA", fontSize: 24, fontWeight: "800", marginTop: 4 }}>Inspirations</Text>
         </View>
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 32 }}>
-          <Ionicons name="bookmark-outline" size={52} color="rgba(0,0,0,0.1)" />
-          <Text style={{ color: "#1A1A1A", fontSize: 18, fontWeight: "700", marginTop: 16, textAlign: "center" }}>Sauvegarde tes inspirations</Text>
-          <Text style={{ color: "#6B6B7A", fontSize: 14, marginTop: 8, textAlign: "center", lineHeight: 21 }}>
+          <Ionicons name="bookmark-outline" size={52} color="rgba(244,241,234,0.15)" />
+          <Text style={{ color: "#F4F1EA", fontSize: 18, fontWeight: "700", marginTop: 16, textAlign: "center" }}>Sauvegarde tes inspirations</Text>
+          <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, marginTop: 8, textAlign: "center", lineHeight: 21 }}>
             Crée un compte pour construire tes planches d'idées et retrouver tes tatouages favoris.
           </Text>
-          <TouchableOpacity onPress={() => setShowAuth(true)} style={{ marginTop: 24, backgroundColor: "#B8903E", borderRadius: 14, paddingHorizontal: 28, paddingVertical: 14 }}>
-            <Text style={{ color: "#F5F3EE", fontWeight: "700", fontSize: 15 }}>Créer un compte</Text>
+          <TouchableOpacity onPress={() => setShowAuth(true)} style={{ marginTop: 24, backgroundColor: "#C9A24B", borderRadius: 14, paddingHorizontal: 28, paddingVertical: 14 }}>
+            <Text style={{ color: "#0A0A0B", fontWeight: "700", fontSize: 15 }}>Créer un compte</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setShowAuth(true)} style={{ marginTop: 12, paddingVertical: 10 }}>
-            <Text style={{ color: "#6B6B7A", fontSize: 14 }}>Se connecter</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14 }}>Se connecter</Text>
           </TouchableOpacity>
         </View>
         <AuthPrompt visible={showAuth} context="save" onClose={() => setShowAuth(false)} />
@@ -108,15 +108,15 @@ export default function BoardScreen() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B" }}>
       {/* Header */}
       <View style={{ paddingTop: 56, paddingHorizontal: 20, paddingBottom: 16, flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between" }}>
         <View>
-          <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Mes boards</Text>
-          <Text style={{ color: "#1A1A1A", fontSize: 24, fontWeight: "800", marginTop: 2 }}>Inspirations</Text>
+          <Text style={{ color: "#C9A24B", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Mes boards</Text>
+          <Text style={{ color: "#F4F1EA", fontSize: 24, fontWeight: "800", marginTop: 2 }}>Inspirations</Text>
         </View>
-        <TouchableOpacity onPress={() => setShowCreate(true)} style={{ backgroundColor: "#B8903E", borderRadius: 12, padding: 10, marginBottom: 4 }}>
-          <Ionicons name="add" size={20} color="#F5F3EE" />
+        <TouchableOpacity onPress={() => setShowCreate(true)} style={{ backgroundColor: "#C9A24B", borderRadius: 12, padding: 10, marginBottom: 4 }}>
+          <Ionicons name="add" size={20} color="#0A0A0B" />
         </TouchableOpacity>
       </View>
 
@@ -129,18 +129,18 @@ export default function BoardScreen() {
           data={boards}
           keyExtractor={(b) => b.id}
           numColumns={2}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); load(); }} tintColor="#B8903E" />}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); load(); }} tintColor="#C9A24B" />}
           contentContainerStyle={{ paddingHorizontal: 16, gap: 12, paddingBottom: 100 }}
           columnWrapperStyle={{ gap: 12 }}
           ListEmptyComponent={
             <View style={{ alignItems: "center", paddingTop: 60, paddingHorizontal: 20 }}>
-              <Ionicons name="albums-outline" size={52} color="rgba(0,0,0,0.1)" />
-              <Text style={{ color: "#1A1A1A", fontSize: 17, fontWeight: "700", marginTop: 16, textAlign: "center" }}>Aucun board</Text>
-              <Text style={{ color: "#6B6B7A", fontSize: 14, marginTop: 8, textAlign: "center", lineHeight: 20 }}>
+              <Ionicons name="albums-outline" size={52} color="rgba(244,241,234,0.15)" />
+              <Text style={{ color: "#F4F1EA", fontSize: 17, fontWeight: "700", marginTop: 16, textAlign: "center" }}>Aucun board</Text>
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, marginTop: 8, textAlign: "center", lineHeight: 20 }}>
                 Crée ton premier board pour organiser tes inspirations tattoo.
               </Text>
-              <TouchableOpacity onPress={() => setShowCreate(true)} style={{ marginTop: 20, backgroundColor: "#B8903E", borderRadius: 12, paddingHorizontal: 24, paddingVertical: 12 }}>
-                <Text style={{ color: "#F5F3EE", fontWeight: "700" }}>Créer un board</Text>
+              <TouchableOpacity onPress={() => setShowCreate(true)} style={{ marginTop: 20, backgroundColor: "#C9A24B", borderRadius: 12, paddingHorizontal: 24, paddingVertical: 12 }}>
+                <Text style={{ color: "#0A0A0B", fontWeight: "700" }}>Créer un board</Text>
               </TouchableOpacity>
             </View>
           }
@@ -151,17 +151,17 @@ export default function BoardScreen() {
               activeOpacity={0.85}
               style={{ flex: 1 }}
             >
-              <View style={{ borderRadius: 14, overflow: "hidden", backgroundColor: "#FFFFFF" }}>
+              <View style={{ borderRadius: 14, overflow: "hidden", backgroundColor: "#17171A" }}>
                 {item.cover_url ? (
                   <Image source={{ uri: item.cover_url }} style={{ width: "100%", height: (W - 44) / 2 }} contentFit="cover" />
                 ) : (
-                  <View style={{ width: "100%", height: (W - 44) / 2, backgroundColor: "rgba(0,0,0,0.06)", alignItems: "center", justifyContent: "center" }}>
-                    <Ionicons name="bookmark-outline" size={36} color="rgba(0,0,0,0.18)" />
+                  <View style={{ width: "100%", height: (W - 44) / 2, backgroundColor: "rgba(244,241,234,0.06)", alignItems: "center", justifyContent: "center" }}>
+                    <Ionicons name="bookmark-outline" size={36} color="rgba(244,241,234,0.18)" />
                   </View>
                 )}
                 <View style={{ padding: 12 }}>
-                  <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 14 }} numberOfLines={1}>{item.name}</Text>
-                  <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 2 }}>
+                  <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 14 }} numberOfLines={1}>{item.name}</Text>
+                  <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 2 }}>
                     {(item as any).items_count ?? 0} inspiration{((item as any).items_count ?? 0) !== 1 ? "s" : ""}
                   </Text>
                 </View>
@@ -174,20 +174,21 @@ export default function BoardScreen() {
       {/* Modal création */}
       <Modal visible={showCreate} transparent animationType="slide" onRequestClose={() => setShowCreate(false)}>
         <Pressable style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.5)" }} onPress={() => setShowCreate(false)} />
-        <View style={{ backgroundColor: "#EDE9E1", borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, paddingBottom: 44 }}>
-          <View style={{ width: 36, height: 4, borderRadius: 2, backgroundColor: "rgba(0,0,0,0.1)", alignSelf: "center", marginBottom: 20 }} />
-          <Text style={{ color: "#1A1A1A", fontSize: 18, fontWeight: "800", marginBottom: 16 }}>Nouveau board</Text>
+        <View style={{ backgroundColor: "#17171A", borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, paddingBottom: 44 }}>
+          <View style={{ width: 36, height: 4, borderRadius: 2, backgroundColor: "rgba(244,241,234,0.15)", alignSelf: "center", marginBottom: 20 }} />
+          <Text style={{ color: "#F4F1EA", fontSize: 18, fontWeight: "800", marginBottom: 16 }}>Nouveau board</Text>
           <TextInput
             value={newName}
             onChangeText={setNewName}
             placeholder="Ex : Bras gauche, Fine line, Idées…"
-            placeholderTextColor="rgba(0,0,0,0.18)"
+            placeholderTextColor="rgba(244,241,234,0.28)"
+            accessibilityLabel="Nom du board"
             autoFocus
             onSubmitEditing={handleCreate}
-            style={{ backgroundColor: "rgba(0,0,0,0.06)", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, color: "#1A1A1A", fontSize: 15, borderWidth: 1, borderColor: "rgba(0,0,0,0.1)", marginBottom: 16 }}
+            style={{ backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, color: "#F4F1EA", fontSize: 15, borderWidth: 1, borderColor: "rgba(244,241,234,0.1)", marginBottom: 16 }}
           />
-          <TouchableOpacity onPress={handleCreate} disabled={!newName.trim() || creating} style={{ backgroundColor: newName.trim() ? "#B8903E" : "rgba(0,0,0,0.06)", borderRadius: 12, paddingVertical: 14, alignItems: "center" }}>
-            {creating ? <ActivityIndicator color="#F5F3EE" /> : <Text style={{ color: newName.trim() ? "#F5F3EE" : "rgba(0,0,0,0.18)", fontWeight: "700", fontSize: 15 }}>Créer le board</Text>}
+          <TouchableOpacity onPress={handleCreate} disabled={!newName.trim() || creating} style={{ backgroundColor: newName.trim() ? "#C9A24B" : "rgba(244,241,234,0.06)", borderRadius: 12, paddingVertical: 14, alignItems: "center" }}>
+            {creating ? <ActivityIndicator color="#0A0A0B" /> : <Text style={{ color: newName.trim() ? "#0A0A0B" : "rgba(244,241,234,0.18)", fontWeight: "700", fontSize: 15 }}>Créer le board</Text>}
           </TouchableOpacity>
         </View>
       </Modal>

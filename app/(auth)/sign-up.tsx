@@ -11,7 +11,6 @@ export default function SignUpScreen() {
   const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  // Plateforme liée au corps et à des mineurs potentiels : majorité + consentement requis
   const [isAdult, setIsAdult] = useState(false);
   const [acceptsTerms, setAcceptsTerms] = useState(false);
 
@@ -35,66 +34,69 @@ export default function SignUpScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
-      style={{ flex: 1, backgroundColor: "#F5F3EE" }}
+      style={{ flex: 1, backgroundColor: "#0A0A0B" }}
     >
       <View style={{ flex: 1, justifyContent: "center", paddingHorizontal: 24 }}>
-        {/* Toujours proposer une sortie : retour arrière si possible, sinon feed */}
         <TouchableOpacity
           onPress={() => (router.canGoBack() ? router.back() : router.replace("/(tabs)"))}
+          accessibilityRole="button"
+          accessibilityLabel="Fermer"
           style={{ position: "absolute", top: 56, left: 20, zIndex: 10, padding: 8 }}
         >
-          <Text style={{ color: "#6B6B7A", fontSize: 15 }}>✕ Fermer</Text>
+          <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 15 }}>✕ Fermer</Text>
         </TouchableOpacity>
-        <Text style={{ color: "#B8903E", fontSize: 40, fontWeight: "800", letterSpacing: 6, textAlign: "center", marginBottom: 6 }}>INK</Text>
-        <Text style={{ color: "#6B6B7A", fontSize: 14, textAlign: "center", marginBottom: 36 }}>Rejoins la communauté</Text>
+        <Text style={{ color: "#C9A24B", fontSize: 40, fontWeight: "800", letterSpacing: 6, textAlign: "center", marginBottom: 6 }}>INK</Text>
+        <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, textAlign: "center", marginBottom: 36 }}>Rejoins la communauté</Text>
 
         {error ? (
-          <View style={{ backgroundColor: "rgba(217,53,53,0.08)", borderWidth: 0.5, borderColor: "rgba(217,53,53,0.3)", borderRadius: 12, padding: 12, marginBottom: 14 }}>
-            <Text style={{ color: "#D93535", fontSize: 13, textAlign: "center" }}>{error}</Text>
+          <View style={{ backgroundColor: "rgba(217,53,53,0.12)", borderWidth: 0.5, borderColor: "rgba(217,53,53,0.3)", borderRadius: 12, padding: 12, marginBottom: 14 }}>
+            <Text style={{ color: "#E55353", fontSize: 13, textAlign: "center" }}>{error}</Text>
           </View>
         ) : null}
 
-        <View className="gap-3">
+        <View style={{ gap: 12 }}>
           <TextInput
-            style={{ backgroundColor: "rgba(255,255,255,0.8)", color: "#1A1A1A", borderRadius: 14, paddingHorizontal: 16, height: 50, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.1)", fontSize: 15 }}
+            style={{ backgroundColor: "rgba(244,241,234,0.08)", color: "#F4F1EA", borderRadius: 14, paddingHorizontal: 16, height: 50, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.12)", fontSize: 15 }}
             placeholder="Prénom ou pseudo"
-            placeholderTextColor="#6B6B7A"
+            placeholderTextColor="rgba(244,241,234,0.28)"
+            accessibilityLabel="Prénom ou pseudo"
             value={displayName}
             onChangeText={setDisplayName}
           />
           <TextInput
-            style={{ backgroundColor: "rgba(255,255,255,0.8)", color: "#1A1A1A", borderRadius: 14, paddingHorizontal: 16, height: 50, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.1)", fontSize: 15 }}
+            style={{ backgroundColor: "rgba(244,241,234,0.08)", color: "#F4F1EA", borderRadius: 14, paddingHorizontal: 16, height: 50, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.12)", fontSize: 15 }}
             placeholder="Email"
-            placeholderTextColor="#6B6B7A"
+            placeholderTextColor="rgba(244,241,234,0.28)"
+            accessibilityLabel="Adresse email"
             keyboardType="email-address"
             autoCapitalize="none"
             value={email}
             onChangeText={setEmail}
           />
           <TextInput
-            style={{ backgroundColor: "rgba(255,255,255,0.8)", color: "#1A1A1A", borderRadius: 14, paddingHorizontal: 16, height: 50, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.1)", fontSize: 15 }}
+            style={{ backgroundColor: "rgba(244,241,234,0.08)", color: "#F4F1EA", borderRadius: 14, paddingHorizontal: 16, height: 50, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.12)", fontSize: 15 }}
             placeholder="Mot de passe (8 caractères min)"
-            placeholderTextColor="#6B6B7A"
+            placeholderTextColor="rgba(244,241,234,0.28)"
+            accessibilityLabel="Mot de passe"
             secureTextEntry
             value={password}
             onChangeText={setPassword}
           />
         </View>
 
-        {/* Majorité + consentement — requis pour une plateforme tattoo */}
         <View style={{ gap: 12, marginTop: 18 }}>
           <Checkbox
             checked={isAdult}
             onToggle={() => setIsAdult((v) => !v)}
             label="Je certifie avoir 18 ans ou plus."
           />
-          <TouchableOpacity onPress={() => setAcceptsTerms((v) => !v)} activeOpacity={0.7} style={{ flexDirection: "row", alignItems: "flex-start", gap: 10 }}>
+          <TouchableOpacity onPress={() => setAcceptsTerms((v) => !v)} accessibilityRole="checkbox" accessibilityState={{ checked: acceptsTerms }} activeOpacity={0.7} style={{ flexDirection: "row", alignItems: "flex-start", gap: 10 }}>
             <Box checked={acceptsTerms} />
-            <Text style={{ flex: 1, color: "#6B6B7A", fontSize: 13, lineHeight: 19 }}>
+            <Text style={{ flex: 1, color: "rgba(244,241,234,0.55)", fontSize: 13, lineHeight: 19 }}>
               J'accepte les{" "}
-              <Text style={{ color: "#B8903E", fontWeight: "600" }} onPress={() => router.push("/legal/cgu" as any)}>CGU</Text>
+              <Text style={{ color: "#C9A24B", fontWeight: "600" }} onPress={() => router.push("/legal/cgu" as any)}>CGU</Text>
               {" "}et la{" "}
-              <Text style={{ color: "#B8903E", fontWeight: "600" }} onPress={() => router.push("/legal/confidentialite" as any)}>politique de confidentialité</Text>.
+              <Text style={{ color: "#C9A24B", fontWeight: "600" }} onPress={() => router.push("/legal/confidentialite" as any)}>politique de confidentialité</Text>.
             </Text>
           </TouchableOpacity>
         </View>
@@ -104,18 +106,18 @@ export default function SignUpScreen() {
           disabled={loading}
           accessibilityRole="button"
           accessibilityLabel="Créer mon compte"
-          style={{ backgroundColor: (isAdult && acceptsTerms) ? "#B8903E" : "rgba(184,144,62,0.4)", borderRadius: 14, height: 52, alignItems: "center", justifyContent: "center", marginTop: 20 }}
+          style={{ backgroundColor: (isAdult && acceptsTerms) ? "#C9A24B" : "rgba(201,162,75,0.3)", borderRadius: 14, height: 52, alignItems: "center", justifyContent: "center", marginTop: 20 }}
           activeOpacity={0.8}
         >
-          <Text style={{ color: "#FFFFFF", fontWeight: "700", fontSize: 16 }}>
+          <Text style={{ color: "#0A0A0B", fontWeight: "700", fontSize: 16 }}>
             {loading ? "Création..." : "Créer mon compte"}
           </Text>
         </TouchableOpacity>
 
-        <View className="flex-row justify-center mt-6 gap-1">
-          <Text className="text-muted text-sm">Déjà un compte ?</Text>
+        <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 24, gap: 4 }}>
+          <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14 }}>Déjà un compte ?</Text>
           <Link href="/(auth)/sign-in">
-            <Text className="text-gold text-sm font-medium"> Se connecter</Text>
+            <Text style={{ color: "#C9A24B", fontSize: 14, fontWeight: "600" }}> Se connecter</Text>
           </Link>
         </View>
       </View>
@@ -127,11 +129,11 @@ function Box({ checked }: { checked: boolean }) {
   return (
     <View style={{
       width: 22, height: 22, borderRadius: 6, marginTop: 1,
-      borderWidth: 1.5, borderColor: checked ? "#B8903E" : "rgba(0,0,0,0.2)",
-      backgroundColor: checked ? "#B8903E" : "transparent",
+      borderWidth: 1.5, borderColor: checked ? "#C9A24B" : "rgba(244,241,234,0.2)",
+      backgroundColor: checked ? "#C9A24B" : "transparent",
       alignItems: "center", justifyContent: "center",
     }}>
-      {checked && <Ionicons name="checkmark" size={15} color="#FFFFFF" />}
+      {checked && <Ionicons name="checkmark" size={15} color="#0A0A0B" />}
     </View>
   );
 }
@@ -140,7 +142,7 @@ function Checkbox({ checked, onToggle, label }: { checked: boolean; onToggle: ()
   return (
     <TouchableOpacity onPress={onToggle} activeOpacity={0.7} accessibilityRole="checkbox" accessibilityState={{ checked }} style={{ flexDirection: "row", alignItems: "flex-start", gap: 10 }}>
       <Box checked={checked} />
-      <Text style={{ flex: 1, color: "#6B6B7A", fontSize: 13, lineHeight: 19 }}>{label}</Text>
+      <Text style={{ flex: 1, color: "rgba(244,241,234,0.55)", fontSize: 13, lineHeight: 19 }}>{label}</Text>
     </TouchableOpacity>
   );
 }

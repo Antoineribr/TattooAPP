@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import {
   View, Text, TouchableOpacity, ScrollView, ActivityIndicator,
-  TextInput, Dimensions, Platform,
+  TextInput, Platform, useWindowDimensions,
 } from "react-native";
 import WebView, { WebViewMessageEvent } from "react-native-webview";
 // @ts-ignore
@@ -16,7 +16,6 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Image } from "expo-image";
 import { PROJECT_STATUS_LABELS, ProjectStatus } from "@/types/database";
 
-const { width: W, height: H } = Dimensions.get("window");
 
 function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number) {
   const R = 6371;
@@ -48,12 +47,13 @@ type ArtistRow = {
 const STYLES = ["blackwork", "fine line", "réalisme", "japonais", "dotwork", "minimaliste", "watercolor", "mandala", "old school", "couleur"];
 
 function ClientMap() {
+  const { width: W } = useWindowDimensions();
   const desktop = isWeb && W >= 700;
-  const pageBg = desktop ? "#0D0D0F" : "#F5F3EE";
-  const panelBg = desktop ? "#171719" : "#FFFFFF";
-  const primaryText = desktop ? "#F4F1EA" : "#1A1A1A";
-  const secondaryText = desktop ? "rgba(244,241,234,0.58)" : "#6B6B7A";
-  const softBorder = desktop ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)";
+  const pageBg = "#0D0D0F";
+  const panelBg = "#171719";
+  const primaryText = "#F4F1EA";
+  const secondaryText = "rgba(244,241,234,0.58)";
+  const softBorder = "rgba(255,255,255,0.1)";
   const router = useRouter();
   const webViewRef = useRef<InstanceType<typeof WebView>>(null);
   const [artists, setArtists] = useState<ArtistRow[]>([]);
@@ -409,8 +409,8 @@ function ClientMap() {
           })}
           {filtered.length === 0 && !loading && (
             <View style={{ alignItems: "center", paddingTop: 60 }}>
-              <Ionicons name="search-outline" size={44} color="rgba(0,0,0,0.1)" />
-              <Text style={{ color: "#6B6B7A", fontSize: 14, marginTop: 12, textAlign: "center" }}>
+              <Ionicons name="search-outline" size={44} color="rgba(244,241,234,0.15)" />
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, marginTop: 12, textAlign: "center" }}>
                 Aucun tatoueur ne correspond à ces filtres.
               </Text>
             </View>
@@ -501,6 +501,7 @@ function ClientMap() {
 
 // ─── STATS ARTISTE ────────────────────────────────────────
 function ArtistStats() {
+  const { width: W } = useWindowDimensions();
   const { session } = useAuthStore();
   const router = useRouter();
   const [stats, setStats] = useState<any>(null);
@@ -524,8 +525,8 @@ function ArtistStats() {
   }
 
   if (loading) return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE", alignItems: "center", justifyContent: "center" }}>
-      <ActivityIndicator color="#B8903E" />
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B", alignItems: "center", justifyContent: "center" }}>
+      <ActivityIndicator color="#C9A24B" />
     </View>
   );
 
@@ -535,10 +536,10 @@ function ArtistStats() {
   }, {});
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#F5F3EE" }} showsVerticalScrollIndicator={false}>
+    <ScrollView style={{ flex: 1, backgroundColor: "#0A0A0B" }} showsVerticalScrollIndicator={false}>
       <View style={{ paddingTop: 56, paddingHorizontal: 20, paddingBottom: 10 }}>
-        <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Tableau de bord</Text>
-        <Text style={{ color: "#1A1A1A", fontSize: 22, fontWeight: "800" }}>Mes statistiques</Text>
+        <Text style={{ color: "#C9A24B", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Tableau de bord</Text>
+        <Text style={{ color: "#F4F1EA", fontSize: 22, fontWeight: "800" }}>Mes statistiques</Text>
       </View>
 
       <View style={{ paddingHorizontal: 16 }}>
@@ -549,10 +550,10 @@ function ArtistStats() {
             { icon: "bookmark-outline", label: "Sauvegardes", value: stats?.saves_count ?? 0 },
             { icon: "color-palette-outline", label: "Demandes", value: stats?.requests_count ?? 0 },
           ].map((s) => (
-            <View key={s.label} style={{ flex: 1, minWidth: "45%", backgroundColor: "#FFFFFF", borderRadius: 16, padding: 16, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)" }}>
-              <Ionicons name={s.icon as any} size={18} color="#B8903E" />
-              <Text style={{ color: "#1A1A1A", fontSize: 28, fontWeight: "800", marginTop: 8 }}>{s.value}</Text>
-              <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 2 }}>{s.label}</Text>
+            <View key={s.label} style={{ flex: 1, minWidth: "45%", backgroundColor: "#17171A", borderRadius: 16, padding: 16, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)" }}>
+              <Ionicons name={s.icon as any} size={18} color="#C9A24B" />
+              <Text style={{ color: "#F4F1EA", fontSize: 28, fontWeight: "800", marginTop: 8 }}>{s.value}</Text>
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 2 }}>{s.label}</Text>
             </View>
           ))}
         </View>
@@ -570,16 +571,16 @@ function ArtistStats() {
         </TouchableOpacity>
 
         {stats?.requests_count > 0 && (
-          <View style={{ backgroundColor: "#FFFFFF", borderRadius: 16, padding: 16, marginBottom: 20, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)" }}>
-            <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 15, marginBottom: 12 }}>Demandes par statut</Text>
+          <View style={{ backgroundColor: "#17171A", borderRadius: 16, padding: 16, marginBottom: 20, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)" }}>
+            <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 15, marginBottom: 12 }}>Demandes par statut</Text>
             <View style={{ gap: 8 }}>
               {Object.entries(statusCounts).map(([status, count]: any) => (
                 <View key={status} style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                  <View style={{ flex: 1, height: 6, backgroundColor: "rgba(0,0,0,0.06)", borderRadius: 3, overflow: "hidden" }}>
-                    <View style={{ width: `${Math.round((count / stats.requests_count) * 100)}%`, height: "100%", backgroundColor: "#B8903E", borderRadius: 3 }} />
+                  <View style={{ flex: 1, height: 6, backgroundColor: "rgba(244,241,234,0.08)", borderRadius: 3, overflow: "hidden" }}>
+                    <View style={{ width: `${Math.round((count / stats.requests_count) * 100)}%`, height: "100%", backgroundColor: "#C9A24B", borderRadius: 3 }} />
                   </View>
-                  <Text style={{ color: "#6B6B7A", fontSize: 12, width: 100 }}>{PROJECT_STATUS_LABELS[status as ProjectStatus]}</Text>
-                  <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 13, width: 20, textAlign: "right" }}>{count}</Text>
+                  <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, width: 100 }}>{PROJECT_STATUS_LABELS[status as ProjectStatus]}</Text>
+                  <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 13, width: 20, textAlign: "right" }}>{count}</Text>
                 </View>
               ))}
             </View>
@@ -588,7 +589,7 @@ function ArtistStats() {
 
         {topPosts.length > 0 && (
           <View style={{ marginBottom: 20 }}>
-            <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 15, marginBottom: 12 }}>Publications les plus sauvegardées</Text>
+            <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 15, marginBottom: 12 }}>Publications les plus sauvegardées</Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 3 }}>
               {topPosts.map((post) => (
                 <TouchableOpacity key={post.id} onPress={() => router.push(`/post/${post.id}` as any)}>
@@ -603,9 +604,9 @@ function ArtistStats() {
           </View>
         )}
 
-        <TouchableOpacity onPress={() => router.push("/stats")} style={{ backgroundColor: "#FFFFFF", borderRadius: 14, paddingVertical: 14, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 8, borderWidth: 1.5, borderColor: "rgba(0,0,0,0.08)", marginBottom: 100 }}>
-          <Ionicons name="bar-chart-outline" size={16} color="#B8903E" />
-          <Text style={{ color: "#B8903E", fontWeight: "700", fontSize: 14 }}>Voir les stats détaillées</Text>
+        <TouchableOpacity onPress={() => router.push("/stats")} style={{ backgroundColor: "#17171A", borderRadius: 14, paddingVertical: 14, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 8, borderWidth: 1.5, borderColor: "rgba(244,241,234,0.1)", marginBottom: 100 }}>
+          <Ionicons name="bar-chart-outline" size={16} color="#C9A24B" />
+          <Text style={{ color: "#C9A24B", fontWeight: "700", fontSize: 14 }}>Voir les stats détaillées</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

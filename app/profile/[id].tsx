@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import {
-  View, Text, ScrollView, Dimensions, TouchableOpacity,
+  View, Text, ScrollView, TouchableOpacity,
   ActivityIndicator, Alert, ActionSheetIOS, Platform, Linking,
+  useWindowDimensions,
 } from "react-native";
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -19,12 +20,11 @@ import { AuthPrompt } from "@/components/ui/AuthPrompt";
 import { ReportSheet } from "@/components/ui/ReportSheet";
 import { ReviewSheet } from "@/components/ui/ReviewSheet";
 
-const { width: W } = Dimensions.get("window");
-const GRID_SIZE = (W - 3) / 3;
-
 type Tab = "posts" | "flash" | "avis" | "about";
 
 export default function ProfileScreen() {
+  const { width: W } = useWindowDimensions();
+  const GRID_SIZE = (W - 3) / 3;
   const { id } = useLocalSearchParams<{ id: string }>();
   const { session, profile: myProfile } = useAuthStore();
   const router = useRouter();

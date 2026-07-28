@@ -24,6 +24,7 @@ if (typeof document !== "undefined") {
     style.textContent = `
     ::-webkit-scrollbar { display: none; }
     * { scrollbar-width: none; -webkit-tap-highlight-color: transparent; }
+    *:focus-visible { outline: 2px solid #C9A24B; outline-offset: 2px; border-radius: 4px; }
     html, body, #root { margin: 0; width: 100%; height: 100%; overflow: hidden; }
     body {
       display: flex;
@@ -40,7 +41,10 @@ if (typeof document !== "undefined") {
     @media (min-width: 700px) {
       body.ink-feed-shell #ink-tabbar { display: none; }
     }
-    input, textarea { user-select: text; -webkit-user-select: text; }
+    input, textarea, p, h1, h2, h3, span[data-selectable] { user-select: text; -webkit-user-select: text; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
     video { object-fit: cover; }
   `;
     document.head.appendChild(style);
