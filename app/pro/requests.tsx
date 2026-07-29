@@ -12,7 +12,7 @@ import {
   SIZE_LABELS, SizeCategory,
 } from "@/types/database";
 
-const GOLD = "#B8903E";
+const GOLD = "#C9A24B";
 
 // Ordre d'affichage : ce qui demande une action d'abord
 const STATUS_ORDER: ProjectStatus[] = [
@@ -28,12 +28,12 @@ function RequestCard({ req, onPress }: { req: ProjectRequest; onPress: () => voi
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.85}
-      style={{ marginHorizontal: 16, marginBottom: 10, backgroundColor: "#FFFFFF", borderRadius: 16, padding: 14, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)" }}>
+      style={{ marginHorizontal: 16, marginBottom: 10, backgroundColor: "#17171A", borderRadius: 16, padding: 14, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)" }}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 10 }}>
         <Avatar uri={req.client?.avatar_url ?? null} name={req.client?.display_name ?? "?"} size={38} />
         <View style={{ flex: 1 }}>
-          <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 14 }}>{req.client?.display_name ?? "Client"}</Text>
-          <Text style={{ color: "#9A9AA5", fontSize: 11 }}>
+          <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 14 }}>{req.client?.display_name ?? "Client"}</Text>
+          <Text style={{ color: "rgba(244,241,234,0.4)", fontSize: 11 }}>
             {new Date(req.created_at).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}
             {req.city ? ` · ${req.city}` : ""}
           </Text>
@@ -42,7 +42,7 @@ function RequestCard({ req, onPress }: { req: ProjectRequest; onPress: () => voi
       </View>
 
       {req.description && (
-        <Text style={{ color: "#6B6B7A", fontSize: 13, lineHeight: 19, marginBottom: 10 }} numberOfLines={2}>
+        <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13, lineHeight: 19, marginBottom: 10 }} numberOfLines={2}>
           {req.description}
         </Text>
       )}
@@ -56,28 +56,28 @@ function RequestCard({ req, onPress }: { req: ProjectRequest; onPress: () => voi
           </View>
         )}
         {req.body_placement && (
-          <View style={{ backgroundColor: "rgba(0,0,0,0.05)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 }}>
-            <Text style={{ color: "#6B6B7A", fontSize: 12 }}>{req.body_placement}</Text>
+          <View style={{ backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 }}>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12 }}>{req.body_placement}</Text>
           </View>
         )}
         {req.size_category && (
-          <View style={{ backgroundColor: "rgba(0,0,0,0.05)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 }}>
-            <Text style={{ color: "#6B6B7A", fontSize: 12 }}>{SIZE_LABELS[req.size_category as SizeCategory]}</Text>
+          <View style={{ backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 }}>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12 }}>{SIZE_LABELS[req.size_category as SizeCategory]}</Text>
           </View>
         )}
         {req.color_preference && req.color_preference !== "any" && (
-          <View style={{ backgroundColor: "rgba(0,0,0,0.05)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 }}>
-            <Text style={{ color: "#6B6B7A", fontSize: 12 }}>{req.color_preference === "black_grey" ? "Noir & gris" : "Couleur"}</Text>
+          <View style={{ backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 }}>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12 }}>{req.color_preference === "black_grey" ? "Noir & gris" : "Couleur"}</Text>
           </View>
         )}
         {req.desired_style && (
-          <View style={{ backgroundColor: "rgba(0,0,0,0.05)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 }}>
-            <Text style={{ color: "#6B6B7A", fontSize: 12 }}>{req.desired_style}</Text>
+          <View style={{ backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 }}>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12 }}>{req.desired_style}</Text>
           </View>
         )}
         {req.desired_date && (
-          <View style={{ backgroundColor: "rgba(0,0,0,0.05)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 }}>
-            <Text style={{ color: "#6B6B7A", fontSize: 12 }}>{req.desired_date}</Text>
+          <View style={{ backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 }}>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12 }}>{req.desired_date}</Text>
           </View>
         )}
       </View>
@@ -124,16 +124,16 @@ export default function ProRequestsScreen() {
     .filter((s) => s.data.length > 0);
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B" }}>
       <View style={{ paddingTop: 56, paddingHorizontal: 20, paddingBottom: 14, flexDirection: "row", alignItems: "center", gap: 12 }}>
         <TouchableOpacity onPress={() => router.back()} hitSlop={12}>
           <Ionicons name="arrow-back" size={24} color="#1A1A1A" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
           <Text style={{ color: GOLD, fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Espace pro</Text>
-          <Text style={{ color: "#1A1A1A", fontSize: 20, fontWeight: "800" }}>Mes demandes</Text>
+          <Text style={{ color: "#F4F1EA", fontSize: 20, fontWeight: "800" }}>Mes demandes</Text>
         </View>
-        <Text style={{ color: "#6B6B7A", fontSize: 13, fontWeight: "600" }}>{requests.length}</Text>
+        <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13, fontWeight: "600" }}>{requests.length}</Text>
       </View>
 
       {loading ? (
@@ -148,16 +148,16 @@ export default function ProRequestsScreen() {
           renderSectionHeader={({ section }) => (
             <View style={{ flexDirection: "row", alignItems: "center", gap: 7, paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
               <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: (section as any).color }} />
-              <Text style={{ color: "#1A1A1A", fontWeight: "800", fontSize: 14 }}>{(section as any).title}</Text>
-              <Text style={{ color: "#9A9AA5", fontSize: 13 }}>· {(section as any).data.length}</Text>
+              <Text style={{ color: "#F4F1EA", fontWeight: "800", fontSize: 14 }}>{(section as any).title}</Text>
+              <Text style={{ color: "rgba(244,241,234,0.4)", fontSize: 13 }}>· {(section as any).data.length}</Text>
             </View>
           )}
           renderItem={({ item }) => <RequestCard req={item} onPress={() => openRequest(item)} />}
           ListEmptyComponent={
             <View style={{ alignItems: "center", paddingTop: 80, paddingHorizontal: 32 }}>
-              <Ionicons name="color-palette-outline" size={52} color="rgba(0,0,0,0.1)" />
-              <Text style={{ color: "#1A1A1A", fontSize: 17, fontWeight: "700", marginTop: 16 }}>Aucune demande pour l'instant</Text>
-              <Text style={{ color: "#6B6B7A", fontSize: 14, marginTop: 8, textAlign: "center", lineHeight: 20 }}>
+              <Ionicons name="color-palette-outline" size={52} color="rgba(244,241,234,0.1)" />
+              <Text style={{ color: "#F4F1EA", fontSize: 17, fontWeight: "700", marginTop: 16 }}>Aucune demande pour l'instant</Text>
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, marginTop: 8, textAlign: "center", lineHeight: 20 }}>
                 Les demandes de projets envoyées par les clients arriveront ici, qualifiées avec budget, taille et emplacement.
               </Text>
             </View>

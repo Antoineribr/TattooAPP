@@ -30,28 +30,28 @@ export default function BoardDetailScreen() {
   }, [id]));
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B" }}>
       <View style={{ paddingTop: 56, paddingHorizontal: 20, paddingBottom: 16, flexDirection: "row", alignItems: "center", gap: 12 }}>
         <TouchableOpacity onPress={() => router.back()} hitSlop={12}>
-          <Ionicons name="chevron-back" size={26} color="#1A1A1A" />
+          <Ionicons name="chevron-back" size={26} color="#F4F1EA" />
         </TouchableOpacity>
-        <Text style={{ flex: 1, color: "#1A1A1A", fontSize: 20, fontWeight: "800" }}>{boardName}</Text>
-        <Text style={{ color: "#6B6B7A", fontSize: 13 }}>{items.length} inspiration{items.length !== 1 ? "s" : ""}</Text>
+        <Text style={{ flex: 1, color: "#F4F1EA", fontSize: 20, fontWeight: "800" }}>{boardName}</Text>
+        <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13 }}>{items.length} inspiration{items.length !== 1 ? "s" : ""}</Text>
       </View>
 
       {loading ? (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <ActivityIndicator color="#B8903E" />
+          <ActivityIndicator color="#C9A24B" />
         </View>
       ) : !items.length ? (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 40 }}>
-          <Ionicons name="bookmark-outline" size={52} color="rgba(0,0,0,0.1)" />
-          <Text style={{ color: "#1A1A1A", fontSize: 17, fontWeight: "700", marginTop: 16, textAlign: "center" }}>Board vide</Text>
-          <Text style={{ color: "#6B6B7A", fontSize: 14, marginTop: 8, textAlign: "center" }}>
+          <Ionicons name="bookmark-outline" size={52} color="rgba(244,241,234,0.1)" />
+          <Text style={{ color: "#F4F1EA", fontSize: 17, fontWeight: "700", marginTop: 16, textAlign: "center" }}>Board vide</Text>
+          <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, marginTop: 8, textAlign: "center" }}>
             Sauvegarde des publications dans ce board depuis le feed.
           </Text>
-          <TouchableOpacity onPress={() => router.replace("/(tabs)")} style={{ marginTop: 20, backgroundColor: "#B8903E", borderRadius: 12, paddingHorizontal: 24, paddingVertical: 12 }}>
-            <Text style={{ color: "#F5F3EE", fontWeight: "700" }}>Explorer le feed</Text>
+          <TouchableOpacity onPress={() => router.replace("/(tabs)")} style={{ marginTop: 20, backgroundColor: "#C9A24B", borderRadius: 12, paddingHorizontal: 24, paddingVertical: 12 }}>
+            <Text style={{ color: "#0A0A0B", fontWeight: "700" }}>Explorer le feed</Text>
           </TouchableOpacity>
         </View>
       ) : (

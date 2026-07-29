@@ -35,7 +35,7 @@ export function Avatar({ uri, name, size = 40 }: Props) {
       borderWidth: 1.5, borderColor: "rgba(184,144,62,0.3)",
       alignItems: "center", justifyContent: "center",
     }}>
-      <Text style={{ color: "#B8903E", fontWeight: "700", fontSize: size * 0.35 }}>{initials}</Text>
+      <Text style={{ color: "#C9A24B", fontWeight: "700", fontSize: size * 0.35 }}>{initials}</Text>
     </View>
   );
 }

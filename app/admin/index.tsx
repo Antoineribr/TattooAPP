@@ -10,7 +10,7 @@ import { supabase } from "@/lib/supabase";
 import { useAuthStore } from "@/store/useAuthStore";
 
 const ADMIN_EMAILS = ["antoine.ribeiro02@gmail.com"];
-const GOLD = "#B8903E";
+const GOLD = "#C9A24B";
 
 type UserRow = {
   id: string;
@@ -100,9 +100,9 @@ export default function AdminScreen() {
 
   if (!isAdmin) {
     return (
-      <View style={{ flex: 1, backgroundColor: "#F5F3EE", alignItems: "center", justifyContent: "center", padding: 32 }}>
-        <Ionicons name="lock-closed" size={52} color="rgba(0,0,0,0.15)" />
-        <Text style={{ color: "#1A1A1A", fontSize: 20, fontWeight: "800", marginTop: 20 }}>Accès restreint</Text>
+      <View style={{ flex: 1, backgroundColor: "#0A0A0B", alignItems: "center", justifyContent: "center", padding: 32 }}>
+        <Ionicons name="lock-closed" size={52} color="rgba(244,241,234,0.15)" />
+        <Text style={{ color: "#F4F1EA", fontSize: 20, fontWeight: "800", marginTop: 20 }}>Accès restreint</Text>
         <TouchableOpacity onPress={() => router.back()} style={{ marginTop: 24, backgroundColor: GOLD, borderRadius: 14, paddingVertical: 14, paddingHorizontal: 32 }}>
           <Text style={{ color: "#fff", fontWeight: "700" }}>Retour</Text>
         </TouchableOpacity>
@@ -116,20 +116,20 @@ export default function AdminScreen() {
   const list = tab === "artists" ? filtered.filter((u) => u.role === "artist") : tab === "clients" ? filtered.filter((u) => u.role !== "artist") : [];
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#F0EDE6" }}>
-      <BlurView intensity={90} tint="extraLight" style={{ paddingTop: 56, paddingBottom: 12, paddingHorizontal: 20, borderBottomWidth: 0.5, borderBottomColor: "rgba(0,0,0,0.08)" }}>
+    <View style={{ flex: 1, backgroundColor: "#0D0D0F" }}>
+      <BlurView intensity={90} tint="dark" style={{ paddingTop: 56, paddingBottom: 12, paddingHorizontal: 20, borderBottomWidth: 0.5, borderBottomColor: "rgba(244,241,234,0.08)" }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 14 }}>
           <TouchableOpacity onPress={() => router.back()} hitSlop={12}>
             <Ionicons name="chevron-back" size={26} color="#1A1A1A" />
           </TouchableOpacity>
           <View>
             <Text style={{ color: GOLD, fontSize: 10, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Administration</Text>
-            <Text style={{ color: "#1A1A1A", fontSize: 22, fontWeight: "800" }}>INK Admin</Text>
+            <Text style={{ color: "#F4F1EA", fontSize: 22, fontWeight: "800" }}>INK Admin</Text>
           </View>
         </View>
         <View style={{ flexDirection: "row", gap: 6 }}>
           {(["stats", "artists", "clients", "reports"] as const).map((key) => (
-            <TouchableOpacity key={key} onPress={() => setTab(key)} style={{ paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: tab === key ? "#1A1A1A" : "rgba(0,0,0,0.06)" }}>
+            <TouchableOpacity key={key} onPress={() => setTab(key)} style={{ paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: tab === key ? "#1A1A1A" : "rgba(244,241,234,0.06)" }}>
               <Text style={{ color: tab === key ? "#FFF" : "#6B6B7A", fontWeight: "700", fontSize: 13 }}>
                 {key === "stats" ? "Dashboard" : key === "artists" ? "Tatoueurs" : key === "clients" ? "Clients" : "Signalements"}
               </Text>
@@ -146,29 +146,29 @@ export default function AdminScreen() {
                 {[
                   { icon: "people", label: "Membres", value: stats.total_users, color: GOLD },
                   { icon: "color-palette", label: "Tatoueurs", value: stats.total_artists, color: GOLD },
-                  { icon: "person", label: "Clients", value: stats.total_clients, color: "#6B6B7A" },
-                  { icon: "images", label: "Posts", value: stats.total_posts, color: "#6B6B7A" },
-                  { icon: "chatbubbles", label: "Conversations", value: stats.total_conversations, color: "#6B6B7A" },
+                  { icon: "person", label: "Clients", value: stats.total_clients, color: "rgba(244,241,234,0.55)" },
+                  { icon: "images", label: "Posts", value: stats.total_posts, color: "rgba(244,241,234,0.55)" },
+                  { icon: "chatbubbles", label: "Conversations", value: stats.total_conversations, color: "rgba(244,241,234,0.55)" },
                   { icon: "color-palette-outline", label: "Projets", value: stats.total_project_requests, color: GOLD },
                 ].map((s) => (
-                  <View key={s.label} style={{ flex: 1, minWidth: "45%", backgroundColor: "#FFFFFF", borderRadius: 14, padding: 14, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)" }}>
+                  <View key={s.label} style={{ flex: 1, minWidth: "45%", backgroundColor: "#17171A", borderRadius: 14, padding: 14, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)" }}>
                     <Ionicons name={s.icon as any} size={18} color={s.color} />
-                    <Text style={{ color: "#1A1A1A", fontSize: 26, fontWeight: "800", marginTop: 8 }}>{s.value}</Text>
-                    <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 2 }}>{s.label}</Text>
+                    <Text style={{ color: "#F4F1EA", fontSize: 26, fontWeight: "800", marginTop: 8 }}>{s.value}</Text>
+                    <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 2 }}>{s.label}</Text>
                   </View>
                 ))}
               </View>
 
               {stats.total_users > 0 && (
-                <View style={{ backgroundColor: "#FFFFFF", borderRadius: 16, padding: 16, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)" }}>
-                  <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 15, marginBottom: 12 }}>Répartition</Text>
+                <View style={{ backgroundColor: "#17171A", borderRadius: 16, padding: 16, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)" }}>
+                  <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 15, marginBottom: 12 }}>Répartition</Text>
                   <View style={{ height: 10, borderRadius: 5, overflow: "hidden", flexDirection: "row" }}>
                     <View style={{ flex: stats.total_artists, backgroundColor: GOLD }} />
-                    <View style={{ flex: stats.total_clients, backgroundColor: "rgba(0,0,0,0.1)" }} />
+                    <View style={{ flex: stats.total_clients, backgroundColor: "rgba(244,241,234,0.1)" }} />
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 8 }}>
                     <Text style={{ color: GOLD, fontSize: 12, fontWeight: "600" }}>{stats.total_artists} tatoueurs ({Math.round(stats.total_artists / stats.total_users * 100)}%)</Text>
-                    <Text style={{ color: "#6B6B7A", fontSize: 12 }}>{stats.total_clients} clients</Text>
+                    <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12 }}>{stats.total_clients} clients</Text>
                   </View>
                 </View>
               )}
@@ -179,24 +179,24 @@ export default function AdminScreen() {
 
           {(tab === "artists" || tab === "clients") && (
             <View style={{ padding: 16, gap: 10 }}>
-              <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "rgba(255,255,255,0.9)", borderRadius: 14, paddingHorizontal: 14, paddingVertical: 11, gap: 8, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.08)" }}>
+              <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "rgba(244,241,234,0.08)", borderRadius: 14, paddingHorizontal: 14, paddingVertical: 11, gap: 8, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)" }}>
                 <Ionicons name="search" size={16} color="#6B6B7A" />
-                <TextInput value={search} onChangeText={setSearch} placeholder="Rechercher…" placeholderTextColor="#9A9AA5" style={{ flex: 1, color: "#1A1A1A", fontSize: 15 }} />
+                <TextInput value={search} onChangeText={setSearch} placeholder="Rechercher…" placeholderTextColor="#9A9AA5" style={{ flex: 1, color: "#F4F1EA", fontSize: 15 }} />
               </View>
-              <Text style={{ color: "#6B6B7A", fontSize: 12 }}>{list.length} {tab === "artists" ? "tatoueur·se·s" : "client·e·s"}</Text>
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12 }}>{list.length} {tab === "artists" ? "tatoueur·se·s" : "client·e·s"}</Text>
 
               {list.map((user) => (
-                <View key={user.id} style={{ backgroundColor: "#FFFFFF", borderRadius: 16, padding: 14, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)" }}>
+                <View key={user.id} style={{ backgroundColor: "#17171A", borderRadius: 16, padding: 14, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)" }}>
                   <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
                     <View style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: "rgba(184,144,62,0.15)", alignItems: "center", justifyContent: "center" }}>
                       <Text style={{ color: GOLD, fontWeight: "800", fontSize: 18 }}>{(user.display_name ?? "?")[0].toUpperCase()}</Text>
                     </View>
                     <View style={{ flex: 1 }}>
-                      <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 15 }}>{user.display_name}</Text>
-                      <Text style={{ color: "#6B6B7A", fontSize: 12 }}>@{user.username}{user.city ? ` · ${user.city}` : ""}</Text>
+                      <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 15 }}>{user.display_name}</Text>
+                      <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12 }}>@{user.username}{user.city ? ` · ${user.city}` : ""}</Text>
                     </View>
                     <View style={{ gap: 4, alignItems: "flex-end" }}>
-                      <View style={{ paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10, backgroundColor: user.role === "artist" ? "rgba(184,144,62,0.12)" : "rgba(0,0,0,0.05)" }}>
+                      <View style={{ paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10, backgroundColor: user.role === "artist" ? "rgba(184,144,62,0.12)" : "rgba(244,241,234,0.06)" }}>
                         <Text style={{ color: user.role === "artist" ? GOLD : "#6B6B7A", fontSize: 11, fontWeight: "700" }}>{user.role === "artist" ? "Artiste" : "Client"}</Text>
                       </View>
                       {user.role === "artist" && (
@@ -207,10 +207,10 @@ export default function AdminScreen() {
                     </View>
                   </View>
 
-                  <View style={{ flexDirection: "row", gap: 8, marginTop: 12, paddingTop: 10, borderTopWidth: 0.5, borderTopColor: "rgba(0,0,0,0.06)" }}>
-                    <TouchableOpacity onPress={() => router.push(`/profile/${user.id}` as any)} style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, backgroundColor: "rgba(0,0,0,0.04)", borderRadius: 10, paddingVertical: 8 }}>
+                  <View style={{ flexDirection: "row", gap: 8, marginTop: 12, paddingTop: 10, borderTopWidth: 0.5, borderTopColor: "rgba(244,241,234,0.06)" }}>
+                    <TouchableOpacity onPress={() => router.push(`/profile/${user.id}` as any)} style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 10, paddingVertical: 8 }}>
                       <Ionicons name="eye-outline" size={14} color="#6B6B7A" />
-                      <Text style={{ color: "#6B6B7A", fontSize: 12, fontWeight: "600" }}>Voir</Text>
+                      <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, fontWeight: "600" }}>Voir</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => toggleRole(user)} style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, backgroundColor: "rgba(184,144,62,0.08)", borderRadius: 10, paddingVertical: 8 }}>
                       <Ionicons name="swap-horizontal-outline" size={14} color={GOLD} />
@@ -268,29 +268,29 @@ function InviteSection() {
 
   return (
     <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-      <View style={{ backgroundColor: "#FFFFFF", borderRadius: 16, padding: 16, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)" }}>
+      <View style={{ backgroundColor: "#17171A", borderRadius: 16, padding: 16, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)" }}>
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
-          <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 15 }}>Inviter un tatoueur</Text>
+          <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 15 }}>Inviter un tatoueur</Text>
           <TouchableOpacity onPress={generate} disabled={creating} style={{ backgroundColor: GOLD, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8 }}>
             {creating ? <ActivityIndicator color="#FFF" size="small" /> : <Text style={{ color: "#FFF", fontWeight: "700", fontSize: 13 }}>Générer un code</Text>}
           </TouchableOpacity>
         </View>
-        <Text style={{ color: "#6B6B7A", fontSize: 12, marginBottom: 10 }}>
+        <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginBottom: 10 }}>
           Envoie le code au tatoueur : il crée son compte puis entre le code pour activer son profil pro.
         </Text>
         {lastCode && (
           <View style={{ backgroundColor: "rgba(184,144,62,0.1)", borderRadius: 12, padding: 14, alignItems: "center", marginBottom: 10, borderWidth: 1, borderColor: "rgba(184,144,62,0.25)" }}>
             <Text style={{ color: GOLD, fontSize: 24, fontWeight: "800", letterSpacing: 4 }}>{lastCode}</Text>
-            <Text style={{ color: "#6B6B7A", fontSize: 11, marginTop: 4 }}>Valable 30 jours · usage unique</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 11, marginTop: 4 }}>Valable 30 jours · usage unique</Text>
           </View>
         )}
         {pending.length > 0 && (
           <View style={{ gap: 6 }}>
-            <Text style={{ color: "#6B6B7A", fontSize: 12, fontWeight: "600" }}>{pending.length} code{pending.length > 1 ? "s" : ""} en attente</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, fontWeight: "600" }}>{pending.length} code{pending.length > 1 ? "s" : ""} en attente</Text>
             {pending.map((i) => (
-              <View key={i.code} style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingVertical: 6, borderBottomWidth: 0.5, borderBottomColor: "rgba(0,0,0,0.05)" }}>
-                <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 14, letterSpacing: 2 }}>{i.code}</Text>
-                <Text style={{ color: "#9A9AA5", fontSize: 11 }}>
+              <View key={i.code} style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingVertical: 6, borderBottomWidth: 0.5, borderBottomColor: "rgba(244,241,234,0.06)" }}>
+                <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 14, letterSpacing: 2 }}>{i.code}</Text>
+                <Text style={{ color: "rgba(244,241,234,0.4)", fontSize: 11 }}>
                   expire le {new Date(i.expires_at).toLocaleDateString("fr-FR")}
                 </Text>
               </View>
@@ -328,28 +328,28 @@ function ReportsTab() {
     setReports((prev) => prev.map((r) => r.id === id ? { ...r, resolved: true } : r));
   }
 
-  if (loading) return <ActivityIndicator color="#B8903E" style={{ marginTop: 40 }} />;
+  if (loading) return <ActivityIndicator color="#C9A24B" style={{ marginTop: 40 }} />;
 
   const pending = reports.filter((r) => !r.resolved);
   const resolved = reports.filter((r) => r.resolved);
 
   return (
     <View style={{ padding: 16, gap: 10 }}>
-      <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 14 }}>{pending.length} signalement{pending.length > 1 ? "s" : ""} en attente</Text>
+      <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 14 }}>{pending.length} signalement{pending.length > 1 ? "s" : ""} en attente</Text>
       {pending.map((r) => (
-        <View key={r.id} style={{ backgroundColor: "#FFFFFF", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(231,76,60,0.15)" }}>
+        <View key={r.id} style={{ backgroundColor: "#17171A", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(231,76,60,0.15)" }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8 }}>
             <View style={{ backgroundColor: "rgba(231,76,60,0.1)", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 }}>
               <Text style={{ color: "#E74C3C", fontSize: 12, fontWeight: "700" }}>{r.reason}</Text>
             </View>
-            <Text style={{ color: "#6B6B7A", fontSize: 11 }}>{new Date(r.created_at).toLocaleDateString("fr-FR")}</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 11 }}>{new Date(r.created_at).toLocaleDateString("fr-FR")}</Text>
           </View>
-          <Text style={{ color: "#6B6B7A", fontSize: 13 }}>
-            <Text style={{ fontWeight: "600", color: "#1A1A1A" }}>@{r.reporter?.username ?? "?"}</Text>
+          <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13 }}>
+            <Text style={{ fontWeight: "600", color: "#F4F1EA" }}>@{r.reporter?.username ?? "?"}</Text>
             {" → "}
-            {r.reported_user ? <Text style={{ fontWeight: "600", color: "#1A1A1A" }}>@{r.reported_user.username}</Text> : "publication"}
+            {r.reported_user ? <Text style={{ fontWeight: "600", color: "#F4F1EA" }}>@{r.reported_user.username}</Text> : "publication"}
           </Text>
-          {r.note && <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 6, fontStyle: "italic" }}>"{r.note}"</Text>}
+          {r.note && <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 6, fontStyle: "italic" }}>"{r.note}"</Text>}
           <TouchableOpacity
             onPress={() => markResolved(r.id)}
             style={{ marginTop: 10, backgroundColor: "rgba(39,174,96,0.1)", borderRadius: 10, paddingVertical: 8, alignItems: "center" }}
@@ -361,10 +361,10 @@ function ReportsTab() {
 
       {resolved.length > 0 && (
         <>
-          <Text style={{ color: "#6B6B7A", fontWeight: "600", fontSize: 13, marginTop: 8 }}>{resolved.length} résolu{resolved.length > 1 ? "s" : ""}</Text>
+          <Text style={{ color: "rgba(244,241,234,0.55)", fontWeight: "600", fontSize: 13, marginTop: 8 }}>{resolved.length} résolu{resolved.length > 1 ? "s" : ""}</Text>
           {resolved.map((r) => (
-            <View key={r.id} style={{ backgroundColor: "#FFFFFF", borderRadius: 12, padding: 12, opacity: 0.5 }}>
-              <Text style={{ color: "#6B6B7A", fontSize: 12 }}>{r.reason} · @{r.reporter?.username}</Text>
+            <View key={r.id} style={{ backgroundColor: "#17171A", borderRadius: 12, padding: 12, opacity: 0.5 }}>
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12 }}>{r.reason} · @{r.reporter?.username}</Text>
             </View>
           ))}
         </>

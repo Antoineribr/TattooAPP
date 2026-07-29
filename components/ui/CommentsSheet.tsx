@@ -106,14 +106,14 @@ export function CommentsSheet({ visible, postId, commentsEnabled, onClose }: Pro
           </TouchableOpacity>
           <View style={{ flex: 1 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 3 }}>
-              <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 13 }}>{c.display_name}</Text>
-              <Text style={{ color: "#6B6B7A", fontSize: 11 }}>{timeAgo(c.created_at)}</Text>
+              <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 13 }}>{c.display_name}</Text>
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 11 }}>{timeAgo(c.created_at)}</Text>
             </View>
             <Text style={{ color: "rgba(26,26,26,0.88)", fontSize: 14, lineHeight: 20 }}>{c.body}</Text>
             <View style={{ flexDirection: "row", gap: 16, marginTop: 6 }}>
               {!isReply && (
                 <TouchableOpacity onPress={() => { setReplyTo(c); inputRef.current?.focus(); }}>
-                  <Text style={{ color: "#6B6B7A", fontSize: 12, fontWeight: "600" }}>Répondre</Text>
+                  <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, fontWeight: "600" }}>Répondre</Text>
                 </TouchableOpacity>
               )}
               {isOwn && (
@@ -131,11 +131,11 @@ export function CommentsSheet({ visible, postId, commentsEnabled, onClose }: Pro
 
   return (
     <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
-      <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#F5F3EE" }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
+      <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#0A0A0B" }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
         {/* Header */}
-        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 20, paddingBottom: 14, borderBottomWidth: 1, borderBottomColor: "#FFFFFF" }}>
-          <Text style={{ flex: 1, color: "#1A1A1A", fontSize: 17, fontWeight: "800" }}>
-            Commentaires {comments.length > 0 && <Text style={{ color: "#6B6B7A", fontWeight: "400" }}>({comments.length})</Text>}
+        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 20, paddingBottom: 14, borderBottomWidth: 1, borderBottomColor: "#17171A" }}>
+          <Text style={{ flex: 1, color: "#F4F1EA", fontSize: 17, fontWeight: "800" }}>
+            Commentaires {comments.length > 0 && <Text style={{ color: "rgba(244,241,234,0.55)", fontWeight: "400" }}>({comments.length})</Text>}
           </Text>
           <TouchableOpacity onPress={onClose} hitSlop={12}>
             <Ionicons name="close" size={24} color="#6B6B7A" />
@@ -145,7 +145,7 @@ export function CommentsSheet({ visible, postId, commentsEnabled, onClose }: Pro
         {/* Liste */}
         {loading ? (
           <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <ActivityIndicator color="#B8903E" />
+            <ActivityIndicator color="#C9A24B" />
           </View>
         ) : (
           <FlatList
@@ -159,9 +159,9 @@ export function CommentsSheet({ visible, postId, commentsEnabled, onClose }: Pro
             )}
             ListEmptyComponent={
               <View style={{ alignItems: "center", paddingTop: 60 }}>
-                <Ionicons name="chatbubble-outline" size={44} color="rgba(0,0,0,0.1)" />
-                <Text style={{ color: "#1A1A1A", fontSize: 16, fontWeight: "700", marginTop: 14 }}>Aucun commentaire</Text>
-                <Text style={{ color: "#6B6B7A", fontSize: 14, marginTop: 6 }}>Sois le premier à commenter !</Text>
+                <Ionicons name="chatbubble-outline" size={44} color="rgba(244,241,234,0.1)" />
+                <Text style={{ color: "#F4F1EA", fontSize: 16, fontWeight: "700", marginTop: 14 }}>Aucun commentaire</Text>
+                <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, marginTop: 6 }}>Sois le premier à commenter !</Text>
               </View>
             }
             contentContainerStyle={{ paddingBottom: 20 }}
@@ -171,11 +171,11 @@ export function CommentsSheet({ visible, postId, commentsEnabled, onClose }: Pro
 
         {/* Input */}
         {commentsEnabled ? (
-          <View style={{ borderTopWidth: 1, borderTopColor: "#FFFFFF", paddingHorizontal: 16, paddingBottom: Platform.OS === "ios" ? 34 : 16, paddingTop: 10 }}>
+          <View style={{ borderTopWidth: 1, borderTopColor: "#17171A", paddingHorizontal: 16, paddingBottom: Platform.OS === "ios" ? 34 : 16, paddingTop: 10 }}>
             {replyTo && (
-              <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#FFFFFF", borderRadius: 8, paddingHorizontal: 12, paddingVertical: 7, marginBottom: 8, gap: 8 }}>
-                <Text style={{ flex: 1, color: "#6B6B7A", fontSize: 12 }}>
-                  Répondre à <Text style={{ color: "#B8903E", fontWeight: "700" }}>{replyTo.display_name}</Text>
+              <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#17171A", borderRadius: 8, paddingHorizontal: 12, paddingVertical: 7, marginBottom: 8, gap: 8 }}>
+                <Text style={{ flex: 1, color: "rgba(244,241,234,0.55)", fontSize: 12 }}>
+                  Répondre à <Text style={{ color: "#C9A24B", fontWeight: "700" }}>{replyTo.display_name}</Text>
                 </Text>
                 <TouchableOpacity onPress={() => setReplyTo(null)}>
                   <Ionicons name="close" size={16} color="#6B6B7A" />
@@ -192,25 +192,25 @@ export function CommentsSheet({ visible, postId, commentsEnabled, onClose }: Pro
                   placeholderTextColor="#6B6B7A"
                   multiline
                   maxLength={500}
-                  style={{ flex: 1, backgroundColor: "#FFFFFF", color: "#1A1A1A", borderRadius: 14, paddingHorizontal: 14, paddingVertical: 10, fontSize: 14, maxHeight: 100 }}
+                  style={{ flex: 1, backgroundColor: "#17171A", color: "#F4F1EA", borderRadius: 14, paddingHorizontal: 14, paddingVertical: 10, fontSize: 14, maxHeight: 100 }}
                 />
                 <TouchableOpacity
                   onPress={send}
                   disabled={!text.trim() || sending}
-                  style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: text.trim() ? "#B8903E" : "rgba(0,0,0,0.1)", alignItems: "center", justifyContent: "center" }}
+                  style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: text.trim() ? "#C9A24B" : "rgba(244,241,234,0.1)", alignItems: "center", justifyContent: "center" }}
                 >
-                  {sending ? <ActivityIndicator size="small" color="#F5F3EE" /> : <Ionicons name="arrow-up" size={18} color={text.trim() ? "#F5F3EE" : "#6B6B7A"} />}
+                  {sending ? <ActivityIndicator size="small" color="#0A0A0B" /> : <Ionicons name="arrow-up" size={18} color={text.trim() ? "#0A0A0B" : "#6B6B7A"} />}
                 </TouchableOpacity>
               </View>
             ) : (
-              <TouchableOpacity onPress={() => { onClose(); setTimeout(() => router.push("/(auth)/sign-in"), 200); }} style={{ backgroundColor: "#FFFFFF", borderRadius: 14, paddingVertical: 13, alignItems: "center" }}>
-                <Text style={{ color: "#B8903E", fontWeight: "700", fontSize: 14 }}>Connecte-toi pour commenter</Text>
+              <TouchableOpacity onPress={() => { onClose(); setTimeout(() => router.push("/(auth)/sign-in"), 200); }} style={{ backgroundColor: "#17171A", borderRadius: 14, paddingVertical: 13, alignItems: "center" }}>
+                <Text style={{ color: "#C9A24B", fontWeight: "700", fontSize: 14 }}>Connecte-toi pour commenter</Text>
               </TouchableOpacity>
             )}
           </View>
         ) : (
-          <View style={{ borderTopWidth: 1, borderTopColor: "#FFFFFF", padding: 16, alignItems: "center" }}>
-            <Text style={{ color: "#6B6B7A", fontSize: 14 }}>Les commentaires sont désactivés</Text>
+          <View style={{ borderTopWidth: 1, borderTopColor: "#17171A", padding: 16, alignItems: "center" }}>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14 }}>Les commentaires sont désactivés</Text>
           </View>
         )}
       </KeyboardAvoidingView>

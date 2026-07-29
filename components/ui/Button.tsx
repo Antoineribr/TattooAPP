@@ -29,7 +29,7 @@ export function Button({
       activeOpacity={0.75}
     >
       {loading ? (
-        <ActivityIndicator color={isPrimary ? "#F5F3EE" : "#B8903E"} />
+        <ActivityIndicator color={isPrimary ? "#0A0A0B" : "#C9A24B"} />
       ) : (
         <Text
           className={[

@@ -8,8 +8,8 @@ import { Image } from "expo-image";
 import { useEffect, useState, useCallback } from "react";
 import { useFocusEffect } from "expo-router";
 
-const GOLD = "#B8903E";
-const BG = "#F5F3EE";
+const GOLD = "#C9A24B";
+const BG = "#0A0A0B";
 const ADMIN_EMAIL = "antoine.ribeiro02@gmail.com";
 
 // ─── PROFIL CLIENT ──────────────────────────────────────────────────────────
@@ -49,32 +49,32 @@ function ClientProfile() {
     <ScrollView style={{ flex: 1, backgroundColor: BG }} showsVerticalScrollIndicator={false}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={async () => { setRefreshing(true); await load(); setRefreshing(false); }} tintColor={GOLD} />}>
       {/* Hero client */}
-      <View style={{ backgroundColor: "#FFF", paddingTop: 64, paddingBottom: 24, paddingHorizontal: 24, borderBottomLeftRadius: 28, borderBottomRightRadius: 28, shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 10 }}>
+      <View style={{ backgroundColor: "#17171A", paddingTop: 64, paddingBottom: 24, paddingHorizontal: 24, borderBottomLeftRadius: 28, borderBottomRightRadius: 28 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
           <Avatar uri={profile?.avatar_url} name={profile?.display_name ?? ""} size={72} />
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#1A1A1A", fontSize: 22, fontWeight: "800" }}>{profile?.display_name}</Text>
-            <Text style={{ color: "#6B6B7A", fontSize: 14 }}>@{profile?.username}</Text>
-            {profile?.city && <Text style={{ color: "#9A9AA5", fontSize: 13, marginTop: 2 }}>📍 {profile.city}</Text>}
+            <Text style={{ color: "#F4F1EA", fontSize: 22, fontWeight: "800" }}>{profile?.display_name}</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14 }}>@{profile?.username}</Text>
+            {profile?.city && <Text style={{ color: "rgba(244,241,234,0.4)", fontSize: 13, marginTop: 2 }}>📍 {profile.city}</Text>}
           </View>
-          <TouchableOpacity onPress={() => router.push("/edit/profile" as any)} style={{ width: 38, height: 38, borderRadius: 19, backgroundColor: "rgba(0,0,0,0.05)", alignItems: "center", justifyContent: "center" }}>
-            <Ionicons name="pencil-outline" size={18} color="#6B6B7A" />
+          <TouchableOpacity onPress={() => router.push("/edit/profile" as any)} style={{ width: 38, height: 38, borderRadius: 19, backgroundColor: "rgba(244,241,234,0.08)", alignItems: "center", justifyContent: "center" }}>
+            <Ionicons name="pencil-outline" size={18} color="rgba(244,241,234,0.55)" />
           </TouchableOpacity>
         </View>
 
         {/* Stats rapides */}
         <View style={{ flexDirection: "row", gap: 8, marginTop: 20 }}>
-          <View style={{ flex: 1, backgroundColor: "rgba(184,144,62,0.08)", borderRadius: 14, padding: 14, alignItems: "center" }}>
+          <View style={{ flex: 1, backgroundColor: "rgba(201,162,75,0.1)", borderRadius: 14, padding: 14, alignItems: "center" }}>
             <Text style={{ color: GOLD, fontSize: 22, fontWeight: "800" }}>{projectCount}</Text>
-            <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 2 }}>Projets</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 2 }}>Projets</Text>
           </View>
-          <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.04)", borderRadius: 14, padding: 14, alignItems: "center" }}>
-            <Text style={{ color: "#1A1A1A", fontSize: 22, fontWeight: "800" }}>{savedCount}</Text>
-            <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 2 }}>Sauvegardés</Text>
+          <View style={{ flex: 1, backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 14, padding: 14, alignItems: "center" }}>
+            <Text style={{ color: "#F4F1EA", fontSize: 22, fontWeight: "800" }}>{savedCount}</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 2 }}>Sauvegardés</Text>
           </View>
-          <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.04)", borderRadius: 14, padding: 14, alignItems: "center" }}>
-            <Text style={{ color: "#1A1A1A", fontSize: 22, fontWeight: "800" }}>{followedArtists.length}</Text>
-            <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 2 }}>Artistes</Text>
+          <View style={{ flex: 1, backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 14, padding: 14, alignItems: "center" }}>
+            <Text style={{ color: "#F4F1EA", fontSize: 22, fontWeight: "800" }}>{followedArtists.length}</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 2 }}>Artistes</Text>
           </View>
         </View>
 
@@ -82,7 +82,7 @@ function ClientProfile() {
         {styles.length > 0 && (
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 14 }}>
             {styles.map((s: string) => (
-              <View key={s} style={{ backgroundColor: "rgba(184,144,62,0.1)", borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4 }}>
+              <View key={s} style={{ backgroundColor: "rgba(201,162,75,0.12)", borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4 }}>
                 <Text style={{ color: GOLD, fontSize: 12, fontWeight: "600" }}>{s}</Text>
               </View>
             ))}
@@ -94,7 +94,7 @@ function ClientProfile() {
       {followedArtists.length > 0 && (
         <View style={{ marginTop: 24 }}>
           <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, marginBottom: 14 }}>
-            <Text style={{ color: "#1A1A1A", fontSize: 17, fontWeight: "800" }}>Mes tatoueurs</Text>
+            <Text style={{ color: "#F4F1EA", fontSize: 17, fontWeight: "800" }}>Mes tatoueurs</Text>
             <Text style={{ color: GOLD, fontSize: 13, fontWeight: "600" }}>{followedArtists.length}</Text>
           </View>
           <FlatList
@@ -105,8 +105,8 @@ function ClientProfile() {
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => router.push(`/profile/${item.id}` as any)} style={{ alignItems: "center", width: 80 }}>
                 <Avatar uri={item.avatar_url} name={item.display_name} size={56} />
-                <Text style={{ color: "#1A1A1A", fontSize: 12, fontWeight: "600", marginTop: 6, textAlign: "center" }} numberOfLines={1}>{item.display_name}</Text>
-                {item.city && <Text style={{ color: "#9A9AA5", fontSize: 10, textAlign: "center" }} numberOfLines={1}>{item.city}</Text>}
+                <Text style={{ color: "#F4F1EA", fontSize: 12, fontWeight: "600", marginTop: 6, textAlign: "center" }} numberOfLines={1}>{item.display_name}</Text>
+                {item.city && <Text style={{ color: "rgba(244,241,234,0.4)", fontSize: 10, textAlign: "center" }} numberOfLines={1}>{item.city}</Text>}
               </TouchableOpacity>
             )}
           />
@@ -114,33 +114,33 @@ function ClientProfile() {
       )}
 
       {/* Raccourcis */}
-      <View style={{ margin: 20, backgroundColor: "#FFF", borderRadius: 20, overflow: "hidden", borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)" }}>
+      <View style={{ margin: 20, backgroundColor: "#17171A", borderRadius: 20, overflow: "hidden", borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)" }}>
         {[
           { icon: "bookmark-outline", label: "Mes boards", sub: "Inspirations sauvegardées", route: "/(tabs)/board" },
           { icon: "chatbubble-outline", label: "Mes projets", sub: "Conversations et statuts", route: "/(tabs)/messages" },
           { icon: "notifications-outline", label: "Notifications", sub: "Activité sur mon compte", route: "/notifications" },
         ].map((item, i) => (
-          <TouchableOpacity key={item.route} onPress={() => router.push(item.route as any)} style={{ flexDirection: "row", alignItems: "center", gap: 14, paddingHorizontal: 18, paddingVertical: 16, borderTopWidth: i === 0 ? 0 : 0.5, borderTopColor: "rgba(0,0,0,0.06)" }}>
-            <View style={{ width: 38, height: 38, borderRadius: 11, backgroundColor: "rgba(184,144,62,0.1)", alignItems: "center", justifyContent: "center" }}>
+          <TouchableOpacity key={item.route} onPress={() => router.push(item.route as any)} style={{ flexDirection: "row", alignItems: "center", gap: 14, paddingHorizontal: 18, paddingVertical: 16, borderTopWidth: i === 0 ? 0 : 0.5, borderTopColor: "rgba(244,241,234,0.08)" }}>
+            <View style={{ width: 38, height: 38, borderRadius: 11, backgroundColor: "rgba(201,162,75,0.12)", alignItems: "center", justifyContent: "center" }}>
               <Ionicons name={item.icon as any} size={19} color={GOLD} />
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: "#1A1A1A", fontWeight: "600", fontSize: 15 }}>{item.label}</Text>
-              <Text style={{ color: "#9A9AA5", fontSize: 12 }}>{item.sub}</Text>
+              <Text style={{ color: "#F4F1EA", fontWeight: "600", fontSize: 15 }}>{item.label}</Text>
+              <Text style={{ color: "rgba(244,241,234,0.4)", fontSize: 12 }}>{item.sub}</Text>
             </View>
-            <Ionicons name="chevron-forward" size={16} color="#C0C0C8" />
+            <Ionicons name="chevron-forward" size={16} color="rgba(244,241,234,0.25)" />
           </TouchableOpacity>
         ))}
       </View>
 
       {/* Compte */}
-      <View style={{ marginHorizontal: 20, backgroundColor: "#FFF", borderRadius: 20, overflow: "hidden", borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)", marginBottom: 100 }}>
-        <TouchableOpacity onPress={() => router.push("/edit/profile" as any)} style={{ flexDirection: "row", alignItems: "center", gap: 14, paddingHorizontal: 18, paddingVertical: 16, borderBottomWidth: 0.5, borderBottomColor: "rgba(0,0,0,0.06)" }}>
-          <View style={{ width: 38, height: 38, borderRadius: 11, backgroundColor: "rgba(0,0,0,0.05)", alignItems: "center", justifyContent: "center" }}>
-            <Ionicons name="person-outline" size={19} color="#6B6B7A" />
+      <View style={{ marginHorizontal: 20, backgroundColor: "#17171A", borderRadius: 20, overflow: "hidden", borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)", marginBottom: 100 }}>
+        <TouchableOpacity onPress={() => router.push("/edit/profile" as any)} style={{ flexDirection: "row", alignItems: "center", gap: 14, paddingHorizontal: 18, paddingVertical: 16, borderBottomWidth: 0.5, borderBottomColor: "rgba(244,241,234,0.08)" }}>
+          <View style={{ width: 38, height: 38, borderRadius: 11, backgroundColor: "rgba(244,241,234,0.08)", alignItems: "center", justifyContent: "center" }}>
+            <Ionicons name="person-outline" size={19} color="rgba(244,241,234,0.55)" />
           </View>
-          <Text style={{ flex: 1, color: "#1A1A1A", fontWeight: "600", fontSize: 15 }}>Modifier le profil</Text>
-          <Ionicons name="chevron-forward" size={16} color="#C0C0C8" />
+          <Text style={{ flex: 1, color: "#F4F1EA", fontWeight: "600", fontSize: 15 }}>Modifier le profil</Text>
+          <Ionicons name="chevron-forward" size={16} color="rgba(244,241,234,0.25)" />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleLogout} style={{ flexDirection: "row", alignItems: "center", gap: 14, paddingHorizontal: 18, paddingVertical: 16 }}>
           <View style={{ width: 38, height: 38, borderRadius: 11, backgroundColor: "rgba(217,53,53,0.08)", alignItems: "center", justifyContent: "center" }}>
@@ -198,13 +198,13 @@ function ArtistProfile() {
     <ScrollView style={{ flex: 1, backgroundColor: BG }} showsVerticalScrollIndicator={false}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={async () => { setRefreshing(true); await load(); setRefreshing(false); }} tintColor={GOLD} />}>
       {/* Hero artiste */}
-      <View style={{ backgroundColor: "#1A1A1A", paddingTop: 64, paddingBottom: 28, paddingHorizontal: 24 }}>
+      <View style={{ backgroundColor: "#17171A", paddingTop: 64, paddingBottom: 28, paddingHorizontal: 24 }}>
         <View style={{ flexDirection: "row", alignItems: "flex-start", gap: 16 }}>
           <Avatar uri={profile?.avatar_url} name={profile?.display_name ?? ""} size={72} />
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#F5F3EE", fontSize: 22, fontWeight: "800" }}>{profile?.display_name}</Text>
-            <Text style={{ color: "rgba(245,243,238,0.5)", fontSize: 14 }}>@{profile?.username}</Text>
-            {profile?.city && <Text style={{ color: "rgba(245,243,238,0.5)", fontSize: 13, marginTop: 2 }}>📍 {profile.city}</Text>}
+            <Text style={{ color: "#F4F1EA", fontSize: 22, fontWeight: "800" }}>{profile?.display_name}</Text>
+            <Text style={{ color: "rgba(244,241,234,0.5)", fontSize: 14 }}>@{profile?.username}</Text>
+            {profile?.city && <Text style={{ color: "rgba(244,241,234,0.5)", fontSize: 13, marginTop: 2 }}>📍 {profile.city}</Text>}
           </View>
           <View style={{ gap: 8 }}>
             <TouchableOpacity onPress={() => router.push("/edit/profile" as any)} style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.1)", alignItems: "center", justifyContent: "center" }}>
@@ -233,8 +233,8 @@ function ArtistProfile() {
             { label: "Demandes", value: pendingCount, gold: true },
           ].map((s) => (
             <View key={s.label} style={{ flex: 1, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 14, padding: 12, alignItems: "center" }}>
-              <Text style={{ color: s.gold ? GOLD : "#F5F3EE", fontSize: 22, fontWeight: "800" }}>{s.value}</Text>
-              <Text style={{ color: "rgba(245,243,238,0.4)", fontSize: 11, marginTop: 2 }}>{s.label}</Text>
+              <Text style={{ color: s.gold ? GOLD : "#F4F1EA", fontSize: 22, fontWeight: "800" }}>{s.value}</Text>
+              <Text style={{ color: "rgba(244,241,234,0.4)", fontSize: 11, marginTop: 2 }}>{s.label}</Text>
             </View>
           ))}
         </View>
@@ -242,13 +242,13 @@ function ArtistProfile() {
 
       {/* Nouvelles demandes — bandeau urgent */}
       {pendingCount > 0 && (
-        <TouchableOpacity onPress={() => router.push("/(tabs)/messages" as any)} style={{ margin: 16, borderRadius: 16, backgroundColor: "rgba(184,144,62,0.1)", borderWidth: 1, borderColor: "rgba(184,144,62,0.25)", padding: 16, flexDirection: "row", alignItems: "center", gap: 12 }}>
+        <TouchableOpacity onPress={() => router.push("/(tabs)/messages" as any)} style={{ margin: 16, borderRadius: 16, backgroundColor: "rgba(201,162,75,0.1)", borderWidth: 1, borderColor: "rgba(201,162,75,0.25)", padding: 16, flexDirection: "row", alignItems: "center", gap: 12 }}>
           <View style={{ width: 42, height: 42, borderRadius: 21, backgroundColor: GOLD, alignItems: "center", justifyContent: "center" }}>
-            <Text style={{ color: "#FFF", fontSize: 18, fontWeight: "800" }}>{pendingCount}</Text>
+            <Text style={{ color: "#0A0A0B", fontSize: 18, fontWeight: "800" }}>{pendingCount}</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#1A1A1A", fontWeight: "800", fontSize: 15 }}>Nouvelle{pendingCount > 1 ? "s" : ""} demande{pendingCount > 1 ? "s" : ""}</Text>
-            <Text style={{ color: "#6B6B7A", fontSize: 13 }}>Client{pendingCount > 1 ? "s" : ""} en attente de ta réponse</Text>
+            <Text style={{ color: "#F4F1EA", fontWeight: "800", fontSize: 15 }}>Nouvelle{pendingCount > 1 ? "s" : ""} demande{pendingCount > 1 ? "s" : ""}</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13 }}>Client{pendingCount > 1 ? "s" : ""} en attente de ta réponse</Text>
           </View>
           <Ionicons name="chevron-forward" size={18} color={GOLD} />
         </TouchableOpacity>
@@ -258,7 +258,7 @@ function ArtistProfile() {
       {recentPosts.length > 0 && (
         <View style={{ marginHorizontal: 16, marginTop: pendingCount > 0 ? 0 : 16 }}>
           <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-            <Text style={{ color: "#1A1A1A", fontSize: 17, fontWeight: "800" }}>Publications récentes</Text>
+            <Text style={{ color: "#F4F1EA", fontSize: 17, fontWeight: "800" }}>Publications récentes</Text>
             <TouchableOpacity onPress={() => router.push(`/profile/${session?.user.id}` as any)}>
               <Text style={{ color: GOLD, fontSize: 13, fontWeight: "600" }}>Voir tout</Text>
             </TouchableOpacity>
@@ -274,34 +274,34 @@ function ArtistProfile() {
       )}
 
       {/* Actions pro */}
-      <View style={{ margin: 16, backgroundColor: "#FFF", borderRadius: 20, overflow: "hidden", borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)" }}>
+      <View style={{ margin: 16, backgroundColor: "#17171A", borderRadius: 20, overflow: "hidden", borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)" }}>
         {[
           { icon: "bar-chart-outline", label: "Statistiques", sub: "Vues, abonnés, projets", route: "/stats", gold: true },
           { icon: "calendar-outline", label: "Configurer mon profil", sub: "Bio, tarifs, disponibilité", route: "/edit/profile" },
           { icon: "notifications-outline", label: "Notifications", sub: "Activité et demandes", route: "/notifications" },
         ].map((item, i) => (
-          <TouchableOpacity key={item.route} onPress={() => router.push(item.route as any)} style={{ flexDirection: "row", alignItems: "center", gap: 14, paddingHorizontal: 18, paddingVertical: 16, borderTopWidth: i === 0 ? 0 : 0.5, borderTopColor: "rgba(0,0,0,0.06)" }}>
-            <View style={{ width: 38, height: 38, borderRadius: 11, backgroundColor: item.gold ? "rgba(184,144,62,0.12)" : "rgba(0,0,0,0.05)", alignItems: "center", justifyContent: "center" }}>
-              <Ionicons name={item.icon as any} size={19} color={item.gold ? GOLD : "#6B6B7A"} />
+          <TouchableOpacity key={item.route} onPress={() => router.push(item.route as any)} style={{ flexDirection: "row", alignItems: "center", gap: 14, paddingHorizontal: 18, paddingVertical: 16, borderTopWidth: i === 0 ? 0 : 0.5, borderTopColor: "rgba(244,241,234,0.08)" }}>
+            <View style={{ width: 38, height: 38, borderRadius: 11, backgroundColor: item.gold ? "rgba(201,162,75,0.12)" : "rgba(244,241,234,0.08)", alignItems: "center", justifyContent: "center" }}>
+              <Ionicons name={item.icon as any} size={19} color={item.gold ? GOLD : "rgba(244,241,234,0.55)"} />
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: "#1A1A1A", fontWeight: "600", fontSize: 15 }}>{item.label}</Text>
-              <Text style={{ color: "#9A9AA5", fontSize: 12 }}>{item.sub}</Text>
+              <Text style={{ color: "#F4F1EA", fontWeight: "600", fontSize: 15 }}>{item.label}</Text>
+              <Text style={{ color: "rgba(244,241,234,0.4)", fontSize: 12 }}>{item.sub}</Text>
             </View>
-            <Ionicons name="chevron-forward" size={16} color="#C0C0C8" />
+            <Ionicons name="chevron-forward" size={16} color="rgba(244,241,234,0.25)" />
           </TouchableOpacity>
         ))}
       </View>
 
       {/* Admin + Déco */}
-      <View style={{ marginHorizontal: 16, backgroundColor: "#FFF", borderRadius: 20, overflow: "hidden", borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)", marginBottom: 100 }}>
+      <View style={{ marginHorizontal: 16, backgroundColor: "#17171A", borderRadius: 20, overflow: "hidden", borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)", marginBottom: 100 }}>
         {isAdmin && (
-          <TouchableOpacity onPress={() => router.push("/admin" as any)} style={{ flexDirection: "row", alignItems: "center", gap: 14, paddingHorizontal: 18, paddingVertical: 16, borderBottomWidth: 0.5, borderBottomColor: "rgba(0,0,0,0.06)" }}>
-            <View style={{ width: 38, height: 38, borderRadius: 11, backgroundColor: "rgba(184,144,62,0.12)", alignItems: "center", justifyContent: "center" }}>
+          <TouchableOpacity onPress={() => router.push("/admin" as any)} style={{ flexDirection: "row", alignItems: "center", gap: 14, paddingHorizontal: 18, paddingVertical: 16, borderBottomWidth: 0.5, borderBottomColor: "rgba(244,241,234,0.08)" }}>
+            <View style={{ width: 38, height: 38, borderRadius: 11, backgroundColor: "rgba(201,162,75,0.12)", alignItems: "center", justifyContent: "center" }}>
               <Ionicons name="shield-checkmark-outline" size={19} color={GOLD} />
             </View>
-            <Text style={{ flex: 1, color: "#1A1A1A", fontWeight: "600", fontSize: 15 }}>Administration</Text>
-            <Ionicons name="chevron-forward" size={16} color="#C0C0C8" />
+            <Text style={{ flex: 1, color: "#F4F1EA", fontWeight: "600", fontSize: 15 }}>Administration</Text>
+            <Ionicons name="chevron-forward" size={16} color="rgba(244,241,234,0.25)" />
           </TouchableOpacity>
         )}
         <TouchableOpacity onPress={handleLogout} style={{ flexDirection: "row", alignItems: "center", gap: 14, paddingHorizontal: 18, paddingVertical: 16 }}>
@@ -322,21 +322,21 @@ function GuestProfile() {
     <View style={{ flex: 1, backgroundColor: BG }}>
       <View style={{ paddingTop: 64, paddingHorizontal: 24, paddingBottom: 24 }}>
         <Text style={{ color: GOLD, fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Bienvenue</Text>
-        <Text style={{ color: "#1A1A1A", fontSize: 26, fontWeight: "800", marginTop: 4 }}>Mon compte</Text>
+        <Text style={{ color: "#F4F1EA", fontSize: 26, fontWeight: "800", marginTop: 4 }}>Mon compte</Text>
       </View>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 32 }}>
-        <View style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: "rgba(184,144,62,0.1)", alignItems: "center", justifyContent: "center", marginBottom: 20, borderWidth: 1.5, borderColor: "rgba(184,144,62,0.2)" }}>
+        <View style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: "rgba(201,162,75,0.1)", alignItems: "center", justifyContent: "center", marginBottom: 20, borderWidth: 1.5, borderColor: "rgba(201,162,75,0.2)" }}>
           <Ionicons name="person-outline" size={36} color={GOLD} />
         </View>
-        <Text style={{ color: "#1A1A1A", fontSize: 22, fontWeight: "800", textAlign: "center", marginBottom: 10 }}>Rejoins INK</Text>
-        <Text style={{ color: "#6B6B7A", fontSize: 15, textAlign: "center", lineHeight: 22, marginBottom: 32 }}>
+        <Text style={{ color: "#F4F1EA", fontSize: 22, fontWeight: "800", textAlign: "center", marginBottom: 10 }}>Rejoins INK</Text>
+        <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 15, textAlign: "center", lineHeight: 22, marginBottom: 32 }}>
           Crée un compte pour sauvegarder tes inspirations, suivre des artistes et lancer tes projets.
         </Text>
         <TouchableOpacity onPress={() => router.push("/(auth)/sign-up" as any)} style={{ backgroundColor: GOLD, borderRadius: 14, paddingVertical: 16, width: "100%", alignItems: "center", marginBottom: 12 }}>
-          <Text style={{ color: "#FFF", fontWeight: "800", fontSize: 16 }}>Créer un compte</Text>
+          <Text style={{ color: "#0A0A0B", fontWeight: "800", fontSize: 16 }}>Créer un compte</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push("/(auth)/sign-in" as any)} style={{ paddingVertical: 14, width: "100%", alignItems: "center" }}>
-          <Text style={{ color: "#6B6B7A", fontSize: 15 }}>Déjà un compte ? <Text style={{ color: GOLD, fontWeight: "700" }}>Se connecter</Text></Text>
+          <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 15 }}>Déjà un compte ? <Text style={{ color: GOLD, fontWeight: "700" }}>Se connecter</Text></Text>
         </TouchableOpacity>
       </View>
     </View>

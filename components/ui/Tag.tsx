@@ -16,7 +16,7 @@ export function Tag({ label, gold }: Props) {
       borderColor: gold ? "rgba(201,162,75,0.5)" : "rgba(244,241,234,0.15)",
     }}>
       <Text style={{
-        color: gold ? "#B8903E" : "#FFFFFF",
+        color: gold ? "#C9A24B" : "#FFFFFF",
         fontSize: 11,
         fontWeight: "600",
         letterSpacing: 0.3,

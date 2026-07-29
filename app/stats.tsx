@@ -45,23 +45,23 @@ export default function StatsScreen() {
   });
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#F5F3EE" }} showsVerticalScrollIndicator={false}>
+    <ScrollView style={{ flex: 1, backgroundColor: "#0A0A0B" }} showsVerticalScrollIndicator={false}>
       <View style={{ paddingTop: 56, paddingHorizontal: 20, paddingBottom: 24 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 16 }}>
           <TouchableOpacity onPress={() => router.back()} hitSlop={12}>
             <Ionicons name="chevron-back" size={26} color="#1A1A1A" />
           </TouchableOpacity>
           <View>
-            <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Espace pro</Text>
-            <Text style={{ color: "#1A1A1A", fontSize: 24, fontWeight: "800" }}>Statistiques</Text>
+            <Text style={{ color: "#C9A24B", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Espace pro</Text>
+            <Text style={{ color: "#F4F1EA", fontSize: 24, fontWeight: "800" }}>Statistiques</Text>
           </View>
         </View>
-        <Text style={{ color: "#6B6B7A", fontSize: 13 }}>Chiffres calculés en temps réel depuis les vraies interactions.</Text>
+        <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13 }}>Chiffres calculés en temps réel depuis les vraies interactions.</Text>
       </View>
 
       {loading ? (
         <View style={{ paddingTop: 60, alignItems: "center" }}>
-          <ActivityIndicator color="#B8903E" />
+          <ActivityIndicator color="#C9A24B" />
         </View>
       ) : (
         <View style={{ padding: 20, gap: 20 }}>
@@ -77,15 +77,15 @@ export default function StatsScreen() {
           {stats?.requests_count > 0 && (
             <View>
               <SectionTitle title="Demandes par statut" />
-              <View style={{ backgroundColor: "#FFFFFF", borderRadius: 14, overflow: "hidden" }}>
+              <View style={{ backgroundColor: "#17171A", borderRadius: 14, overflow: "hidden" }}>
                 {Object.entries(statusCounts).map(([status, count], i) => (
-                  <View key={status} style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: i < Object.keys(statusCounts).length - 1 ? 1 : 0, borderBottomColor: "rgba(0,0,0,0.06)" }}>
+                  <View key={status} style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: i < Object.keys(statusCounts).length - 1 ? 1 : 0, borderBottomColor: "rgba(244,241,234,0.06)" }}>
                     <View style={{ flex: 1 }}>
-                      <Text style={{ color: "#1A1A1A", fontSize: 14 }}>{PROJECT_STATUS_LABELS[status as ProjectStatus] ?? status}</Text>
+                      <Text style={{ color: "#F4F1EA", fontSize: 14 }}>{PROJECT_STATUS_LABELS[status as ProjectStatus] ?? status}</Text>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                      <View style={{ height: 6, width: Math.max(20, ((count as number) / stats.requests_count) * 120), backgroundColor: "#B8903E", borderRadius: 3 }} />
-                      <Text style={{ color: "#B8903E", fontWeight: "700", fontSize: 14, width: 24, textAlign: "right" }}>{count as number}</Text>
+                      <View style={{ height: 6, width: Math.max(20, ((count as number) / stats.requests_count) * 120), backgroundColor: "#C9A24B", borderRadius: 3 }} />
+                      <Text style={{ color: "#C9A24B", fontWeight: "700", fontSize: 14, width: 24, textAlign: "right" }}>{count as number}</Text>
                     </View>
                   </View>
                 ))}
@@ -102,26 +102,26 @@ export default function StatsScreen() {
                   <TouchableOpacity
                     key={post.id}
                     onPress={() => router.push(`/post/${post.id}`)}
-                    style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: "#FFFFFF", borderRadius: 12, padding: 12 }}
+                    style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: "#17171A", borderRadius: 12, padding: 12 }}
                   >
-                    <Text style={{ color: "#6B6B7A", fontWeight: "700", fontSize: 16, width: 20 }}>#{i + 1}</Text>
+                    <Text style={{ color: "rgba(244,241,234,0.55)", fontWeight: "700", fontSize: 16, width: 20 }}>#{i + 1}</Text>
                     <Image source={{ uri: post.thumbnail_url ?? post.media_url }} style={{ width: 52, height: 52, borderRadius: 8 }} contentFit="cover" />
                     <View style={{ flex: 1 }}>
-                      <Text style={{ color: "#1A1A1A", fontSize: 14, fontWeight: "600" }} numberOfLines={1}>
+                      <Text style={{ color: "#F4F1EA", fontSize: 14, fontWeight: "600" }} numberOfLines={1}>
                         {post.caption ?? post.style_tags?.[0] ?? "Sans titre"}
                       </Text>
                       <View style={{ flexDirection: "row", gap: 12, marginTop: 4 }}>
                         <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-                          <Ionicons name="bookmark" size={12} color="#B8903E" />
-                          <Text style={{ color: "#B8903E", fontSize: 12, fontWeight: "600" }}>{post.saves_count}</Text>
+                          <Ionicons name="bookmark" size={12} color="#C9A24B" />
+                          <Text style={{ color: "#C9A24B", fontSize: 12, fontWeight: "600" }}>{post.saves_count}</Text>
                         </View>
                         <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
                           <Ionicons name="heart" size={12} color="#6B6B7A" />
-                          <Text style={{ color: "#6B6B7A", fontSize: 12 }}>{post.likes_count}</Text>
+                          <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12 }}>{post.likes_count}</Text>
                         </View>
                       </View>
                     </View>
-                    <Ionicons name="chevron-forward" size={16} color="rgba(0,0,0,0.18)" />
+                    <Ionicons name="chevron-forward" size={16} color="rgba(244,241,234,0.28)" />
                   </TouchableOpacity>
                 ))}
               </View>
@@ -131,9 +131,9 @@ export default function StatsScreen() {
           {/* État vide */}
           {stats?.posts_count === 0 && (
             <View style={{ alignItems: "center", paddingVertical: 40 }}>
-              <Ionicons name="stats-chart-outline" size={48} color="rgba(0,0,0,0.1)" />
-              <Text style={{ color: "#1A1A1A", fontSize: 16, fontWeight: "700", marginTop: 16, textAlign: "center" }}>Aucune statistique</Text>
-              <Text style={{ color: "#6B6B7A", fontSize: 14, marginTop: 8, textAlign: "center", lineHeight: 20 }}>
+              <Ionicons name="stats-chart-outline" size={48} color="rgba(244,241,234,0.1)" />
+              <Text style={{ color: "#F4F1EA", fontSize: 16, fontWeight: "700", marginTop: 16, textAlign: "center" }}>Aucune statistique</Text>
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, marginTop: 8, textAlign: "center", lineHeight: 20 }}>
                 Les statistiques apparaîtront à mesure que ton profil sera découvert et tes publications sauvegardées.
               </Text>
             </View>
@@ -147,14 +147,14 @@ export default function StatsScreen() {
 
 function StatCard({ icon, label, value, gold }: { icon: any; label: string; value: number; gold?: boolean }) {
   return (
-    <View style={{ width: (W - 52) / 2, backgroundColor: "#FFFFFF", borderRadius: 14, padding: 16, borderWidth: 1, borderColor: gold ? "rgba(184,144,62,0.2)" : "rgba(0,0,0,0.06)" }}>
-      <Ionicons name={icon} size={20} color={gold ? "#B8903E" : "#6B6B7A"} />
-      <Text style={{ color: gold ? "#B8903E" : "#1A1A1A", fontSize: 28, fontWeight: "800", marginTop: 10 }}>{value}</Text>
-      <Text style={{ color: "#6B6B7A", fontSize: 13, marginTop: 2 }}>{label}</Text>
+    <View style={{ width: (W - 52) / 2, backgroundColor: "#17171A", borderRadius: 14, padding: 16, borderWidth: 1, borderColor: gold ? "rgba(184,144,62,0.2)" : "rgba(244,241,234,0.06)" }}>
+      <Ionicons name={icon} size={20} color={gold ? "#C9A24B" : "#6B6B7A"} />
+      <Text style={{ color: gold ? "#C9A24B" : "#1A1A1A", fontSize: 28, fontWeight: "800", marginTop: 10 }}>{value}</Text>
+      <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13, marginTop: 2 }}>{label}</Text>
     </View>
   );
 }
 
 function SectionTitle({ title }: { title: string }) {
-  return <Text style={{ color: "#1A1A1A", fontSize: 16, fontWeight: "700", marginBottom: 10 }}>{title}</Text>;
+  return <Text style={{ color: "#F4F1EA", fontSize: 16, fontWeight: "700", marginBottom: 10 }}>{title}</Text>;
 }

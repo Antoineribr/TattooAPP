@@ -122,7 +122,7 @@ export default function PublishScreen() {
       const payload = { ...await buildPayload(urls), status: "published" };
       const { error } = await supabase.from("posts").insert(payload);
       if (error) throw error;
-      Alert.alert("✓ Publié !", "Ton tatouage est maintenant visible dans le feed.", [
+      Alert.alert("Publié !", "Ton tatouage est maintenant visible dans le feed.", [
         { text: "Voir le feed", onPress: () => { resetForm(); router.replace("/(tabs)"); } },
       ]);
     } catch (e: any) {
@@ -163,12 +163,12 @@ export default function PublishScreen() {
   const canPublish = medias.length > 0 && selectedStyles.length > 0 && city.trim() && certified;
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#F5F3EE" }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
+    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#0A0A0B" }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingBottom: Platform.OS === "ios" ? 200 : 180 }}>
         {/* Header */}
         <View style={{ paddingTop: 56, paddingHorizontal: 20, paddingBottom: 20 }}>
-          <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Publier</Text>
-          <Text style={{ color: "#1A1A1A", fontSize: 24, fontWeight: "800", marginTop: 4 }}>Partage ton travail</Text>
+          <Text style={{ color: "#C9A24B", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Publier</Text>
+          <Text style={{ color: "#F4F1EA", fontSize: 24, fontWeight: "800", marginTop: 4 }}>Partage ton travail</Text>
         </View>
 
         <View style={{ paddingHorizontal: 20 }}>
@@ -176,8 +176,8 @@ export default function PublishScreen() {
           <TouchableOpacity
             onPress={pickMedia}
             style={{
-              borderRadius: 16, backgroundColor: "#FFFFFF", borderWidth: 2,
-              borderColor: medias.length ? "#B8903E" : "rgba(0,0,0,0.1)",
+              borderRadius: 16, backgroundColor: "#17171A", borderWidth: 2,
+              borderColor: medias.length ? "#C9A24B" : "rgba(244,241,234,0.1)",
               borderStyle: medias.length ? "solid" : "dashed",
               marginBottom: 16, overflow: "hidden",
             }}
@@ -195,7 +195,7 @@ export default function PublishScreen() {
                       )}
                       <TouchableOpacity
                         onPress={() => setMedias((prev) => prev.filter((_, j) => j !== i))}
-                        style={{ position: "absolute", top: -6, right: -6, backgroundColor: "#F5F3EE", borderRadius: 10 }}
+                        style={{ position: "absolute", top: -6, right: -6, backgroundColor: "#0A0A0B", borderRadius: 10 }}
                       >
                         <Ionicons name="close-circle" size={20} color="#FF4444" />
                       </TouchableOpacity>
@@ -203,19 +203,19 @@ export default function PublishScreen() {
                   ))}
                   <TouchableOpacity
                     onPress={pickMedia}
-                    style={{ width: 100, height: 100, borderRadius: 10, backgroundColor: "#F5F3EE", borderWidth: 1, borderColor: "rgba(0,0,0,0.1)", borderStyle: "dashed", alignItems: "center", justifyContent: "center" }}
+                    style={{ width: 100, height: 100, borderRadius: 10, backgroundColor: "rgba(244,241,234,0.06)", borderWidth: 1, borderColor: "rgba(244,241,234,0.1)", borderStyle: "dashed", alignItems: "center", justifyContent: "center" }}
                   >
-                    <Ionicons name="add" size={28} color="#6B6B7A" />
+                    <Ionicons name="add" size={28} color="rgba(244,241,234,0.55)" />
                   </TouchableOpacity>
                 </View>
               </ScrollView>
             ) : (
               <View style={{ paddingVertical: 48, alignItems: "center" }}>
-                <View style={{ width: 56, height: 56, borderRadius: 16, backgroundColor: "rgba(0,0,0,0.06)", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
-                  <Ionicons name="add-circle-outline" size={32} color="#B8903E" />
+                <View style={{ width: 56, height: 56, borderRadius: 16, backgroundColor: "rgba(201,162,75,0.1)", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                  <Ionicons name="add-circle-outline" size={32} color="#C9A24B" />
                 </View>
-                <Text style={{ color: "#1A1A1A", fontSize: 16, fontWeight: "700" }}>Photo(s) ou vidéo</Text>
-                <Text style={{ color: "#6B6B7A", fontSize: 13, marginTop: 4 }}>Sélectionne plusieurs angles</Text>
+                <Text style={{ color: "#F4F1EA", fontSize: 16, fontWeight: "700" }}>Photo(s) ou vidéo</Text>
+                <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13, marginTop: 4 }}>Sélectionne plusieurs angles</Text>
               </View>
             )}
           </TouchableOpacity>
@@ -229,16 +229,16 @@ export default function PublishScreen() {
                 onPress={() => setCreationType(opt.value)}
                 style={{
                   flexDirection: "row", alignItems: "center", gap: 12, padding: 14, borderRadius: 12,
-                  backgroundColor: creationType === opt.value ? "rgba(184,144,62,0.1)" : "#FFFFFF",
-                  borderWidth: 1.5, borderColor: creationType === opt.value ? "#B8903E" : "transparent",
+                  backgroundColor: creationType === opt.value ? "rgba(201,162,75,0.1)" : "#17171A",
+                  borderWidth: 1.5, borderColor: creationType === opt.value ? "#C9A24B" : "transparent",
                 }}
               >
-                <Ionicons name={opt.icon as any} size={20} color={creationType === opt.value ? "#B8903E" : "#6B6B7A"} />
+                <Ionicons name={opt.icon as any} size={20} color={creationType === opt.value ? "#C9A24B" : "rgba(244,241,234,0.55)"} />
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: creationType === opt.value ? "#B8903E" : "#1A1A1A", fontWeight: "600", fontSize: 14 }}>{opt.label}</Text>
-                  <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 1 }}>{opt.desc}</Text>
+                  <Text style={{ color: creationType === opt.value ? "#C9A24B" : "#F4F1EA", fontWeight: "600", fontSize: 14 }}>{opt.label}</Text>
+                  <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 1 }}>{opt.desc}</Text>
                 </View>
-                {creationType === opt.value && <Ionicons name="checkmark-circle" size={20} color="#B8903E" />}
+                {creationType === opt.value && <Ionicons name="checkmark-circle" size={20} color="#C9A24B" />}
               </TouchableOpacity>
             ))}
           </View>
@@ -254,11 +254,11 @@ export default function PublishScreen() {
                 )}
                 style={{
                   paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20,
-                  backgroundColor: selectedStyles.includes(s) ? "#B8903E" : "#FFFFFF",
-                  borderWidth: 1, borderColor: selectedStyles.includes(s) ? "#B8903E" : "rgba(0,0,0,0.1)",
+                  backgroundColor: selectedStyles.includes(s) ? "#C9A24B" : "#17171A",
+                  borderWidth: 1, borderColor: selectedStyles.includes(s) ? "#C9A24B" : "rgba(244,241,234,0.1)",
                 }}
               >
-                <Text style={{ color: selectedStyles.includes(s) ? "#F5F3EE" : "#1A1A1A", fontWeight: "600", fontSize: 13 }}>{s}</Text>
+                <Text style={{ color: selectedStyles.includes(s) ? "#0A0A0B" : "#F4F1EA", fontWeight: "600", fontSize: 13 }}>{s}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -269,8 +269,8 @@ export default function PublishScreen() {
             value={city}
             onChangeText={setCity}
             placeholder="Paris, Lyon, Bordeaux…"
-            placeholderTextColor="rgba(0,0,0,0.18)"
-            style={{ backgroundColor: "#FFFFFF", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 13, color: "#1A1A1A", fontSize: 15, borderWidth: 1, borderColor: "rgba(0,0,0,0.08)", marginBottom: 20 }}
+            placeholderTextColor="rgba(244,241,234,0.28)"
+            style={{ backgroundColor: "#17171A", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 13, color: "#F4F1EA", fontSize: 15, borderWidth: 1, borderColor: "rgba(244,241,234,0.1)", marginBottom: 20 }}
           />
 
           {/* Titre (optionnel) */}
@@ -279,8 +279,8 @@ export default function PublishScreen() {
             value={title}
             onChangeText={setTitle}
             placeholder="Ex : Dragon japonais cuisse"
-            placeholderTextColor="rgba(0,0,0,0.18)"
-            style={{ backgroundColor: "#FFFFFF", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 13, color: "#1A1A1A", fontSize: 15, borderWidth: 1, borderColor: "rgba(0,0,0,0.08)", marginBottom: 20 }}
+            placeholderTextColor="rgba(244,241,234,0.28)"
+            style={{ backgroundColor: "#17171A", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 13, color: "#F4F1EA", fontSize: 15, borderWidth: 1, borderColor: "rgba(244,241,234,0.1)", marginBottom: 20 }}
           />
 
           {/* Description */}
@@ -289,9 +289,9 @@ export default function PublishScreen() {
             value={caption}
             onChangeText={setCaption}
             placeholder="Technique, durée, anecdote…"
-            placeholderTextColor="rgba(0,0,0,0.18)"
+            placeholderTextColor="rgba(244,241,234,0.28)"
             multiline
-            style={{ backgroundColor: "#FFFFFF", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 13, color: "#1A1A1A", fontSize: 15, minHeight: 90, borderWidth: 1, borderColor: "rgba(0,0,0,0.08)", marginBottom: 20, textAlignVertical: "top" }}
+            style={{ backgroundColor: "#17171A", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 13, color: "#F4F1EA", fontSize: 15, minHeight: 90, borderWidth: 1, borderColor: "rgba(244,241,234,0.1)", marginBottom: 20, textAlignVertical: "top" }}
           />
 
           {/* Taille (optionnel) */}
@@ -301,9 +301,9 @@ export default function PublishScreen() {
               <TouchableOpacity
                 key={key}
                 onPress={() => setSizeCategory(sizeCategory === key ? "" : key)}
-                style={{ paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: sizeCategory === key ? "#B8903E" : "#FFFFFF", borderWidth: 1, borderColor: sizeCategory === key ? "#B8903E" : "rgba(0,0,0,0.1)" }}
+                style={{ paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: sizeCategory === key ? "#C9A24B" : "#17171A", borderWidth: 1, borderColor: sizeCategory === key ? "#C9A24B" : "rgba(244,241,234,0.1)" }}
               >
-                <Text style={{ color: sizeCategory === key ? "#F5F3EE" : "#1A1A1A", fontSize: 13, fontWeight: "600" }}>{label}</Text>
+                <Text style={{ color: sizeCategory === key ? "#0A0A0B" : "#F4F1EA", fontSize: 13, fontWeight: "600" }}>{label}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -314,9 +314,9 @@ export default function PublishScreen() {
             value={duration}
             onChangeText={setDuration}
             placeholder="Ex : 120"
-            placeholderTextColor="rgba(0,0,0,0.18)"
+            placeholderTextColor="rgba(244,241,234,0.28)"
             keyboardType="number-pad"
-            style={{ backgroundColor: "#FFFFFF", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 13, color: "#1A1A1A", fontSize: 15, borderWidth: 1, borderColor: "rgba(0,0,0,0.08)", marginBottom: 20 }}
+            style={{ backgroundColor: "#17171A", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 13, color: "#F4F1EA", fontSize: 15, borderWidth: 1, borderColor: "rgba(244,241,234,0.1)", marginBottom: 20 }}
           />
 
           {/* Prix (optionnel) */}
@@ -326,19 +326,19 @@ export default function PublishScreen() {
               <TouchableOpacity
                 key={val}
                 onPress={() => setPriceType(val)}
-                style={{ flex: 1, paddingVertical: 10, borderRadius: 12, alignItems: "center", backgroundColor: priceType === val ? "#B8903E" : "#FFFFFF", borderWidth: 1, borderColor: priceType === val ? "#B8903E" : "rgba(0,0,0,0.1)" }}
+                style={{ flex: 1, paddingVertical: 10, borderRadius: 12, alignItems: "center", backgroundColor: priceType === val ? "#C9A24B" : "#17171A", borderWidth: 1, borderColor: priceType === val ? "#C9A24B" : "rgba(244,241,234,0.1)" }}
               >
-                <Text style={{ color: priceType === val ? "#F5F3EE" : "#1A1A1A", fontWeight: "600", fontSize: 12 }}>{lbl}</Text>
+                <Text style={{ color: priceType === val ? "#0A0A0B" : "#F4F1EA", fontWeight: "600", fontSize: 12 }}>{lbl}</Text>
               </TouchableOpacity>
             ))}
           </View>
           {priceType !== "on_quote" && (
             <View style={{ flexDirection: "row", gap: 10, marginBottom: 20 }}>
-              <TextInput value={priceMin} onChangeText={setPriceMin} placeholder={priceType === "fixed" ? "Prix (€)" : "Min (€)"} placeholderTextColor="rgba(0,0,0,0.18)" keyboardType="number-pad"
-                style={{ flex: 1, backgroundColor: "#FFFFFF", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: "#1A1A1A", fontSize: 15, borderWidth: 1, borderColor: "rgba(0,0,0,0.08)" }} />
+              <TextInput value={priceMin} onChangeText={setPriceMin} placeholder={priceType === "fixed" ? "Prix (€)" : "Min (€)"} placeholderTextColor="rgba(244,241,234,0.28)" keyboardType="number-pad"
+                style={{ flex: 1, backgroundColor: "#17171A", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: "#F4F1EA", fontSize: 15, borderWidth: 1, borderColor: "rgba(244,241,234,0.1)" }} />
               {priceType === "range" && (
-                <TextInput value={priceMax} onChangeText={setPriceMax} placeholder="Max (€)" placeholderTextColor="rgba(0,0,0,0.18)" keyboardType="number-pad"
-                  style={{ flex: 1, backgroundColor: "#FFFFFF", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: "#1A1A1A", fontSize: 15, borderWidth: 1, borderColor: "rgba(0,0,0,0.08)" }} />
+                <TextInput value={priceMax} onChangeText={setPriceMax} placeholder="Max (€)" placeholderTextColor="rgba(244,241,234,0.28)" keyboardType="number-pad"
+                  style={{ flex: 1, backgroundColor: "#17171A", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, color: "#F4F1EA", fontSize: 15, borderWidth: 1, borderColor: "rgba(244,241,234,0.1)" }} />
               )}
             </View>
           )}
@@ -348,20 +348,20 @@ export default function PublishScreen() {
             onPress={() => setCertified((v) => !v)}
             style={{
               flexDirection: "row", alignItems: "flex-start", gap: 12,
-              backgroundColor: certified ? "rgba(184,144,62,0.08)" : "#FFFFFF",
+              backgroundColor: certified ? "rgba(201,162,75,0.1)" : "#17171A",
               borderRadius: 14, padding: 16, marginBottom: 24,
-              borderWidth: 1.5, borderColor: certified ? "#B8903E" : "rgba(0,0,0,0.1)",
+              borderWidth: 1.5, borderColor: certified ? "#C9A24B" : "rgba(244,241,234,0.1)",
             }}
           >
             <View style={{
               width: 22, height: 22, borderRadius: 6, marginTop: 1,
-              backgroundColor: certified ? "#B8903E" : "transparent",
-              borderWidth: 2, borderColor: certified ? "#B8903E" : "rgba(0,0,0,0.2)",
+              backgroundColor: certified ? "#C9A24B" : "transparent",
+              borderWidth: 2, borderColor: certified ? "#C9A24B" : "rgba(244,241,234,0.2)",
               alignItems: "center", justifyContent: "center", flexShrink: 0,
             }}>
-              {certified && <Ionicons name="checkmark" size={13} color="#FFF" />}
+              {certified && <Ionicons name="checkmark" size={13} color="#0A0A0B" />}
             </View>
-            <Text style={{ flex: 1, color: certified ? "#B8903E" : "#1A1A1A", fontSize: 13, lineHeight: 20, fontWeight: "500" }}>
+            <Text style={{ flex: 1, color: certified ? "#C9A24B" : "#F4F1EA", fontSize: 13, lineHeight: 20, fontWeight: "500" }}>
               Je certifie être l'auteur de ce tatouage et avoir l'autorisation de publier ce contenu.
             </Text>
           </TouchableOpacity>
@@ -371,7 +371,7 @@ export default function PublishScreen() {
       {/* Boutons bas */}
       <View style={{
         position: "absolute", bottom: Platform.OS === "ios" ? 78 : 58, left: 0, right: 0,
-        backgroundColor: "#F5F3EE", borderTopWidth: 1, borderTopColor: "#FFFFFF",
+        backgroundColor: "#0A0A0B", borderTopWidth: 1, borderTopColor: "rgba(244,241,234,0.08)",
         padding: 16, flexDirection: "row", gap: 10,
       }}>
         {/* Brouillon */}
@@ -380,12 +380,12 @@ export default function PublishScreen() {
           disabled={savingDraft || publishing}
           style={{
             flex: 1, borderRadius: 14, paddingVertical: 15, alignItems: "center",
-            backgroundColor: "#FFFFFF", borderWidth: 1.5, borderColor: "rgba(0,0,0,0.1)",
+            backgroundColor: "#17171A", borderWidth: 1.5, borderColor: "rgba(244,241,234,0.1)",
           }}
         >
           {savingDraft
-            ? <ActivityIndicator color="#6B6B7A" />
-            : <Text style={{ color: "#6B6B7A", fontWeight: "700", fontSize: 14 }}>Brouillon</Text>
+            ? <ActivityIndicator color="rgba(244,241,234,0.55)" />
+            : <Text style={{ color: "rgba(244,241,234,0.55)", fontWeight: "700", fontSize: 14 }}>Brouillon</Text>
           }
         </TouchableOpacity>
 
@@ -394,13 +394,13 @@ export default function PublishScreen() {
           onPress={handlePublish}
           disabled={publishing || savingDraft || !canPublish}
           style={{
-            flex: 2, backgroundColor: canPublish ? "#B8903E" : "rgba(0,0,0,0.06)",
+            flex: 2, backgroundColor: canPublish ? "#C9A24B" : "rgba(244,241,234,0.06)",
             borderRadius: 14, paddingVertical: 15, alignItems: "center",
           }}
         >
           {publishing
-            ? <ActivityIndicator color="#F5F3EE" />
-            : <Text style={{ color: canPublish ? "#F5F3EE" : "rgba(0,0,0,0.2)", fontWeight: "800", fontSize: 16 }}>Publier</Text>
+            ? <ActivityIndicator color="#0A0A0B" />
+            : <Text style={{ color: canPublish ? "#0A0A0B" : "rgba(244,241,234,0.18)", fontWeight: "800", fontSize: 16 }}>Publier</Text>
           }
         </TouchableOpacity>
       </View>
@@ -409,5 +409,5 @@ export default function PublishScreen() {
 }
 
 function SectionTitle({ label }: { label: string }) {
-  return <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 14, marginBottom: 10 }}>{label}</Text>;
+  return <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 14, marginBottom: 10 }}>{label}</Text>;
 }

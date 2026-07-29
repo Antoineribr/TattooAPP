@@ -48,16 +48,16 @@ export default function StylesOnboarding() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B" }}>
       {/* Header */}
       <View style={{ paddingTop: 70, paddingHorizontal: 24, paddingBottom: 24 }}>
-        <Text style={{ color: "#B8903E", fontSize: 13, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>
+        <Text style={{ color: "#C9A24B", fontSize: 13, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>
           Ton board
         </Text>
-        <Text style={{ color: "#1A1A1A", fontSize: 28, fontWeight: "800", marginTop: 6, lineHeight: 34 }}>
+        <Text style={{ color: "#F4F1EA", fontSize: 28, fontWeight: "800", marginTop: 6, lineHeight: 34 }}>
           Quels styles{"\n"}t'inspirent ?
         </Text>
-        <Text style={{ color: "#6B6B7A", fontSize: 15, marginTop: 10, lineHeight: 22 }}>
+        <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 15, marginTop: 10, lineHeight: 22 }}>
           On personnalise ton feed selon tes goûts. Tu pourras changer ça plus tard.
         </Text>
       </View>
@@ -76,16 +76,16 @@ export default function StylesOnboarding() {
                   borderRadius: 16,
                   overflow: "hidden",
                   borderWidth: 2,
-                  borderColor: active ? "#B8903E" : "transparent",
+                  borderColor: active ? "#C9A24B" : "transparent",
                 }}
               >
-                <View style={{ padding: 16, backgroundColor: active ? "rgba(184,144,62,0.08)" : "#FFFFFF" }}>
+                <View style={{ padding: 16, backgroundColor: active ? "rgba(184,144,62,0.08)" : "#17171A" }}>
                   <Text style={{ fontSize: 28, marginBottom: 8 }}>{s.emoji}</Text>
-                  <Text style={{ color: active ? "#B8903E" : "#1A1A1A", fontWeight: "700", fontSize: 16 }}>{s.label}</Text>
-                  <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 3 }}>{s.desc}</Text>
+                  <Text style={{ color: active ? "#C9A24B" : "#F4F1EA", fontWeight: "700", fontSize: 16 }}>{s.label}</Text>
+                  <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 3 }}>{s.desc}</Text>
                   {active && (
-                    <View style={{ position: "absolute", top: 10, right: 10, backgroundColor: "#B8903E", borderRadius: 12, width: 22, height: 22, alignItems: "center", justifyContent: "center" }}>
-                      <Text style={{ color: "#F5F3EE", fontSize: 13, fontWeight: "800" }}>✓</Text>
+                    <View style={{ position: "absolute", top: 10, right: 10, backgroundColor: "#C9A24B", borderRadius: 12, width: 22, height: 22, alignItems: "center", justifyContent: "center" }}>
+                      <Text style={{ color: "#0A0A0B", fontSize: 13, fontWeight: "800" }}>✓</Text>
                     </View>
                   )}
                 </View>
@@ -105,13 +105,13 @@ export default function StylesOnboarding() {
           onPress={selected.length ? handleContinue : () => router.replace("/(tabs)")}
           disabled={loading}
           style={{
-            backgroundColor: selected.length ? "#B8903E" : "#FFFFFF",
+            backgroundColor: selected.length ? "#C9A24B" : "#17171A",
             borderRadius: 16, paddingVertical: 17,
             alignItems: "center",
           }}
         >
-          {loading ? <ActivityIndicator color="#F5F3EE" /> : (
-            <Text style={{ color: selected.length ? "#F5F3EE" : "#6B6B7A", fontWeight: "800", fontSize: 17 }}>
+          {loading ? <ActivityIndicator color="#0A0A0B" /> : (
+            <Text style={{ color: selected.length ? "#0A0A0B" : "#6B6B7A", fontWeight: "800", fontSize: 17 }}>
               {selected.length ? `Continuer (${selected.length} style${selected.length > 1 ? "s" : ""})` : "Passer cette étape"}
             </Text>
           )}

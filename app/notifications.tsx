@@ -19,9 +19,9 @@ type Notif = {
 
 const NOTIF_ICON: Record<string, { name: any; color: string }> = {
   like: { name: "heart", color: "#FF4466" },
-  follow: { name: "person-add", color: "#B8903E" },
-  save: { name: "bookmark", color: "#B8903E" },
-  project_request: { name: "color-palette", color: "#B8903E" },
+  follow: { name: "person-add", color: "#C9A24B" },
+  save: { name: "bookmark", color: "#C9A24B" },
+  project_request: { name: "color-palette", color: "#C9A24B" },
   project_status: { name: "refresh-circle", color: "#4488FF" },
   message: { name: "chatbubble", color: "#44CC88" },
 };
@@ -81,34 +81,34 @@ export default function NotificationsScreen() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B" }}>
       <View style={{ paddingTop: 56, paddingHorizontal: 20, paddingBottom: 16, flexDirection: "row", alignItems: "center", gap: 12 }}>
         <TouchableOpacity onPress={() => router.back()} hitSlop={12}>
           <Ionicons name="chevron-back" size={26} color="#1A1A1A" />
         </TouchableOpacity>
-        <Text style={{ color: "#1A1A1A", fontSize: 22, fontWeight: "800" }}>Notifications</Text>
+        <Text style={{ color: "#F4F1EA", fontSize: 22, fontWeight: "800" }}>Notifications</Text>
       </View>
 
       {loading ? (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <ActivityIndicator color="#B8903E" />
+          <ActivityIndicator color="#C9A24B" />
         </View>
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#B8903E" />}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#C9A24B" />}
         >
           {notifs.length === 0 && (
             <View style={{ alignItems: "center", paddingTop: 80 }}>
-              <Ionicons name="notifications-outline" size={52} color="rgba(0,0,0,0.1)" />
-              <Text style={{ color: "#1A1A1A", fontSize: 17, fontWeight: "700", marginTop: 16 }}>Aucune notification</Text>
-              <Text style={{ color: "#6B6B7A", fontSize: 14, marginTop: 6, textAlign: "center", paddingHorizontal: 40 }}>
+              <Ionicons name="notifications-outline" size={52} color="rgba(244,241,234,0.1)" />
+              <Text style={{ color: "#F4F1EA", fontSize: 17, fontWeight: "700", marginTop: 16 }}>Aucune notification</Text>
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, marginTop: 6, textAlign: "center", paddingHorizontal: 40 }}>
                 Les likes, abonnements et messages apparaîtront ici.
               </Text>
             </View>
           )}
           {notifs.map((n) => {
-            const ico = NOTIF_ICON[n.type] ?? { name: "notifications", color: "#6B6B7A" };
+            const ico = NOTIF_ICON[n.type] ?? { name: "notifications", color: "rgba(244,241,234,0.55)" };
             return (
               <TouchableOpacity
                 key={n.id}
@@ -116,27 +116,27 @@ export default function NotificationsScreen() {
                 style={{
                   flexDirection: "row", alignItems: "center", gap: 14,
                   paddingHorizontal: 20, paddingVertical: 14,
-                  borderBottomWidth: 1, borderBottomColor: "#EDE9E1",
+                  borderBottomWidth: 1, borderBottomColor: "rgba(244,241,234,0.08)",
                   backgroundColor: n.is_read ? "transparent" : "rgba(201,162,75,0.05)",
                 }}
               >
                 {/* Avatar + icône */}
                 <View style={{ position: "relative" }}>
                   <Avatar uri={(n.actor as any)?.avatar_url} name={(n.actor as any)?.display_name ?? "?"} size={46} />
-                  <View style={{ position: "absolute", bottom: -2, right: -2, width: 20, height: 20, borderRadius: 10, backgroundColor: ico.color, alignItems: "center", justifyContent: "center", borderWidth: 2, borderColor: "#F5F3EE" }}>
+                  <View style={{ position: "absolute", bottom: -2, right: -2, width: 20, height: 20, borderRadius: 10, backgroundColor: ico.color, alignItems: "center", justifyContent: "center", borderWidth: 2, borderColor: "#0A0A0B" }}>
                     <Ionicons name={ico.name} size={10} color="#fff" />
                   </View>
                 </View>
                 {/* Texte */}
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: "#1A1A1A", fontSize: 14, lineHeight: 20 }}>
+                  <Text style={{ color: "#F4F1EA", fontSize: 14, lineHeight: 20 }}>
                     <Text style={{ fontWeight: "700" }}>{(n.actor as any)?.display_name ?? "Quelqu'un"}</Text>
                     {" "}{NOTIF_TEXT[n.type] ?? "a fait une action"}
                   </Text>
-                  <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 2 }}>{timeAgo(n.created_at)}</Text>
+                  <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 2 }}>{timeAgo(n.created_at)}</Text>
                 </View>
                 {!n.is_read && (
-                  <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: "#B8903E" }} />
+                  <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: "#C9A24B" }} />
                 )}
               </TouchableOpacity>
             );

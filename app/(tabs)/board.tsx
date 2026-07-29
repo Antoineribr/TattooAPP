@@ -122,7 +122,7 @@ export default function BoardScreen() {
 
       {loading ? (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <ActivityIndicator color="#B8903E" />
+          <ActivityIndicator color="#C9A24B" />
         </View>
       ) : (
         <FlatList

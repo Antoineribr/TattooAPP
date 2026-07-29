@@ -240,7 +240,7 @@ export default function FeedScreen() {
   }
 
   return (
-    <View style={{ width: W, height: H, alignSelf: "center", backgroundColor: "#F5F3EE" }}>
+    <View style={{ width: W, height: H, alignSelf: "center", backgroundColor: "#0A0A0B" }}>
       {feedList}
       {actionModals}
     </View>

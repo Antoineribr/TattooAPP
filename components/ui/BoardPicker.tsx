@@ -77,15 +77,15 @@ export function BoardPicker({ visible, postId, onClose, onSaved }: Props) {
       <Pressable style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.5)" }} onPress={onClose} />
       <View style={{ backgroundColor: "#EDE9E1", borderTopLeftRadius: 24, borderTopRightRadius: 24 }}>
         {/* Handle */}
-        <View style={{ width: 36, height: 4, borderRadius: 2, backgroundColor: "rgba(0,0,0,0.1)", alignSelf: "center", marginTop: 12 }} />
+        <View style={{ width: 36, height: 4, borderRadius: 2, backgroundColor: "rgba(244,241,234,0.1)", alignSelf: "center", marginTop: 12 }} />
 
         <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
-          <Text style={{ color: "#1A1A1A", fontSize: 18, fontWeight: "800" }}>Enregistrer dans…</Text>
+          <Text style={{ color: "#F4F1EA", fontSize: 18, fontWeight: "800" }}>Enregistrer dans…</Text>
         </View>
 
         {loading ? (
           <View style={{ paddingVertical: 32, alignItems: "center" }}>
-            <ActivityIndicator color="#B8903E" />
+            <ActivityIndicator color="#C9A24B" />
           </View>
         ) : (
           <FlatList
@@ -96,27 +96,27 @@ export function BoardPicker({ visible, postId, onClose, onSaved }: Props) {
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => toggle(item)}
-                style={{ flexDirection: "row", alignItems: "center", paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: "rgba(0,0,0,0.06)", gap: 12 }}
+                style={{ flexDirection: "row", alignItems: "center", paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: "rgba(244,241,234,0.06)", gap: 12 }}
               >
                 <View style={{
-                  width: 44, height: 44, borderRadius: 10, backgroundColor: "rgba(0,0,0,0.06)",
+                  width: 44, height: 44, borderRadius: 10, backgroundColor: "rgba(244,241,234,0.06)",
                   alignItems: "center", justifyContent: "center",
                   borderWidth: saved[item.id] ? 2 : 1,
-                  borderColor: saved[item.id] ? "#B8903E" : "rgba(0,0,0,0.1)",
+                  borderColor: saved[item.id] ? "#C9A24B" : "rgba(244,241,234,0.1)",
                 }}>
-                  <Ionicons name={saved[item.id] ? "bookmark" : "bookmark-outline"} size={20} color={saved[item.id] ? "#B8903E" : "#6B6B7A"} />
+                  <Ionicons name={saved[item.id] ? "bookmark" : "bookmark-outline"} size={20} color={saved[item.id] ? "#C9A24B" : "#6B6B7A"} />
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: "#1A1A1A", fontWeight: "600", fontSize: 15 }}>{item.name}</Text>
-                  <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 1 }}>
+                  <Text style={{ color: "#F4F1EA", fontWeight: "600", fontSize: 15 }}>{item.name}</Text>
+                  <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 1 }}>
                     {(item as any).board_items?.[0]?.count ?? 0} inspirations
                   </Text>
                 </View>
-                {saved[item.id] && <Ionicons name="checkmark-circle" size={22} color="#B8903E" />}
+                {saved[item.id] && <Ionicons name="checkmark-circle" size={22} color="#C9A24B" />}
               </TouchableOpacity>
             )}
             ListEmptyComponent={
-              <Text style={{ color: "#6B6B7A", fontSize: 14, paddingVertical: 16 }}>Aucun board — crée-en un !</Text>
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, paddingVertical: 16 }}>Aucun board — crée-en un !</Text>
             }
           />
         )}
@@ -128,24 +128,24 @@ export function BoardPicker({ visible, postId, onClose, onSaved }: Props) {
               value={newName}
               onChangeText={setNewName}
               placeholder="Nouveau board…"
-              placeholderTextColor="rgba(0,0,0,0.18)"
+              placeholderTextColor="rgba(244,241,234,0.28)"
               onSubmitEditing={handleCreate}
               returnKeyType="done"
               style={{
-                flex: 1, backgroundColor: "rgba(0,0,0,0.06)", borderRadius: 12,
-                paddingHorizontal: 14, paddingVertical: 12, color: "#1A1A1A", fontSize: 14,
-                borderWidth: 1, borderColor: "rgba(0,0,0,0.1)",
+                flex: 1, backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 12,
+                paddingHorizontal: 14, paddingVertical: 12, color: "#F4F1EA", fontSize: 14,
+                borderWidth: 1, borderColor: "rgba(244,241,234,0.1)",
               }}
             />
             <TouchableOpacity
               onPress={handleCreate}
               disabled={!newName.trim() || creating}
               style={{
-                backgroundColor: newName.trim() ? "#B8903E" : "rgba(0,0,0,0.06)",
+                backgroundColor: newName.trim() ? "#C9A24B" : "rgba(244,241,234,0.06)",
                 borderRadius: 12, paddingHorizontal: 16, alignItems: "center", justifyContent: "center",
               }}
             >
-              {creating ? <ActivityIndicator size="small" color="#F5F3EE" /> : <Ionicons name="add" size={22} color={newName.trim() ? "#F5F3EE" : "rgba(0,0,0,0.18)"} />}
+              {creating ? <ActivityIndicator size="small" color="#0A0A0B" /> : <Ionicons name="add" size={22} color={newName.trim() ? "#0A0A0B" : "rgba(244,241,234,0.28)"} />}
             </TouchableOpacity>
           </View>
         </View>

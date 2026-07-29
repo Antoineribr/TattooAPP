@@ -12,8 +12,8 @@ import { Avatar } from "@/components/ui/Avatar";
 import { StatusChip } from "@/components/ui/StatusChip";
 import { ProjectStatus } from "@/types/database";
 
-const GOLD = "#B8903E";
-const BG = "#F5F3EE";
+const GOLD = "#C9A24B";
+const BG = "#0A0A0B";
 
 interface ConvRow {
   id: string;
@@ -40,31 +40,29 @@ function fmtTime(ts: string | null) {
 }
 
 // ─── CARD ARTISTE (vue client) ─────────────────────────────────────────────
-// Met l'image du tatouage en avant, status bien visible
 function ProjectCard({ item, onPress }: { item: ConvRow; onPress: () => void }) {
   return (
-    <TouchableOpacity onPress={onPress} style={{ marginHorizontal: 16, marginBottom: 12, borderRadius: 18, overflow: "hidden", backgroundColor: "#FFF", shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.06)" }}>
+    <TouchableOpacity onPress={onPress} style={{ marginHorizontal: 16, marginBottom: 12, borderRadius: 18, overflow: "hidden", backgroundColor: "#17171A", borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)" }}>
       <View style={{ flexDirection: "row" }}>
-        {/* Image tatouage de référence */}
         {item.project_thumb ? (
           <Image source={{ uri: item.project_thumb }} style={{ width: 90, height: 90 }} contentFit="cover" />
         ) : (
-          <View style={{ width: 90, height: 90, backgroundColor: "rgba(184,144,62,0.08)", alignItems: "center", justifyContent: "center" }}>
-            <Ionicons name="color-palette-outline" size={26} color="rgba(184,144,62,0.4)" />
+          <View style={{ width: 90, height: 90, backgroundColor: "rgba(201,162,75,0.1)", alignItems: "center", justifyContent: "center" }}>
+            <Ionicons name="color-palette-outline" size={26} color="rgba(201,162,75,0.4)" />
           </View>
         )}
         <View style={{ flex: 1, padding: 14, justifyContent: "space-between" }}>
           <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
               <Avatar uri={item.other_avatar} name={item.other_name} size={26} />
-              <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 14 }} numberOfLines={1}>{item.other_name}</Text>
+              <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 14 }} numberOfLines={1}>{item.other_name}</Text>
             </View>
             {item.unread && <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: GOLD }} />}
           </View>
           {item.project_status && <StatusChip status={item.project_status} small />}
           <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-            <Text style={{ color: "#6B6B7A", fontSize: 12 }} numberOfLines={1}>{item.last_body ?? "Nouvelle conversation"}</Text>
-            <Text style={{ color: "#9A9AA5", fontSize: 11 }}>{fmtTime(item.last_at)}</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12 }} numberOfLines={1}>{item.last_body ?? "Nouvelle conversation"}</Text>
+            <Text style={{ color: "rgba(244,241,234,0.4)", fontSize: 11 }}>{fmtTime(item.last_at)}</Text>
           </View>
         </View>
       </View>
@@ -75,20 +73,20 @@ function ProjectCard({ item, onPress }: { item: ConvRow; onPress: () => void }) 
 // ─── ROW SIMPLE (vue artiste) ─────────────────────────────────────────────
 function ConvRow({ item, onPress }: { item: ConvRow; onPress: () => void }) {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={{ flexDirection: "row", alignItems: "center", gap: 13, paddingHorizontal: 20, paddingVertical: 14, backgroundColor: item.unread ? "rgba(184,144,62,0.04)" : "transparent", borderBottomWidth: 0.5, borderBottomColor: "rgba(0,0,0,0.06)" }}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={{ flexDirection: "row", alignItems: "center", gap: 13, paddingHorizontal: 20, paddingVertical: 14, backgroundColor: item.unread ? "rgba(201,162,75,0.06)" : "transparent", borderBottomWidth: 0.5, borderBottomColor: "rgba(244,241,234,0.08)" }}>
       <View style={{ position: "relative" }}>
         <Avatar uri={item.other_avatar} name={item.other_name} size={50} />
         {item.unread && <View style={{ position: "absolute", top: 1, right: 1, width: 11, height: 11, borderRadius: 6, backgroundColor: GOLD, borderWidth: 2, borderColor: BG }} />}
       </View>
       <View style={{ flex: 1, minWidth: 0 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 3 }}>
-          <Text style={{ color: "#1A1A1A", fontWeight: item.unread ? "800" : "600", fontSize: 15 }} numberOfLines={1}>{item.other_name}</Text>
+          <Text style={{ color: "#F4F1EA", fontWeight: item.unread ? "800" : "600", fontSize: 15 }} numberOfLines={1}>{item.other_name}</Text>
           {item.project_status && <StatusChip status={item.project_status} small />}
         </View>
-        <Text style={{ color: "#6B6B7A", fontSize: 13 }} numberOfLines={1}>{item.last_body ?? "—"}</Text>
+        <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13 }} numberOfLines={1}>{item.last_body ?? "—"}</Text>
       </View>
       <View style={{ alignItems: "flex-end", gap: 6 }}>
-        <Text style={{ color: "#9A9AA5", fontSize: 11 }}>{fmtTime(item.last_at)}</Text>
+        <Text style={{ color: "rgba(244,241,234,0.4)", fontSize: 11 }}>{fmtTime(item.last_at)}</Text>
         {item.project_thumb && <Image source={{ uri: item.project_thumb }} style={{ width: 34, height: 34, borderRadius: 6 }} contentFit="cover" />}
       </View>
     </TouchableOpacity>
@@ -154,14 +152,14 @@ export default function MessagesScreen() {
     return (
       <View style={{ flex: 1, backgroundColor: BG }}>
         <View style={{ paddingTop: 60, paddingHorizontal: 20, paddingBottom: 24 }}>
-          <Text style={{ color: "#1A1A1A", fontSize: 24, fontWeight: "800" }}>Messages</Text>
+          <Text style={{ color: "#F4F1EA", fontSize: 24, fontWeight: "800" }}>Messages</Text>
         </View>
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 40 }}>
-          <Ionicons name="chatbubbles-outline" size={52} color="rgba(0,0,0,0.1)" />
-          <Text style={{ color: "#1A1A1A", fontSize: 18, fontWeight: "700", marginTop: 16, textAlign: "center" }}>Connecte-toi</Text>
-          <Text style={{ color: "#6B6B7A", fontSize: 14, marginTop: 8, textAlign: "center", lineHeight: 20 }}>Pour contacter des tatoueurs et suivre tes projets.</Text>
+          <Ionicons name="chatbubbles-outline" size={52} color="rgba(244,241,234,0.15)" />
+          <Text style={{ color: "#F4F1EA", fontSize: 18, fontWeight: "700", marginTop: 16, textAlign: "center" }}>Connecte-toi</Text>
+          <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, marginTop: 8, textAlign: "center", lineHeight: 20 }}>Pour contacter des tatoueurs et suivre tes projets.</Text>
           <TouchableOpacity onPress={() => router.push("/(auth)/sign-in")} style={{ marginTop: 20, backgroundColor: GOLD, borderRadius: 12, paddingHorizontal: 24, paddingVertical: 13 }}>
-            <Text style={{ color: "#FFF", fontWeight: "700" }}>Se connecter</Text>
+            <Text style={{ color: "#0A0A0B", fontWeight: "700" }}>Se connecter</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -178,8 +176,8 @@ export default function MessagesScreen() {
       <View style={{ flex: 1, backgroundColor: BG }}>
         <View style={{ paddingTop: 60, paddingHorizontal: 20, paddingBottom: 8 }}>
           <Text style={{ color: GOLD, fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Espace client</Text>
-          <Text style={{ color: "#1A1A1A", fontSize: 26, fontWeight: "800", marginTop: 4 }}>Mes projets</Text>
-          {convs.length > 0 && <Text style={{ color: "#6B6B7A", fontSize: 13, marginTop: 2 }}>{convs.filter(c => c.unread).length > 0 ? `${convs.filter(c => c.unread).length} non lu${convs.filter(c => c.unread).length > 1 ? "s" : ""}` : `${convs.length} conversation${convs.length > 1 ? "s" : ""}`}</Text>}
+          <Text style={{ color: "#F4F1EA", fontSize: 26, fontWeight: "800", marginTop: 4 }}>Mes projets</Text>
+          {convs.length > 0 && <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13, marginTop: 2 }}>{convs.filter(c => c.unread).length > 0 ? `${convs.filter(c => c.unread).length} non lu${convs.filter(c => c.unread).length > 1 ? "s" : ""}` : `${convs.length} conversation${convs.length > 1 ? "s" : ""}`}</Text>}
         </View>
 
         {loading ? (
@@ -188,16 +186,16 @@ export default function MessagesScreen() {
           </View>
         ) : !convs.length ? (
           <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 40 }}>
-            <View style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: "rgba(184,144,62,0.08)", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
-              <Ionicons name="color-palette-outline" size={36} color="rgba(184,144,62,0.4)" />
+            <View style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: "rgba(201,162,75,0.1)", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+              <Ionicons name="color-palette-outline" size={36} color="rgba(201,162,75,0.4)" />
             </View>
-            <Text style={{ color: "#1A1A1A", fontSize: 18, fontWeight: "700", textAlign: "center" }}>Aucun projet en cours</Text>
-            <Text style={{ color: "#6B6B7A", fontSize: 14, marginTop: 8, textAlign: "center", lineHeight: 20 }}>
+            <Text style={{ color: "#F4F1EA", fontSize: 18, fontWeight: "700", textAlign: "center" }}>Aucun projet en cours</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, marginTop: 8, textAlign: "center", lineHeight: 20 }}>
               Trouve un tatoueur qui te correspond et lance ta première demande de projet.
             </Text>
             <TouchableOpacity onPress={() => router.replace("/(tabs)" as any)} style={{ marginTop: 24, backgroundColor: GOLD, borderRadius: 14, paddingHorizontal: 28, paddingVertical: 14, flexDirection: "row", alignItems: "center", gap: 8 }}>
-              <Ionicons name="search-outline" size={16} color="#FFF" />
-              <Text style={{ color: "#FFF", fontWeight: "700", fontSize: 15 }}>Explorer les tatoueurs</Text>
+              <Ionicons name="search-outline" size={16} color="#0A0A0B" />
+              <Text style={{ color: "#0A0A0B", fontWeight: "700", fontSize: 15 }}>Explorer les tatoueurs</Text>
             </TouchableOpacity>
           </View>
         ) : (
@@ -208,19 +206,19 @@ export default function MessagesScreen() {
               <>
                 {pending.length > 0 && (
                   <View style={{ paddingTop: 16 }}>
-                    <Text style={{ color: "#1A1A1A", fontSize: 13, fontWeight: "700", paddingHorizontal: 20, marginBottom: 12, letterSpacing: 0.3 }}>EN COURS · {pending.length}</Text>
+                    <Text style={{ color: "#F4F1EA", fontSize: 13, fontWeight: "700", paddingHorizontal: 20, marginBottom: 12, letterSpacing: 0.3 }}>EN COURS · {pending.length}</Text>
                     {pending.map(item => <ProjectCard key={item.id} item={item} onPress={() => router.push(`/chat/${item.id}` as any)} />)}
                   </View>
                 )}
                 {other.length > 0 && (
                   <View style={{ paddingTop: 8 }}>
-                    <Text style={{ color: "#1A1A1A", fontSize: 13, fontWeight: "700", paddingHorizontal: 20, marginBottom: 12, letterSpacing: 0.3 }}>CONVERSATIONS</Text>
+                    <Text style={{ color: "#F4F1EA", fontSize: 13, fontWeight: "700", paddingHorizontal: 20, marginBottom: 12, letterSpacing: 0.3 }}>CONVERSATIONS</Text>
                     {other.map(item => <ProjectCard key={item.id} item={item} onPress={() => router.push(`/chat/${item.id}` as any)} />)}
                   </View>
                 )}
                 {done.length > 0 && (
                   <View style={{ paddingTop: 8 }}>
-                    <Text style={{ color: "#9A9AA5", fontSize: 13, fontWeight: "700", paddingHorizontal: 20, marginBottom: 12, letterSpacing: 0.3 }}>TERMINÉS · {done.length}</Text>
+                    <Text style={{ color: "rgba(244,241,234,0.4)", fontSize: 13, fontWeight: "700", paddingHorizontal: 20, marginBottom: 12, letterSpacing: 0.3 }}>TERMINÉS · {done.length}</Text>
                     {done.map(item => <ProjectCard key={item.id} item={item} onPress={() => router.push(`/chat/${item.id}` as any)} />)}
                   </View>
                 )}
@@ -247,10 +245,10 @@ export default function MessagesScreen() {
       <View style={{ paddingTop: 60, paddingHorizontal: 20, paddingBottom: 16 }}>
         <Text style={{ color: GOLD, fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Espace pro</Text>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 4 }}>
-          <Text style={{ color: "#1A1A1A", fontSize: 26, fontWeight: "800" }}>Boîte de réception</Text>
+          <Text style={{ color: "#F4F1EA", fontSize: 26, fontWeight: "800" }}>Boîte de réception</Text>
           {unreadCount > 0 && (
             <View style={{ backgroundColor: GOLD, borderRadius: 12, paddingHorizontal: 8, paddingVertical: 3 }}>
-              <Text style={{ color: "#FFF", fontSize: 12, fontWeight: "800" }}>{unreadCount}</Text>
+              <Text style={{ color: "#0A0A0B", fontSize: 12, fontWeight: "800" }}>{unreadCount}</Text>
             </View>
           )}
         </View>
@@ -262,11 +260,11 @@ export default function MessagesScreen() {
         </View>
       ) : !convs.length ? (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 40 }}>
-          <View style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: "rgba(184,144,62,0.08)", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
-            <Ionicons name="mail-outline" size={36} color="rgba(184,144,62,0.35)" />
+          <View style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: "rgba(201,162,75,0.1)", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+            <Ionicons name="mail-outline" size={36} color="rgba(201,162,75,0.35)" />
           </View>
-          <Text style={{ color: "#1A1A1A", fontSize: 18, fontWeight: "700", textAlign: "center" }}>Aucun message reçu</Text>
-          <Text style={{ color: "#6B6B7A", fontSize: 14, marginTop: 8, textAlign: "center", lineHeight: 20 }}>
+          <Text style={{ color: "#F4F1EA", fontSize: 18, fontWeight: "700", textAlign: "center" }}>Aucun message reçu</Text>
+          <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, marginTop: 8, textAlign: "center", lineHeight: 20 }}>
             Tes clients te contacteront ici depuis ton profil ou le feed. Assure-toi que ton profil est complet.
           </Text>
           <TouchableOpacity onPress={() => router.push("/edit/profile" as any)} style={{ marginTop: 24, borderWidth: 1.5, borderColor: GOLD, borderRadius: 14, paddingHorizontal: 24, paddingVertical: 13 }}>
@@ -282,15 +280,15 @@ export default function MessagesScreen() {
             <>
               {/* Nouvelles demandes — bandeau doré */}
               {newRequests.length > 0 && (
-                <View style={{ margin: 16, borderRadius: 18, overflow: "hidden", backgroundColor: "rgba(184,144,62,0.08)", borderWidth: 1, borderColor: "rgba(184,144,62,0.2)" }}>
+                <View style={{ margin: 16, borderRadius: 18, overflow: "hidden", backgroundColor: "rgba(201,162,75,0.1)", borderWidth: 1, borderColor: "rgba(201,162,75,0.2)" }}>
                   <View style={{ flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 16, paddingTop: 14, paddingBottom: 8 }}>
                     <View style={{ backgroundColor: GOLD, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 }}>
-                      <Text style={{ color: "#FFF", fontSize: 11, fontWeight: "800" }}>{newRequests.length} NOUVEAU{newRequests.length > 1 ? "X" : ""}</Text>
+                      <Text style={{ color: "#0A0A0B", fontSize: 11, fontWeight: "800" }}>{newRequests.length} NOUVEAU{newRequests.length > 1 ? "X" : ""}</Text>
                     </View>
-                    <Text style={{ color: "#B8903E", fontWeight: "600", fontSize: 13 }}>Demandes de projet</Text>
+                    <Text style={{ color: GOLD, fontWeight: "600", fontSize: 13 }}>Demandes de projet</Text>
                   </View>
                   {newRequests.map((item, i) => (
-                    <View key={item.id} style={i > 0 ? { borderTopWidth: 0.5, borderTopColor: "rgba(184,144,62,0.15)" } : undefined}>
+                    <View key={item.id} style={i > 0 ? { borderTopWidth: 0.5, borderTopColor: "rgba(201,162,75,0.15)" } : undefined}>
                       <ConvRow item={item} onPress={() => router.push(`/chat/${item.id}` as any)} />
                     </View>
                   ))}
@@ -300,7 +298,7 @@ export default function MessagesScreen() {
               {/* En cours */}
               {active.length > 0 && (
                 <View>
-                  <Text style={{ color: "#1A1A1A", fontSize: 12, fontWeight: "700", letterSpacing: 1, paddingHorizontal: 20, paddingVertical: 10 }}>EN COURS · {active.length}</Text>
+                  <Text style={{ color: "#F4F1EA", fontSize: 12, fontWeight: "700", letterSpacing: 1, paddingHorizontal: 20, paddingVertical: 10 }}>EN COURS · {active.length}</Text>
                   {active.map(item => <ConvRow key={item.id} item={item} onPress={() => router.push(`/chat/${item.id}` as any)} />)}
                 </View>
               )}
@@ -308,7 +306,7 @@ export default function MessagesScreen() {
               {/* Archivés */}
               {archived.length > 0 && (
                 <View>
-                  <Text style={{ color: "#9A9AA5", fontSize: 12, fontWeight: "700", letterSpacing: 1, paddingHorizontal: 20, paddingVertical: 10 }}>ARCHIVÉS · {archived.length}</Text>
+                  <Text style={{ color: "rgba(244,241,234,0.4)", fontSize: 12, fontWeight: "700", letterSpacing: 1, paddingHorizontal: 20, paddingVertical: 10 }}>ARCHIVÉS · {archived.length}</Text>
                   {archived.map(item => <ConvRow key={item.id} item={item} onPress={() => router.push(`/chat/${item.id}` as any)} />)}
                 </View>
               )}

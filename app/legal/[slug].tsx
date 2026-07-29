@@ -34,24 +34,24 @@ export default function LegalScreen() {
   const page = PAGES[slug ?? ""] ?? PAGES.cgu;
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B" }}>
       <View style={{ paddingTop: 56, paddingHorizontal: 20, paddingBottom: 14, flexDirection: "row", alignItems: "center", gap: 12 }}>
         <TouchableOpacity onPress={() => (router.canGoBack() ? router.back() : router.replace("/(tabs)"))} hitSlop={12}>
           <Ionicons name="arrow-back" size={24} color="#1A1A1A" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
-          <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>{APP_CONFIG.brandName}</Text>
-          <Text style={{ color: "#1A1A1A", fontSize: 18, fontWeight: "800" }}>{page.title}</Text>
+          <Text style={{ color: "#C9A24B", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>{APP_CONFIG.brandName}</Text>
+          <Text style={{ color: "#F4F1EA", fontSize: 18, fontWeight: "800" }}>{page.title}</Text>
         </View>
       </View>
       <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 60, gap: 20 }}>
         {page.sections.map((s) => (
           <View key={s.h}>
-            <Text style={{ color: "#1A1A1A", fontWeight: "800", fontSize: 15, marginBottom: 6 }}>{s.h}</Text>
-            <Text style={{ color: "#6B6B7A", fontSize: 14, lineHeight: 22 }}>{s.p}</Text>
+            <Text style={{ color: "#F4F1EA", fontWeight: "800", fontSize: 15, marginBottom: 6 }}>{s.h}</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, lineHeight: 22 }}>{s.p}</Text>
           </View>
         ))}
-        <Text style={{ color: "#9A9AA5", fontSize: 12, marginTop: 8 }}>
+        <Text style={{ color: "rgba(244,241,234,0.4)", fontSize: 12, marginTop: 8 }}>
           Dernière mise à jour : juillet 2026 — document de travail, à valider juridiquement avant lancement public.
         </Text>
       </ScrollView>

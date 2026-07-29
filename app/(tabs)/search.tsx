@@ -168,7 +168,7 @@ function ClientMap() {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    border: 2.5px solid #B8903E;
+    border: 2.5px solid #C9A24B;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     object-fit: cover;
     background: #EDE9E1;
@@ -183,9 +183,9 @@ function ClientMap() {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    border: 2.5px solid #B8903E;
+    border: 2.5px solid #C9A24B;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    background: #B8903E;
+    background: #C9A24B;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -290,14 +290,14 @@ function ClientMap() {
       <View style={{ paddingTop: desktop ? 28 : 56, paddingHorizontal: desktop ? 28 : 16, paddingBottom: desktop ? 16 : 10, backgroundColor: pageBg, borderBottomWidth: desktop ? 1 : 0, borderBottomColor: softBorder }}>
         <View style={{ flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 10 }}>
           <View>
-            <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Trouver</Text>
+            <Text style={{ color: "#C9A24B", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Trouver</Text>
             <Text style={{ color: primaryText, fontSize: desktop ? 24 : 20, fontWeight: "800" }}>Tatoueurs près de toi</Text>
           </View>
           {/* Toggle carte / liste */}
           <View style={{ flexDirection: "row", backgroundColor: desktop ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)", borderRadius: 10, padding: 3 }}>
             {([["map", "map-outline"], ["list", "list-outline"]] as const).map(([mode, icon]) => (
               <TouchableOpacity key={mode} onPress={() => setViewMode(mode)}
-                style={{ paddingHorizontal: 12, paddingVertical: 7, borderRadius: 8, backgroundColor: viewMode === mode ? (desktop ? "rgba(201,162,75,0.18)" : "#FFFFFF") : "transparent" }}>
+                style={{ paddingHorizontal: 12, paddingVertical: 7, borderRadius: 8, backgroundColor: viewMode === mode ? (desktop ? "rgba(201,162,75,0.18)" : "#17171A") : "transparent" }}>
                 <Ionicons name={icon as any} size={16} color={viewMode === mode ? "#C9A24B" : secondaryText} />
               </TouchableOpacity>
             ))}
@@ -328,7 +328,7 @@ function ClientMap() {
                       {a.avatar_url ? (
                         <Image source={{ uri: a.avatar_url }} style={{ width: 50, height: 50, borderRadius: 25, borderWidth: 2, borderColor: "#4CAF50" }} contentFit="cover" />
                       ) : (
-                        <View style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: "#B8903E", borderWidth: 2, borderColor: "#4CAF50", alignItems: "center", justifyContent: "center" }}>
+                        <View style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: "#C9A24B", borderWidth: 2, borderColor: "#4CAF50", alignItems: "center", justifyContent: "center" }}>
                           <Text style={{ color: "#FFF", fontWeight: "700", fontSize: 18 }}>{a.display_name.charAt(0)}</Text>
                         </View>
                       )}
@@ -347,13 +347,13 @@ function ClientMap() {
             {/* Filtre disponibilité en tête : le critère n°1 pour un client */}
             <TouchableOpacity onPress={() => setDispoOnly(!dispoOnly)}
               style={{ flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, backgroundColor: dispoOnly ? "#27AE60" : panelBg, borderWidth: 1, borderColor: dispoOnly ? "#27AE60" : softBorder }}>
-              <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: dispoOnly ? "#FFFFFF" : "#27AE60" }} />
-              <Text style={{ color: dispoOnly ? "#FFFFFF" : primaryText, fontSize: 12, fontWeight: "600" }}>Dispo</Text>
+              <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: dispoOnly ? "#17171A" : "#27AE60" }} />
+              <Text style={{ color: dispoOnly ? "#17171A" : primaryText, fontSize: 12, fontWeight: "600" }}>Dispo</Text>
             </TouchableOpacity>
             {STYLES.map((s) => (
               <TouchableOpacity key={s} onPress={() => setStyleFilter(styleFilter === s ? "" : s)}
-                style={{ paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, backgroundColor: styleFilter === s ? "#B8903E" : panelBg, borderWidth: 1, borderColor: styleFilter === s ? "#B8903E" : softBorder }}>
-                <Text style={{ color: styleFilter === s ? "#F5F3EE" : primaryText, fontSize: 12, fontWeight: "600" }}>{s}</Text>
+                style={{ paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, backgroundColor: styleFilter === s ? "#C9A24B" : panelBg, borderWidth: 1, borderColor: styleFilter === s ? "#C9A24B" : softBorder }}>
+                <Text style={{ color: styleFilter === s ? "#0A0A0B" : primaryText, fontSize: 12, fontWeight: "600" }}>{s}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -381,13 +381,13 @@ function ClientMap() {
                 <View style={{ flex: 1 }}>
                   <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
                     <Text style={{ color: primaryText, fontWeight: "800", fontSize: 15 }}>{a.display_name}</Text>
-                    {a.is_verified && <Ionicons name="checkmark-circle" size={13} color="#B8903E" />}
+                    {a.is_verified && <Ionicons name="checkmark-circle" size={13} color="#C9A24B" />}
                   </View>
                   <Text style={{ color: secondaryText, fontSize: 12, marginTop: 2 }}>
                     {a.city}{km > 0 ? ` · ${km} km` : ""}
                   </Text>
                   {a.style_tags?.length > 0 && (
-                    <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "600", marginTop: 3 }} numberOfLines={1}>
+                    <Text style={{ color: "#C9A24B", fontSize: 11, fontWeight: "600", marginTop: 3 }} numberOfLines={1}>
                       {a.style_tags.slice(0, 3).join(" · ")}
                     </Text>
                   )}
@@ -395,7 +395,7 @@ function ClientMap() {
                 <View style={{ alignItems: "flex-end", gap: 4 }}>
                   {rating && (
                     <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }}>
-                      <Ionicons name="star" size={12} color="#B8903E" />
+                      <Ionicons name="star" size={12} color="#C9A24B" />
                       <Text style={{ color: primaryText, fontWeight: "700", fontSize: 13 }}>{rating.avg.toFixed(1)}</Text>
                       <Text style={{ color: "#9A9AA5", fontSize: 11 }}>({rating.count})</Text>
                     </View>
@@ -462,14 +462,14 @@ function ClientMap() {
         {/* Bouton ma position */}
         <TouchableOpacity
           onPress={requestLocation}
-          style={{ position: "absolute", top: 12, right: 12, width: 42, height: 42, borderRadius: 21, backgroundColor: "#FFFFFF", alignItems: "center", justifyContent: "center", shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.12, shadowRadius: 6 }}
+          style={{ position: "absolute", top: 12, right: 12, width: 42, height: 42, borderRadius: 21, backgroundColor: "#17171A", alignItems: "center", justifyContent: "center", shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.12, shadowRadius: 6 }}
         >
-          <Ionicons name="locate" size={20} color="#B8903E" />
+          <Ionicons name="locate" size={20} color="#C9A24B" />
         </TouchableOpacity>
 
         {/* Compteur */}
-        <View style={{ position: "absolute", top: 12, left: 12, backgroundColor: "#FFFFFF", borderRadius: 20, paddingHorizontal: 12, paddingVertical: 6, shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 4 }}>
-          <Text style={{ color: "#1A1A1A", fontSize: 12, fontWeight: "700" }}>{filtered.length} tatoueur{filtered.length > 1 ? "s" : ""}</Text>
+        <View style={{ position: "absolute", top: 12, left: 12, backgroundColor: "#17171A", borderRadius: 20, paddingHorizontal: 12, paddingVertical: 6, shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 4 }}>
+          <Text style={{ color: "#F4F1EA", fontSize: 12, fontWeight: "700" }}>{filtered.length} tatoueur{filtered.length > 1 ? "s" : ""}</Text>
         </View>
 
         {/* Fiche artiste sélectionné */}
@@ -482,11 +482,11 @@ function ClientMap() {
             <View style={{ flex: 1 }}>
               <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
                 <Text style={{ color: primaryText, fontWeight: "800", fontSize: 16 }}>{selected.display_name}</Text>
-                {selected.is_verified && <Ionicons name="checkmark-circle" size={14} color="#B8903E" />}
+                {selected.is_verified && <Ionicons name="checkmark-circle" size={14} color="#C9A24B" />}
               </View>
               <Text style={{ color: secondaryText, fontSize: 12, marginTop: 2 }}>{selected.city}</Text>
               {selected.style_tags?.length > 0 && (
-                <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "600", marginTop: 4 }}>
+                <Text style={{ color: "#C9A24B", fontSize: 11, fontWeight: "600", marginTop: 4 }}>
                   {selected.style_tags.slice(0, 3).join(" · ")}
                 </Text>
               )}
@@ -559,7 +559,7 @@ function ArtistStats() {
         </View>
 
         {/* Accès direct aux demandes : le cœur de l'outil pro */}
-        <TouchableOpacity onPress={() => router.push("/pro/requests" as any)} style={{ backgroundColor: "#1A1A1A", borderRadius: 16, padding: 16, marginBottom: 20, flexDirection: "row", alignItems: "center", gap: 12 }}>
+        <TouchableOpacity onPress={() => router.push("/pro/requests" as any)} style={{ backgroundColor: "#F4F1EA", borderRadius: 16, padding: 16, marginBottom: 20, flexDirection: "row", alignItems: "center", gap: 12 }}>
           <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: "rgba(201,162,75,0.2)", alignItems: "center", justifyContent: "center" }}>
             <Ionicons name="color-palette" size={20} color="#C9A24B" />
           </View>

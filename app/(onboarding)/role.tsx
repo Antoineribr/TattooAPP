@@ -42,11 +42,11 @@ export default function RoleScreen() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B" }}>
       <View style={{ flex: 1, justifyContent: "center", paddingHorizontal: 24 }}>
-        <Text style={{ color: "#B8903E", fontSize: 12, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>Bienvenue sur INK</Text>
-        <Text style={{ color: "#1A1A1A", fontSize: 30, fontWeight: "800", marginBottom: 8 }}>Qui es-tu ?</Text>
-        <Text style={{ color: "#6B6B7A", fontSize: 16, lineHeight: 24, marginBottom: 40 }}>
+        <Text style={{ color: "#C9A24B", fontSize: 12, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>Bienvenue sur INK</Text>
+        <Text style={{ color: "#F4F1EA", fontSize: 30, fontWeight: "800", marginBottom: 8 }}>Qui es-tu ?</Text>
+        <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 16, lineHeight: 24, marginBottom: 40 }}>
           Choisis ton profil pour personnaliser ton expérience.
         </Text>
 
@@ -54,40 +54,40 @@ export default function RoleScreen() {
           onPress={chooseClient}
           disabled={loading}
           style={{
-            backgroundColor: "#FFFFFF",
+            backgroundColor: "#17171A",
             borderRadius: 16, padding: 20, marginBottom: 14,
             borderWidth: 1.5, borderColor: "transparent",
             flexDirection: "row", alignItems: "center", gap: 16,
           }}
         >
-          <View style={{ width: 52, height: 52, borderRadius: 14, backgroundColor: "rgba(0,0,0,0.06)", alignItems: "center", justifyContent: "center" }}>
-            <Ionicons name="search-outline" size={24} color="#B8903E" />
+          <View style={{ width: 52, height: 52, borderRadius: 14, backgroundColor: "rgba(244,241,234,0.06)", alignItems: "center", justifyContent: "center" }}>
+            <Ionicons name="search-outline" size={24} color="#C9A24B" />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#1A1A1A", fontWeight: "800", fontSize: 17 }}>Je cherche un tatoueur</Text>
-            <Text style={{ color: "#6B6B7A", fontSize: 13, marginTop: 3 }}>Inspiration, découverte et projets</Text>
+            <Text style={{ color: "#F4F1EA", fontWeight: "800", fontSize: 17 }}>Je cherche un tatoueur</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13, marginTop: 3 }}>Inspiration, découverte et projets</Text>
           </View>
-          {loading && !showInvite ? <ActivityIndicator color="#B8903E" /> : <Ionicons name="chevron-forward" size={20} color="rgba(0,0,0,0.2)" />}
+          {loading && !showInvite ? <ActivityIndicator color="#C9A24B" /> : <Ionicons name="chevron-forward" size={20} color="rgba(244,241,234,0.18)" />}
         </TouchableOpacity>
 
         {/* Tatoueur : uniquement sur invitation — qualité du réseau garantie */}
         <TouchableOpacity
           onPress={() => setShowInvite((v) => !v)}
           style={{
-            backgroundColor: showInvite ? "rgba(184,144,62,0.12)" : "#FFFFFF",
+            backgroundColor: showInvite ? "rgba(184,144,62,0.12)" : "#17171A",
             borderRadius: 16, padding: 20,
-            borderWidth: 1.5, borderColor: showInvite ? "#B8903E" : "transparent",
+            borderWidth: 1.5, borderColor: showInvite ? "#C9A24B" : "transparent",
             flexDirection: "row", alignItems: "center", gap: 16,
           }}
         >
-          <View style={{ width: 52, height: 52, borderRadius: 14, backgroundColor: "rgba(0,0,0,0.06)", alignItems: "center", justifyContent: "center" }}>
-            <Ionicons name="color-palette-outline" size={24} color="#B8903E" />
+          <View style={{ width: 52, height: 52, borderRadius: 14, backgroundColor: "rgba(244,241,234,0.06)", alignItems: "center", justifyContent: "center" }}>
+            <Ionicons name="color-palette-outline" size={24} color="#C9A24B" />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#1A1A1A", fontWeight: "800", fontSize: 17 }}>Je suis tatoueur·se</Text>
-            <Text style={{ color: "#6B6B7A", fontSize: 13, marginTop: 3 }}>Accès sur invitation avec un code</Text>
+            <Text style={{ color: "#F4F1EA", fontWeight: "800", fontSize: 17 }}>Je suis tatoueur·se</Text>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13, marginTop: 3 }}>Accès sur invitation avec un code</Text>
           </View>
-          <Ionicons name={showInvite ? "chevron-up" : "chevron-forward"} size={20} color="rgba(0,0,0,0.2)" />
+          <Ionicons name={showInvite ? "chevron-up" : "chevron-forward"} size={20} color="rgba(244,241,234,0.18)" />
         </TouchableOpacity>
 
         {showInvite && (
@@ -96,25 +96,25 @@ export default function RoleScreen() {
               value={inviteCode}
               onChangeText={(t) => { setInviteCode(t); setInviteError(""); }}
               placeholder="Code d'invitation (ex : A1B2C3D4)"
-              placeholderTextColor="rgba(0,0,0,0.2)"
+              placeholderTextColor="rgba(244,241,234,0.18)"
               autoCapitalize="characters"
               autoCorrect={false}
-              style={{ backgroundColor: "#FFFFFF", borderRadius: 14, paddingHorizontal: 16, paddingVertical: 14, color: "#1A1A1A", fontSize: 16, letterSpacing: 2, fontWeight: "700", borderWidth: 1, borderColor: inviteError ? "#D93535" : "rgba(0,0,0,0.1)", textAlign: "center" }}
+              style={{ backgroundColor: "#17171A", borderRadius: 14, paddingHorizontal: 16, paddingVertical: 14, color: "#F4F1EA", fontSize: 16, letterSpacing: 2, fontWeight: "700", borderWidth: 1, borderColor: inviteError ? "#D93535" : "rgba(244,241,234,0.1)", textAlign: "center" }}
             />
             {inviteError ? (
               <Text style={{ color: "#D93535", fontSize: 13, marginTop: 8, textAlign: "center" }}>{inviteError}</Text>
             ) : (
-              <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 8, textAlign: "center" }}>
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 8, textAlign: "center" }}>
                 INK est sur invitation pour les artistes : chaque profil est vérifié.
               </Text>
             )}
             <TouchableOpacity
               onPress={submitInviteCode}
               disabled={loading || !inviteCode.trim()}
-              style={{ marginTop: 12, backgroundColor: inviteCode.trim() ? "#B8903E" : "rgba(0,0,0,0.06)", borderRadius: 14, paddingVertical: 15, alignItems: "center" }}
+              style={{ marginTop: 12, backgroundColor: inviteCode.trim() ? "#C9A24B" : "rgba(244,241,234,0.06)", borderRadius: 14, paddingVertical: 15, alignItems: "center" }}
             >
-              {loading ? <ActivityIndicator color="#F5F3EE" /> : (
-                <Text style={{ color: inviteCode.trim() ? "#F5F3EE" : "rgba(0,0,0,0.2)", fontWeight: "800", fontSize: 15 }}>Activer mon compte artiste</Text>
+              {loading ? <ActivityIndicator color="#0A0A0B" /> : (
+                <Text style={{ color: inviteCode.trim() ? "#0A0A0B" : "rgba(244,241,234,0.18)", fontWeight: "800", fontSize: 15 }}>Activer mon compte artiste</Text>
               )}
             </TouchableOpacity>
           </View>

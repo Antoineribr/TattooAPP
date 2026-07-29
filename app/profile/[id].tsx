@@ -321,7 +321,7 @@ export default function ProfileScreen() {
                   onPress={handleProject}
                   style={{ backgroundColor: "#C9A24B", borderRadius: 14, paddingVertical: 14, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 8 }}
                 >
-                  <Ionicons name="color-palette-outline" size={18} color="#F5F3EE" />
+                  <Ionicons name="color-palette-outline" size={18} color="#0A0A0B" />
                   <Text style={{ color: "#0A0A0B", fontWeight: "800", fontSize: 15 }}>Demander un projet</Text>
                 </TouchableOpacity>
               )}

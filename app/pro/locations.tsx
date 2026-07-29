@@ -73,26 +73,26 @@ export default function LocationsScreen() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B" }}>
       {/* Header */}
       <View style={{ paddingTop: 56, paddingHorizontal: 20, paddingBottom: 16, flexDirection: "row", alignItems: "center", gap: 12 }}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color="#1A1A1A" />
+          <Ionicons name="arrow-back" size={24} color="#F4F1EA" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
-          <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Profil pro</Text>
-          <Text style={{ color: "#1A1A1A", fontSize: 20, fontWeight: "800" }}>Mes lieux</Text>
+          <Text style={{ color: "#C9A24B", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase" }}>Profil pro</Text>
+          <Text style={{ color: "#F4F1EA", fontSize: 20, fontWeight: "800" }}>Mes lieux</Text>
         </View>
-        <TouchableOpacity onPress={() => setShowForm((v) => !v)} style={{ backgroundColor: "#B8903E", borderRadius: 10, padding: 8 }}>
-          <Ionicons name={showForm ? "close" : "add"} size={20} color="#F5F3EE" />
+        <TouchableOpacity onPress={() => setShowForm((v) => !v)} style={{ backgroundColor: "#C9A24B", borderRadius: 10, padding: 8 }}>
+          <Ionicons name={showForm ? "close" : "add"} size={20} color="#0A0A0B" />
         </TouchableOpacity>
       </View>
 
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 20, gap: 12 }}>
         {/* Formulaire ajout */}
         {showForm && (
-          <View style={{ backgroundColor: "#FFFFFF", borderRadius: 16, padding: 16, marginBottom: 8, gap: 12 }}>
-            <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 15, marginBottom: 4 }}>Ajouter un lieu</Text>
+          <View style={{ backgroundColor: "#17171A", borderRadius: 16, padding: 16, marginBottom: 8, gap: 12 }}>
+            <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 15, marginBottom: 4 }}>Ajouter un lieu</Text>
 
             {/* Type */}
             <View style={{ gap: 8 }}>
@@ -100,81 +100,81 @@ export default function LocationsScreen() {
                 <TouchableOpacity
                   key={key}
                   onPress={() => setType(key)}
-                  style={{ flexDirection: "row", alignItems: "center", gap: 10, padding: 12, borderRadius: 10, backgroundColor: type === key ? "rgba(184,144,62,0.1)" : "#F5F3EE", borderWidth: 1.5, borderColor: type === key ? "#B8903E" : "transparent" }}
+                  style={{ flexDirection: "row", alignItems: "center", gap: 10, padding: 12, borderRadius: 10, backgroundColor: type === key ? "rgba(184,144,62,0.1)" : "#0A0A0B", borderWidth: 1.5, borderColor: type === key ? "#C9A24B" : "transparent" }}
                 >
-                  <Ionicons name={val.icon as any} size={18} color={type === key ? "#B8903E" : "#6B6B7A"} />
+                  <Ionicons name={val.icon as any} size={18} color={type === key ? "#C9A24B" : "#6B6B7A"} />
                   <View style={{ flex: 1 }}>
-                    <Text style={{ color: type === key ? "#B8903E" : "#1A1A1A", fontWeight: "600", fontSize: 13 }}>{val.label}</Text>
-                    <Text style={{ color: "#6B6B7A", fontSize: 11 }}>{val.desc}</Text>
+                    <Text style={{ color: type === key ? "#C9A24B" : "#F4F1EA", fontWeight: "600", fontSize: 13 }}>{val.label}</Text>
+                    <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 11 }}>{val.desc}</Text>
                   </View>
-                  {type === key && <Ionicons name="checkmark-circle" size={18} color="#B8903E" />}
+                  {type === key && <Ionicons name="checkmark-circle" size={18} color="#C9A24B" />}
                 </TouchableOpacity>
               ))}
             </View>
 
             {type === "studio" && (
-              <TextInput value={studioName} onChangeText={setStudioName} placeholder="Nom du studio (optionnel)" placeholderTextColor="rgba(0,0,0,0.2)"
-                style={{ backgroundColor: "#F5F3EE", borderRadius: 10, paddingHorizontal: 14, paddingVertical: 11, color: "#1A1A1A", fontSize: 14 }} />
+              <TextInput value={studioName} onChangeText={setStudioName} placeholder="Nom du studio (optionnel)" placeholderTextColor="rgba(244,241,234,0.18)"
+                style={{ backgroundColor: "#0A0A0B", borderRadius: 10, paddingHorizontal: 14, paddingVertical: 11, color: "#F4F1EA", fontSize: 14 }} />
             )}
 
-            <TextInput value={city} onChangeText={setCity} placeholder="Ville *" placeholderTextColor="rgba(0,0,0,0.2)"
-              style={{ backgroundColor: "#F5F3EE", borderRadius: 10, paddingHorizontal: 14, paddingVertical: 11, color: "#1A1A1A", fontSize: 14 }} />
+            <TextInput value={city} onChangeText={setCity} placeholder="Ville *" placeholderTextColor="rgba(244,241,234,0.18)"
+              style={{ backgroundColor: "#0A0A0B", borderRadius: 10, paddingHorizontal: 14, paddingVertical: 11, color: "#F4F1EA", fontSize: 14 }} />
 
-            <TextInput value={address} onChangeText={setAddress} placeholder="Adresse (optionnel)" placeholderTextColor="rgba(0,0,0,0.2)"
-              style={{ backgroundColor: "#F5F3EE", borderRadius: 10, paddingHorizontal: 14, paddingVertical: 11, color: "#1A1A1A", fontSize: 14 }} />
+            <TextInput value={address} onChangeText={setAddress} placeholder="Adresse (optionnel)" placeholderTextColor="rgba(244,241,234,0.18)"
+              style={{ backgroundColor: "#0A0A0B", borderRadius: 10, paddingHorizontal: 14, paddingVertical: 11, color: "#F4F1EA", fontSize: 14 }} />
 
             {address.trim() !== "" && (
               <TouchableOpacity onPress={() => setIsAddressPublic((v) => !v)} style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                <View style={{ width: 20, height: 20, borderRadius: 5, backgroundColor: isAddressPublic ? "#B8903E" : "transparent", borderWidth: 2, borderColor: isAddressPublic ? "#B8903E" : "rgba(0,0,0,0.2)", alignItems: "center", justifyContent: "center" }}>
+                <View style={{ width: 20, height: 20, borderRadius: 5, backgroundColor: isAddressPublic ? "#C9A24B" : "transparent", borderWidth: 2, borderColor: isAddressPublic ? "#C9A24B" : "rgba(244,241,234,0.18)", alignItems: "center", justifyContent: "center" }}>
                   {isAddressPublic && <Ionicons name="checkmark" size={12} color="#FFF" />}
                 </View>
-                <Text style={{ color: "#6B6B7A", fontSize: 13 }}>Afficher l'adresse sur mon profil</Text>
+                <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13 }}>Afficher l'adresse sur mon profil</Text>
               </TouchableOpacity>
             )}
 
             {type === "guest_spot" && (
               <View style={{ flexDirection: "row", gap: 10 }}>
-                <TextInput value={guestStart} onChangeText={setGuestStart} placeholder="Début (JJ/MM/AAAA)" placeholderTextColor="rgba(0,0,0,0.2)"
-                  style={{ flex: 1, backgroundColor: "#F5F3EE", borderRadius: 10, paddingHorizontal: 12, paddingVertical: 11, color: "#1A1A1A", fontSize: 13 }} />
-                <TextInput value={guestEnd} onChangeText={setGuestEnd} placeholder="Fin (JJ/MM/AAAA)" placeholderTextColor="rgba(0,0,0,0.2)"
-                  style={{ flex: 1, backgroundColor: "#F5F3EE", borderRadius: 10, paddingHorizontal: 12, paddingVertical: 11, color: "#1A1A1A", fontSize: 13 }} />
+                <TextInput value={guestStart} onChangeText={setGuestStart} placeholder="Début (JJ/MM/AAAA)" placeholderTextColor="rgba(244,241,234,0.18)"
+                  style={{ flex: 1, backgroundColor: "#0A0A0B", borderRadius: 10, paddingHorizontal: 12, paddingVertical: 11, color: "#F4F1EA", fontSize: 13 }} />
+                <TextInput value={guestEnd} onChangeText={setGuestEnd} placeholder="Fin (JJ/MM/AAAA)" placeholderTextColor="rgba(244,241,234,0.18)"
+                  style={{ flex: 1, backgroundColor: "#0A0A0B", borderRadius: 10, paddingHorizontal: 12, paddingVertical: 11, color: "#F4F1EA", fontSize: 13 }} />
               </View>
             )}
 
-            <TouchableOpacity onPress={handleAdd} disabled={adding} style={{ backgroundColor: "#B8903E", borderRadius: 12, paddingVertical: 13, alignItems: "center" }}>
-              {adding ? <ActivityIndicator color="#FFF" /> : <Text style={{ color: "#F5F3EE", fontWeight: "700", fontSize: 14 }}>Ajouter ce lieu</Text>}
+            <TouchableOpacity onPress={handleAdd} disabled={adding} style={{ backgroundColor: "#C9A24B", borderRadius: 12, paddingVertical: 13, alignItems: "center" }}>
+              {adding ? <ActivityIndicator color="#FFF" /> : <Text style={{ color: "#0A0A0B", fontWeight: "700", fontSize: 14 }}>Ajouter ce lieu</Text>}
             </TouchableOpacity>
           </View>
         )}
 
         {/* Liste des lieux */}
         {loading ? (
-          <ActivityIndicator color="#B8903E" style={{ marginTop: 40 }} />
+          <ActivityIndicator color="#C9A24B" style={{ marginTop: 40 }} />
         ) : locations.length === 0 ? (
           <View style={{ alignItems: "center", marginTop: 60 }}>
-            <Ionicons name="location-outline" size={48} color="rgba(0,0,0,0.15)" />
-            <Text style={{ color: "#6B6B7A", fontSize: 15, marginTop: 12, textAlign: "center" }}>Aucun lieu ajouté</Text>
+            <Ionicons name="location-outline" size={48} color="rgba(244,241,234,0.15)" />
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 15, marginTop: 12, textAlign: "center" }}>Aucun lieu ajouté</Text>
             <Text style={{ color: "rgba(0,0,0,0.3)", fontSize: 13, textAlign: "center", marginTop: 4 }}>Tes clients verront où tu travailles</Text>
           </View>
         ) : (
           locations.map((loc) => (
-            <View key={loc.id} style={{ backgroundColor: "#FFFFFF", borderRadius: 14, padding: 14, flexDirection: "row", alignItems: "center", gap: 12 }}>
+            <View key={loc.id} style={{ backgroundColor: "#17171A", borderRadius: 14, padding: 14, flexDirection: "row", alignItems: "center", gap: 12 }}>
               <View style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: "rgba(184,144,62,0.1)", alignItems: "center", justifyContent: "center" }}>
-                <Ionicons name={TYPE_LABELS[loc.type].icon as any} size={20} color="#B8903E" />
+                <Ionicons name={TYPE_LABELS[loc.type].icon as any} size={20} color="#C9A24B" />
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 14 }}>
+                <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 14 }}>
                   {loc.studio_name ?? TYPE_LABELS[loc.type].label}
                 </Text>
-                <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 2 }}>{loc.city}</Text>
+                <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 2 }}>{loc.city}</Text>
                 {loc.type === "guest_spot" && loc.guest_spot_start && (
-                  <Text style={{ color: "#B8903E", fontSize: 11, marginTop: 2 }}>
+                  <Text style={{ color: "#C9A24B", fontSize: 11, marginTop: 2 }}>
                     {loc.guest_spot_start} → {loc.guest_spot_end ?? "?"}
                   </Text>
                 )}
               </View>
               <TouchableOpacity onPress={() => handleDelete(loc.id)}>
-                <Ionicons name="trash-outline" size={20} color="rgba(0,0,0,0.25)" />
+                <Ionicons name="trash-outline" size={20} color="rgba(244,241,234,0.28)" />
               </TouchableOpacity>
             </View>
           ))

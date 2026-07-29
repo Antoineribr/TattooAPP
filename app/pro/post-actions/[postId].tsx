@@ -9,7 +9,7 @@ import { Post, PostStatus } from "@/types/database";
 
 const STATUS_INFO: Record<PostStatus, { label: string; color: string; icon: string }> = {
   published: { label: "Publié", color: "#27AE60", icon: "checkmark-circle" },
-  draft: { label: "Brouillon", color: "#6B6B7A", icon: "document-outline" },
+  draft: { label: "Brouillon", color: "rgba(244,241,234,0.55)", icon: "document-outline" },
   paused: { label: "En pause", color: "#FF8C42", icon: "pause-circle" },
   deleted: { label: "Supprimé", color: "#E74C3C", icon: "trash" },
 };
@@ -57,31 +57,31 @@ export default function PostActionsScreen() {
   }
 
   if (loading) return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE", alignItems: "center", justifyContent: "center" }}>
-      <ActivityIndicator color="#B8903E" />
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B", alignItems: "center", justifyContent: "center" }}>
+      <ActivityIndicator color="#C9A24B" />
     </View>
   );
 
   if (!post) return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE", alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ color: "#6B6B7A" }}>Publication introuvable</Text>
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B", alignItems: "center", justifyContent: "center" }}>
+      <Text style={{ color: "rgba(244,241,234,0.55)" }}>Publication introuvable</Text>
     </View>
   );
 
   const statusInfo = STATUS_INFO[post.status];
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
+    <View style={{ flex: 1, backgroundColor: "#0A0A0B" }}>
       <View style={{ paddingTop: 56, paddingHorizontal: 20, paddingBottom: 16, flexDirection: "row", alignItems: "center", gap: 12 }}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="#1A1A1A" />
         </TouchableOpacity>
-        <Text style={{ flex: 1, color: "#1A1A1A", fontSize: 18, fontWeight: "800" }}>Gérer la publication</Text>
+        <Text style={{ flex: 1, color: "#F4F1EA", fontSize: 18, fontWeight: "800" }}>Gérer la publication</Text>
       </View>
 
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 20, gap: 16 }}>
         {/* Aperçu */}
-        <View style={{ backgroundColor: "#FFFFFF", borderRadius: 16, overflow: "hidden" }}>
+        <View style={{ backgroundColor: "#17171A", borderRadius: 16, overflow: "hidden" }}>
           <Image source={{ uri: post.thumbnail_url ?? post.media_url }} style={{ width: "100%", height: 220 }} contentFit="cover" />
           <View style={{ padding: 14 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 6 }}>
@@ -91,13 +91,13 @@ export default function PostActionsScreen() {
               </View>
               {post.creation_type && (
                 <View style={{ backgroundColor: "rgba(184,144,62,0.1)", paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 }}>
-                  <Text style={{ color: "#B8903E", fontSize: 12, fontWeight: "600" }}>
+                  <Text style={{ color: "#C9A24B", fontSize: 12, fontWeight: "600" }}>
                     {post.creation_type === "flash" ? "Flash" : "Sur mesure"}
                   </Text>
                 </View>
               )}
             </View>
-            {post.caption && <Text style={{ color: "#6B6B7A", fontSize: 13, lineHeight: 19 }} numberOfLines={2}>{post.caption}</Text>}
+            {post.caption && <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13, lineHeight: 19 }} numberOfLines={2}>{post.caption}</Text>}
             <Text style={{ color: "rgba(0,0,0,0.3)", fontSize: 11, marginTop: 6 }}>
               {new Date(post.created_at).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
             </Text>
@@ -105,7 +105,7 @@ export default function PostActionsScreen() {
         </View>
 
         {/* Actions */}
-        <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 14 }}>Actions</Text>
+        <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 14 }}>Actions</Text>
 
         {post.status === "published" && (
           <ActionBtn
@@ -151,16 +151,16 @@ function ActionBtn({ icon, label, desc, color, onPress, loading }: {
     <TouchableOpacity
       onPress={onPress}
       disabled={loading}
-      style={{ flexDirection: "row", alignItems: "center", gap: 14, backgroundColor: "#FFFFFF", borderRadius: 14, padding: 16 }}
+      style={{ flexDirection: "row", alignItems: "center", gap: 14, backgroundColor: "#17171A", borderRadius: 14, padding: 16 }}
     >
       <View style={{ width: 42, height: 42, borderRadius: 12, backgroundColor: `${color}18`, alignItems: "center", justifyContent: "center" }}>
         {loading ? <ActivityIndicator color={color} size="small" /> : <Ionicons name={icon as any} size={22} color={color} />}
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 14 }}>{label}</Text>
-        <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 2 }}>{desc}</Text>
+        <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 14 }}>{label}</Text>
+        <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 2 }}>{desc}</Text>
       </View>
-      <Ionicons name="chevron-forward" size={18} color="rgba(0,0,0,0.2)" />
+      <Ionicons name="chevron-forward" size={18} color="rgba(244,241,234,0.18)" />
     </TouchableOpacity>
   );
 }

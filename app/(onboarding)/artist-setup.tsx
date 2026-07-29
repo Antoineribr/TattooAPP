@@ -118,32 +118,32 @@ export default function ArtistSetupScreen() {
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
-      <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
+      <View style={{ flex: 1, backgroundColor: "#0A0A0B" }}>
         {/* Header */}
         <View style={{ paddingTop: 56, paddingHorizontal: 20, paddingBottom: 16 }}>
           <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
             {step > 0 ? (
               <TouchableOpacity onPress={back} style={{ padding: 8, marginLeft: -8 }}>
-                <Ionicons name="arrow-back" size={22} color="#1A1A1A" />
+                <Ionicons name="arrow-back" size={22} color="#F4F1EA" />
               </TouchableOpacity>
             ) : <View style={{ width: 38 }} />}
-            <Text style={{ color: "#6B6B7A", fontSize: 13, fontWeight: "600" }}>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13, fontWeight: "600" }}>
               {step + 1} / {STEPS.length}
             </Text>
             <TouchableOpacity onPress={() => router.replace("/(tabs)")} style={{ padding: 8, marginRight: -8 }}>
-              <Text style={{ color: "#6B6B7A", fontSize: 14 }}>Passer</Text>
+              <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14 }}>Passer</Text>
             </TouchableOpacity>
           </View>
 
           {/* Barre de progression */}
-          <View style={{ height: 3, backgroundColor: "rgba(0,0,0,0.07)", borderRadius: 2, marginBottom: 20 }}>
-            <View style={{ height: "100%", width: `${progress}%`, backgroundColor: "#B8903E", borderRadius: 2 }} />
+          <View style={{ height: 3, backgroundColor: "rgba(244,241,234,0.08)", borderRadius: 2, marginBottom: 20 }}>
+            <View style={{ height: "100%", width: `${progress}%`, backgroundColor: "#C9A24B", borderRadius: 2 }} />
           </View>
 
-          <Text style={{ color: "#B8903E", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase", marginBottom: 4 }}>
+          <Text style={{ color: "#C9A24B", fontSize: 11, fontWeight: "700", letterSpacing: 2, textTransform: "uppercase", marginBottom: 4 }}>
             {STEPS[step].subtitle}
           </Text>
-          <Text style={{ color: "#1A1A1A", fontSize: 26, fontWeight: "800" }}>{STEPS[step].title}</Text>
+          <Text style={{ color: "#F4F1EA", fontSize: 26, fontWeight: "800" }}>{STEPS[step].title}</Text>
         </View>
 
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
@@ -156,14 +156,14 @@ export default function ArtistSetupScreen() {
         </ScrollView>
 
         {/* Bouton bas */}
-        <View style={{ paddingHorizontal: 20, paddingBottom: Platform.OS === "ios" ? 40 : 24, paddingTop: 12, backgroundColor: "#F5F3EE" }}>
+        <View style={{ paddingHorizontal: 20, paddingBottom: Platform.OS === "ios" ? 40 : 24, paddingTop: 12, backgroundColor: "#0A0A0B" }}>
           <TouchableOpacity
             onPress={next}
             disabled={loading}
-            style={{ backgroundColor: "#B8903E", borderRadius: 16, paddingVertical: 17, alignItems: "center" }}
+            style={{ backgroundColor: "#C9A24B", borderRadius: 16, paddingVertical: 17, alignItems: "center" }}
             activeOpacity={0.85}
           >
-            <Text style={{ color: "#F5F3EE", fontWeight: "800", fontSize: 16 }}>
+            <Text style={{ color: "#0A0A0B", fontWeight: "800", fontSize: 16 }}>
               {loading ? "Enregistrement…" : step < STEPS.length - 1 ? "Continuer" : "Accéder à mon espace"}
             </Text>
           </TouchableOpacity>
@@ -180,18 +180,18 @@ function StepIdentity({ avatarUri, bio, instagram, onPickAvatar, onBio, onInstag
       {/* Avatar */}
       <View style={{ alignItems: "center", marginTop: 8, marginBottom: 8 }}>
         <TouchableOpacity onPress={onPickAvatar} activeOpacity={0.85}>
-          <View style={{ width: 100, height: 100, borderRadius: 50, backgroundColor: "#EDE9E1", overflow: "hidden", borderWidth: 2, borderColor: "#B8903E", alignItems: "center", justifyContent: "center" }}>
+          <View style={{ width: 100, height: 100, borderRadius: 50, backgroundColor: "#EDE9E1", overflow: "hidden", borderWidth: 2, borderColor: "#C9A24B", alignItems: "center", justifyContent: "center" }}>
             {avatarUri ? (
               <Image source={{ uri: avatarUri }} style={{ width: 100, height: 100 }} contentFit="cover" />
             ) : (
-              <Ionicons name="camera-outline" size={32} color="#B8903E" />
+              <Ionicons name="camera-outline" size={32} color="#C9A24B" />
             )}
           </View>
-          <View style={{ position: "absolute", bottom: 2, right: 2, backgroundColor: "#B8903E", borderRadius: 12, padding: 5, borderWidth: 2, borderColor: "#F5F3EE" }}>
-            <Ionicons name="add" size={12} color="#F5F3EE" />
+          <View style={{ position: "absolute", bottom: 2, right: 2, backgroundColor: "#C9A24B", borderRadius: 12, padding: 5, borderWidth: 2, borderColor: "#0A0A0B" }}>
+            <Ionicons name="add" size={12} color="#0A0A0B" />
           </View>
         </TouchableOpacity>
-        <Text style={{ color: "#6B6B7A", fontSize: 13, marginTop: 10 }}>Photo de profil</Text>
+        <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13, marginTop: 10 }}>Photo de profil</Text>
       </View>
 
       <View>
@@ -203,21 +203,21 @@ function StepIdentity({ avatarUri, bio, instagram, onPickAvatar, onBio, onInstag
           placeholderTextColor="#6B6B7A"
           multiline
           numberOfLines={4}
-          style={{ backgroundColor: "#FFFFFF", color: "#1A1A1A", borderRadius: 14, padding: 14, fontSize: 15, minHeight: 100, textAlignVertical: "top", borderWidth: 1, borderColor: "rgba(0,0,0,0.1)" }}
+          style={{ backgroundColor: "#17171A", color: "#F4F1EA", borderRadius: 14, padding: 14, fontSize: 15, minHeight: 100, textAlignVertical: "top", borderWidth: 1, borderColor: "rgba(244,241,234,0.1)" }}
         />
       </View>
 
       <View>
         <FieldLabel text="Instagram" optional />
-        <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#FFFFFF", borderRadius: 14, paddingHorizontal: 14, borderWidth: 1, borderColor: "rgba(0,0,0,0.1)" }}>
-          <Text style={{ color: "#6B6B7A", fontSize: 15 }}>@</Text>
+        <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#17171A", borderRadius: 14, paddingHorizontal: 14, borderWidth: 1, borderColor: "rgba(244,241,234,0.1)" }}>
+          <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 15 }}>@</Text>
           <TextInput
             value={instagram}
             onChangeText={onInstagram}
             placeholder="monpseudo"
             placeholderTextColor="#6B6B7A"
             autoCapitalize="none"
-            style={{ flex: 1, color: "#1A1A1A", padding: 14, fontSize: 15 }}
+            style={{ flex: 1, color: "#F4F1EA", padding: 14, fontSize: 15 }}
           />
         </View>
       </View>
@@ -229,7 +229,7 @@ function StepIdentity({ avatarUri, bio, instagram, onPickAvatar, onBio, onInstag
 function StepCity({ city, onCity }: any) {
   return (
     <View style={{ gap: 20 }}>
-      <Text style={{ color: "#6B6B7A", fontSize: 15, lineHeight: 22 }}>
+      <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 15, lineHeight: 22 }}>
         Ta ville sera utilisée pour placer ton profil sur la carte et permettre aux clients proches de te trouver.
       </Text>
       <View>
@@ -239,12 +239,12 @@ function StepCity({ city, onCity }: any) {
           onChangeText={onCity}
           placeholder="Paris, Lyon, Marseille…"
           placeholderTextColor="#6B6B7A"
-          style={{ backgroundColor: "#FFFFFF", color: "#1A1A1A", borderRadius: 14, padding: 14, fontSize: 15, borderWidth: 1, borderColor: "rgba(0,0,0,0.1)" }}
+          style={{ backgroundColor: "#17171A", color: "#F4F1EA", borderRadius: 14, padding: 14, fontSize: 15, borderWidth: 1, borderColor: "rgba(244,241,234,0.1)" }}
         />
       </View>
       <View style={{ backgroundColor: "rgba(184,144,62,0.08)", borderRadius: 14, padding: 16, flexDirection: "row", gap: 12 }}>
-        <Ionicons name="information-circle-outline" size={20} color="#B8903E" style={{ marginTop: 1 }} />
-        <Text style={{ color: "#1A1A1A", fontSize: 13, lineHeight: 19, flex: 1 }}>
+        <Ionicons name="information-circle-outline" size={20} color="#C9A24B" style={{ marginTop: 1 }} />
+        <Text style={{ color: "#F4F1EA", fontSize: 13, lineHeight: 19, flex: 1 }}>
           Tu peux aussi ajouter des lieux secondaires (guest spots, à domicile) depuis ton profil une fois connecté.
         </Text>
       </View>
@@ -256,7 +256,7 @@ function StepCity({ city, onCity }: any) {
 function StepStyles({ selected, onToggle }: any) {
   return (
     <View style={{ gap: 16 }}>
-      <Text style={{ color: "#6B6B7A", fontSize: 15, lineHeight: 22 }}>
+      <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 15, lineHeight: 22 }}>
         Sélectionne les styles que tu pratiques. Cela aide les clients à te trouver par leurs préférences.
       </Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
@@ -266,17 +266,17 @@ function StepStyles({ selected, onToggle }: any) {
             onPress={() => onToggle(s)}
             style={{
               paddingHorizontal: 16, paddingVertical: 10, borderRadius: 22,
-              backgroundColor: selected.includes(s) ? "#B8903E" : "#FFFFFF",
-              borderWidth: 1.5, borderColor: selected.includes(s) ? "#B8903E" : "rgba(0,0,0,0.1)",
+              backgroundColor: selected.includes(s) ? "#C9A24B" : "#17171A",
+              borderWidth: 1.5, borderColor: selected.includes(s) ? "#C9A24B" : "rgba(244,241,234,0.1)",
             }}
             activeOpacity={0.8}
           >
-            <Text style={{ color: selected.includes(s) ? "#F5F3EE" : "#1A1A1A", fontWeight: "600", fontSize: 13 }}>{s}</Text>
+            <Text style={{ color: selected.includes(s) ? "#0A0A0B" : "#F4F1EA", fontWeight: "600", fontSize: 13 }}>{s}</Text>
           </TouchableOpacity>
         ))}
       </View>
       {selected.length > 0 && (
-        <Text style={{ color: "#B8903E", fontSize: 13, fontWeight: "600", textAlign: "center" }}>
+        <Text style={{ color: "#C9A24B", fontSize: 13, fontWeight: "600", textAlign: "center" }}>
           {selected.length} style{selected.length > 1 ? "s" : ""} sélectionné{selected.length > 1 ? "s" : ""}
         </Text>
       )}
@@ -290,16 +290,16 @@ function StepTarifs({ price, bookingUrl, accepts, onPrice, onBooking, onAccepts 
     <View style={{ gap: 20 }}>
       <View>
         <FieldLabel text="Prix de départ (€)" optional />
-        <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#FFFFFF", borderRadius: 14, paddingHorizontal: 14, borderWidth: 1, borderColor: "rgba(0,0,0,0.1)" }}>
+        <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#17171A", borderRadius: 14, paddingHorizontal: 14, borderWidth: 1, borderColor: "rgba(244,241,234,0.1)" }}>
           <TextInput
             value={price}
             onChangeText={onPrice}
             placeholder="80"
             placeholderTextColor="#6B6B7A"
             keyboardType="numeric"
-            style={{ flex: 1, color: "#1A1A1A", padding: 14, fontSize: 15 }}
+            style={{ flex: 1, color: "#F4F1EA", padding: 14, fontSize: 15 }}
           />
-          <Text style={{ color: "#6B6B7A", fontSize: 15 }}>€</Text>
+          <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 15 }}>€</Text>
         </View>
       </View>
 
@@ -312,21 +312,21 @@ function StepTarifs({ price, bookingUrl, accepts, onPrice, onBooking, onAccepts 
           placeholderTextColor="#6B6B7A"
           autoCapitalize="none"
           keyboardType="url"
-          style={{ backgroundColor: "#FFFFFF", color: "#1A1A1A", borderRadius: 14, padding: 14, fontSize: 15, borderWidth: 1, borderColor: "rgba(0,0,0,0.1)" }}
+          style={{ backgroundColor: "#17171A", color: "#F4F1EA", borderRadius: 14, padding: 14, fontSize: 15, borderWidth: 1, borderColor: "rgba(244,241,234,0.1)" }}
         />
       </View>
 
       <TouchableOpacity
         onPress={() => onAccepts(!accepts)}
-        style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#FFFFFF", borderRadius: 16, padding: 16, gap: 14, borderWidth: 1, borderColor: "rgba(0,0,0,0.07)" }}
+        style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#17171A", borderRadius: 16, padding: 16, gap: 14, borderWidth: 1, borderColor: "rgba(244,241,234,0.08)" }}
         activeOpacity={0.8}
       >
-        <View style={{ width: 26, height: 26, borderRadius: 13, backgroundColor: accepts ? "#B8903E" : "rgba(0,0,0,0.08)", alignItems: "center", justifyContent: "center" }}>
-          {accepts && <Ionicons name="checkmark" size={14} color="#F5F3EE" />}
+        <View style={{ width: 26, height: 26, borderRadius: 13, backgroundColor: accepts ? "#C9A24B" : "rgba(244,241,234,0.08)", alignItems: "center", justifyContent: "center" }}>
+          {accepts && <Ionicons name="checkmark" size={14} color="#0A0A0B" />}
         </View>
         <View style={{ flex: 1 }}>
-          <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 15 }}>Accepter des demandes de projets</Text>
-          <Text style={{ color: "#6B6B7A", fontSize: 13, marginTop: 3, lineHeight: 18 }}>
+          <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 15 }}>Accepter des demandes de projets</Text>
+          <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 13, marginTop: 3, lineHeight: 18 }}>
             Les clients peuvent t'envoyer leurs idées directement depuis l'app
           </Text>
         </View>
@@ -338,8 +338,8 @@ function StepTarifs({ price, bookingUrl, accepts, onPrice, onBooking, onAccepts 
 function FieldLabel({ text, optional }: { text: string; optional?: boolean }) {
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 8 }}>
-      <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 14 }}>{text}</Text>
-      {optional && <Text style={{ color: "#6B6B7A", fontSize: 12 }}>facultatif</Text>}
+      <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 14 }}>{text}</Text>
+      {optional && <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12 }}>facultatif</Text>}
     </View>
   );
 }

@@ -39,20 +39,20 @@ export function ReportSheet({ visible, onClose, reportedUserId, reportedPostId }
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <Pressable style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.55)" }} onPress={onClose} />
-      <View style={{ backgroundColor: "#F5F3EE", borderTopLeftRadius: 28, borderTopRightRadius: 28, paddingBottom: 48 }}>
+      <View style={{ backgroundColor: "#0A0A0B", borderTopLeftRadius: 28, borderTopRightRadius: 28, paddingBottom: 48 }}>
         <View style={{ width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(0,0,0,0.12)", alignSelf: "center", marginTop: 14, marginBottom: 20 }} />
         <View style={{ paddingHorizontal: 20 }}>
-          <Text style={{ color: "#1A1A1A", fontSize: 18, fontWeight: "800", marginBottom: 16 }}>Signaler</Text>
+          <Text style={{ color: "#F4F1EA", fontSize: 18, fontWeight: "800", marginBottom: 16 }}>Signaler</Text>
 
           <View style={{ gap: 8, marginBottom: 16 }}>
             {REPORT_REASONS.map((r) => (
               <TouchableOpacity
                 key={r.value}
                 onPress={() => setSelectedReason(r.value)}
-                style={{ flexDirection: "row", alignItems: "center", gap: 12, padding: 13, borderRadius: 12, backgroundColor: selectedReason === r.value ? "rgba(184,144,62,0.1)" : "#FFFFFF", borderWidth: 1.5, borderColor: selectedReason === r.value ? "#B8903E" : "transparent" }}
+                style={{ flexDirection: "row", alignItems: "center", gap: 12, padding: 13, borderRadius: 12, backgroundColor: selectedReason === r.value ? "rgba(184,144,62,0.1)" : "#FFFFFF", borderWidth: 1.5, borderColor: selectedReason === r.value ? "#C9A24B" : "transparent" }}
               >
-                <Text style={{ flex: 1, color: selectedReason === r.value ? "#B8903E" : "#1A1A1A", fontSize: 14, fontWeight: selectedReason === r.value ? "700" : "500" }}>{r.label}</Text>
-                {selectedReason === r.value && <Ionicons name="checkmark-circle" size={18} color="#B8903E" />}
+                <Text style={{ flex: 1, color: selectedReason === r.value ? "#C9A24B" : "#1A1A1A", fontSize: 14, fontWeight: selectedReason === r.value ? "700" : "500" }}>{r.label}</Text>
+                {selectedReason === r.value && <Ionicons name="checkmark-circle" size={18} color="#C9A24B" />}
               </TouchableOpacity>
             ))}
           </View>
@@ -61,17 +61,17 @@ export function ReportSheet({ visible, onClose, reportedUserId, reportedPostId }
             value={note}
             onChangeText={setNote}
             placeholder="Détails supplémentaires (optionnel)"
-            placeholderTextColor="rgba(0,0,0,0.2)"
+            placeholderTextColor="rgba(244,241,234,0.18)"
             multiline
-            style={{ backgroundColor: "#FFFFFF", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 11, color: "#1A1A1A", fontSize: 14, minHeight: 70, borderWidth: 1, borderColor: "rgba(0,0,0,0.08)", marginBottom: 14, textAlignVertical: "top" }}
+            style={{ backgroundColor: "#17171A", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 11, color: "#F4F1EA", fontSize: 14, minHeight: 70, borderWidth: 1, borderColor: "rgba(244,241,234,0.08)", marginBottom: 14, textAlignVertical: "top" }}
           />
 
           <TouchableOpacity
             onPress={handleSubmit}
             disabled={submitting || !selectedReason}
-            style={{ backgroundColor: selectedReason ? "#E74C3C" : "rgba(0,0,0,0.06)", borderRadius: 14, paddingVertical: 14, alignItems: "center" }}
+            style={{ backgroundColor: selectedReason ? "#E74C3C" : "rgba(244,241,234,0.06)", borderRadius: 14, paddingVertical: 14, alignItems: "center" }}
           >
-            {submitting ? <ActivityIndicator color="#FFF" /> : <Text style={{ color: selectedReason ? "#FFF" : "rgba(0,0,0,0.2)", fontWeight: "800", fontSize: 15 }}>Envoyer le signalement</Text>}
+            {submitting ? <ActivityIndicator color="#FFF" /> : <Text style={{ color: selectedReason ? "#FFF" : "rgba(244,241,234,0.18)", fontWeight: "800", fontSize: 15 }}>Envoyer le signalement</Text>}
           </TouchableOpacity>
         </View>
       </View>

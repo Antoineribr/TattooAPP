@@ -182,9 +182,9 @@ export default function ChatScreen() {
   });
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#F0EDE6" }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
+    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#0D0D0F" }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
       {/* Header blur */}
-      <BlurView intensity={80} tint="light" style={{ paddingTop: 56, paddingBottom: 14, paddingHorizontal: 16, borderBottomWidth: 0.5, borderBottomColor: "rgba(0,0,0,0.08)" }}>
+      <BlurView intensity={80} tint="dark" style={{ paddingTop: 56, paddingBottom: 14, paddingHorizontal: 16, borderBottomWidth: 0.5, borderBottomColor: "rgba(244,241,234,0.08)" }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
           <TouchableOpacity onPress={() => router.back()} hitSlop={12}>
             <Ionicons name="chevron-back" size={26} color="#1A1A1A" />
@@ -193,7 +193,7 @@ export default function ChatScreen() {
             <TouchableOpacity onPress={() => router.push(`/profile/${otherUser.id}`)} style={{ flexDirection: "row", alignItems: "center", gap: 10, flex: 1 }}>
               <Avatar uri={otherUser.avatar_url} name={otherUser.display_name} size={40} />
               <View>
-                <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 16 }}>{otherUser.display_name}</Text>
+                <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 16 }}>{otherUser.display_name}</Text>
                 {projectReq?.status && <StatusChip status={projectReq.status} small />}
               </View>
             </TouchableOpacity>
@@ -202,13 +202,13 @@ export default function ChatScreen() {
             <View style={{ flexDirection: "row", gap: 8 }}>
               {(projectReq as any).quote_status !== "accepted" && (
                 <TouchableOpacity onPress={() => setShowQuoteModal(true)} style={{ backgroundColor: "rgba(184,144,62,0.12)", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, flexDirection: "row", alignItems: "center", gap: 5 }}>
-                  <Ionicons name="receipt-outline" size={15} color="#B8903E" />
-                  <Text style={{ color: "#B8903E", fontWeight: "700", fontSize: 13 }}>Devis</Text>
+                  <Ionicons name="receipt-outline" size={15} color="#C9A24B" />
+                  <Text style={{ color: "#C9A24B", fontWeight: "700", fontSize: 13 }}>Devis</Text>
                 </TouchableOpacity>
               )}
               <TouchableOpacity onPress={handleChangeStatus} style={{ backgroundColor: "rgba(184,144,62,0.1)", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, flexDirection: "row", alignItems: "center", gap: 5 }}>
-                <Ionicons name="swap-horizontal-outline" size={16} color="#B8903E" />
-                <Text style={{ color: "#B8903E", fontWeight: "700", fontSize: 13 }}>Statut</Text>
+                <Ionicons name="swap-horizontal-outline" size={16} color="#C9A24B" />
+                <Text style={{ color: "#C9A24B", fontWeight: "700", fontSize: 13 }}>Statut</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -217,18 +217,18 @@ export default function ChatScreen() {
 
       {/* Résumé projet */}
       {projectReq && (
-        <View style={{ marginHorizontal: 12, marginTop: 10, backgroundColor: "rgba(255,255,255,0.9)", borderRadius: 14, padding: 12, flexDirection: "row", gap: 10, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.07)", shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 4 }}>
+        <View style={{ marginHorizontal: 12, marginTop: 10, backgroundColor: "rgba(244,241,234,0.08)", borderRadius: 14, padding: 12, flexDirection: "row", gap: 10, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.08)", shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 4 }}>
           {(projectReq as any).post?.thumbnail_url && (
             <Image source={{ uri: (projectReq as any).post.thumbnail_url }} style={{ width: 52, height: 52, borderRadius: 10 }} contentFit="cover" />
           )}
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 13 }} numberOfLines={2}>{projectReq.description ?? "Demande de projet"}</Text>
+            <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 13 }} numberOfLines={2}>{projectReq.description ?? "Demande de projet"}</Text>
             <View style={{ flexDirection: "row", gap: 10, marginTop: 4 }}>
               {projectReq.body_placement && (
                 <Text style={{ color: "#6B6B7A", fontSize: 12 }}>📍 {projectReq.body_placement}</Text>
               )}
               {(projectReq.budget_min || projectReq.budget_max) && (
-                <Text style={{ color: "#B8903E", fontSize: 12, fontWeight: "600" }}>
+                <Text style={{ color: "#C9A24B", fontSize: 12, fontWeight: "600" }}>
                   {projectReq.budget_min}€{projectReq.budget_max ? ` – ${projectReq.budget_max}€` : "+"}
                 </Text>
               )}
@@ -241,22 +241,22 @@ export default function ChatScreen() {
 
       {/* Carte devis (visible si devis envoyé) */}
       {projectReq && (projectReq as any).quote_price && (
-        <View style={{ marginHorizontal: 12, marginTop: 8, backgroundColor: "#FFFBF0", borderRadius: 14, padding: 14, borderWidth: 1.5, borderColor: (projectReq as any).quote_status === "accepted" ? "#4CAF50" : (projectReq as any).quote_status === "refused" ? "rgba(0,0,0,0.1)" : "#B8903E" }}>
+        <View style={{ marginHorizontal: 12, marginTop: 8, backgroundColor: "rgba(201,162,75,0.08)", borderRadius: 14, padding: 14, borderWidth: 1.5, borderColor: (projectReq as any).quote_status === "accepted" ? "#4CAF50" : (projectReq as any).quote_status === "refused" ? "rgba(244,241,234,0.1)" : "#C9A24B" }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 10 }}>
-            <Ionicons name="receipt-outline" size={16} color="#B8903E" />
-            <Text style={{ color: "#1A1A1A", fontWeight: "800", fontSize: 14 }}>Devis</Text>
+            <Ionicons name="receipt-outline" size={16} color="#C9A24B" />
+            <Text style={{ color: "#F4F1EA", fontWeight: "800", fontSize: 14 }}>Devis</Text>
             {(projectReq as any).quote_status === "accepted" && <View style={{ marginLeft: "auto", flexDirection: "row", alignItems: "center", gap: 4 }}><Ionicons name="checkmark-circle" size={15} color="#4CAF50" /><Text style={{ color: "#4CAF50", fontSize: 12, fontWeight: "700" }}>Accepté</Text></View>}
             {(projectReq as any).quote_status === "refused" && <View style={{ marginLeft: "auto", flexDirection: "row", alignItems: "center", gap: 4 }}><Ionicons name="close-circle" size={15} color="#E53935" /><Text style={{ color: "#E53935", fontSize: 12, fontWeight: "700" }}>Décliné</Text></View>}
           </View>
           <View style={{ flexDirection: "row", gap: 16, marginBottom: 8 }}>
             <View>
               <Text style={{ color: "#6B6B7A", fontSize: 11, fontWeight: "600", textTransform: "uppercase", letterSpacing: 0.5 }}>Prix</Text>
-              <Text style={{ color: "#B8903E", fontWeight: "800", fontSize: 20, marginTop: 2 }}>{(projectReq as any).quote_price}€</Text>
+              <Text style={{ color: "#C9A24B", fontWeight: "800", fontSize: 20, marginTop: 2 }}>{(projectReq as any).quote_price}€</Text>
             </View>
             {(projectReq as any).quote_date ? (
               <View>
                 <Text style={{ color: "#6B6B7A", fontSize: 11, fontWeight: "600", textTransform: "uppercase", letterSpacing: 0.5 }}>Date estimée</Text>
-                <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 14, marginTop: 2 }}>{(projectReq as any).quote_date}</Text>
+                <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 14, marginTop: 2 }}>{(projectReq as any).quote_date}</Text>
               </View>
             ) : null}
           </View>
@@ -265,11 +265,11 @@ export default function ChatScreen() {
           ) : null}
           {!isArtist && (projectReq as any).quote_status === "pending" && (
             <View style={{ flexDirection: "row", gap: 8, marginTop: 4 }}>
-              <TouchableOpacity onPress={() => handleQuoteResponse(false)} style={{ flex: 1, paddingVertical: 10, borderRadius: 10, backgroundColor: "rgba(0,0,0,0.06)", alignItems: "center" }}>
+              <TouchableOpacity onPress={() => handleQuoteResponse(false)} style={{ flex: 1, paddingVertical: 10, borderRadius: 10, backgroundColor: "rgba(244,241,234,0.06)", alignItems: "center" }}>
                 <Text style={{ color: "#6B6B7A", fontWeight: "700", fontSize: 14 }}>Décliner</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleQuoteResponse(true)} style={{ flex: 2, paddingVertical: 10, borderRadius: 10, backgroundColor: "#B8903E", alignItems: "center" }}>
-                <Text style={{ color: "#FFF", fontWeight: "800", fontSize: 14 }}>Accepter le devis</Text>
+              <TouchableOpacity onPress={() => handleQuoteResponse(true)} style={{ flex: 2, paddingVertical: 10, borderRadius: 10, backgroundColor: "#C9A24B", alignItems: "center" }}>
+                <Text style={{ color: "#F4F1EA", fontWeight: "800", fontSize: 14 }}>Accepter le devis</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -280,32 +280,32 @@ export default function ChatScreen() {
       <Modal visible={showQuoteModal} transparent animationType="slide" onRequestClose={() => setShowQuoteModal(false)}>
         <Pressable style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.5)" }} onPress={() => setShowQuoteModal(false)} />
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined}>
-          <View style={{ backgroundColor: "#F5F3EE", borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, paddingBottom: Platform.OS === "ios" ? 44 : 28 }}>
-            <View style={{ width: 36, height: 4, borderRadius: 2, backgroundColor: "rgba(0,0,0,0.1)", alignSelf: "center", marginBottom: 20 }} />
-            <Text style={{ color: "#1A1A1A", fontSize: 20, fontWeight: "800", marginBottom: 20 }}>Envoyer un devis</Text>
+          <View style={{ backgroundColor: "#17171A", borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, paddingBottom: Platform.OS === "ios" ? 44 : 28 }}>
+            <View style={{ width: 36, height: 4, borderRadius: 2, backgroundColor: "rgba(244,241,234,0.1)", alignSelf: "center", marginBottom: 20 }} />
+            <Text style={{ color: "#F4F1EA", fontSize: 20, fontWeight: "800", marginBottom: 20 }}>Envoyer un devis</Text>
             <View style={{ gap: 14 }}>
               <View>
-                <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 13, marginBottom: 6 }}>Prix (€) *</Text>
-                <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#FFF", borderRadius: 12, paddingHorizontal: 14, borderWidth: 1, borderColor: "rgba(0,0,0,0.1)" }}>
-                  <TextInput value={quotePrice} onChangeText={setQuotePrice} placeholder="250" placeholderTextColor="#6B6B7A" keyboardType="numeric" style={{ flex: 1, color: "#1A1A1A", padding: 13, fontSize: 15 }} />
+                <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 13, marginBottom: 6 }}>Prix (€) *</Text>
+                <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#F4F1EA", borderRadius: 12, paddingHorizontal: 14, borderWidth: 1, borderColor: "rgba(244,241,234,0.1)" }}>
+                  <TextInput value={quotePrice} onChangeText={setQuotePrice} placeholder="250" placeholderTextColor="#6B6B7A" keyboardType="numeric" style={{ flex: 1, color: "#F4F1EA", padding: 13, fontSize: 15 }} />
                   <Text style={{ color: "#6B6B7A" }}>€</Text>
                 </View>
               </View>
               <View>
-                <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 13, marginBottom: 6 }}>Date estimée <Text style={{ color: "#6B6B7A", fontWeight: "400" }}>(facultatif)</Text></Text>
-                <TextInput value={quoteDate} onChangeText={setQuoteDate} placeholder="Ex: mi-juillet, semaine du 14…" placeholderTextColor="#6B6B7A" style={{ backgroundColor: "#FFF", color: "#1A1A1A", borderRadius: 12, padding: 13, fontSize: 15, borderWidth: 1, borderColor: "rgba(0,0,0,0.1)" }} />
+                <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 13, marginBottom: 6 }}>Date estimée <Text style={{ color: "#6B6B7A", fontWeight: "400" }}>(facultatif)</Text></Text>
+                <TextInput value={quoteDate} onChangeText={setQuoteDate} placeholder="Ex: mi-juillet, semaine du 14…" placeholderTextColor="#6B6B7A" style={{ backgroundColor: "#F4F1EA", color: "#F4F1EA", borderRadius: 12, padding: 13, fontSize: 15, borderWidth: 1, borderColor: "rgba(244,241,234,0.1)" }} />
               </View>
               <View>
-                <Text style={{ color: "#1A1A1A", fontWeight: "700", fontSize: 13, marginBottom: 6 }}>Notes <Text style={{ color: "#6B6B7A", fontWeight: "400" }}>(facultatif)</Text></Text>
-                <TextInput value={quoteNotes} onChangeText={setQuoteNotes} placeholder="Durée estimée, conditions, acompte…" placeholderTextColor="#6B6B7A" multiline numberOfLines={3} style={{ backgroundColor: "#FFF", color: "#1A1A1A", borderRadius: 12, padding: 13, fontSize: 15, minHeight: 80, textAlignVertical: "top", borderWidth: 1, borderColor: "rgba(0,0,0,0.1)" }} />
+                <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 13, marginBottom: 6 }}>Notes <Text style={{ color: "#6B6B7A", fontWeight: "400" }}>(facultatif)</Text></Text>
+                <TextInput value={quoteNotes} onChangeText={setQuoteNotes} placeholder="Durée estimée, conditions, acompte…" placeholderTextColor="#6B6B7A" multiline numberOfLines={3} style={{ backgroundColor: "#F4F1EA", color: "#F4F1EA", borderRadius: 12, padding: 13, fontSize: 15, minHeight: 80, textAlignVertical: "top", borderWidth: 1, borderColor: "rgba(244,241,234,0.1)" }} />
               </View>
             </View>
             <TouchableOpacity
               onPress={handleSendQuote}
               disabled={!quotePrice.trim() || sendingQuote}
-              style={{ backgroundColor: quotePrice.trim() ? "#B8903E" : "rgba(0,0,0,0.08)", borderRadius: 14, paddingVertical: 16, alignItems: "center", marginTop: 20 }}
+              style={{ backgroundColor: quotePrice.trim() ? "#C9A24B" : "rgba(244,241,234,0.08)", borderRadius: 14, paddingVertical: 16, alignItems: "center", marginTop: 20 }}
             >
-              {sendingQuote ? <ActivityIndicator color="#FFF" /> : <Text style={{ color: quotePrice.trim() ? "#FFF" : "rgba(0,0,0,0.2)", fontWeight: "800", fontSize: 15 }}>Envoyer le devis</Text>}
+              {sendingQuote ? <ActivityIndicator color="#F4F1EA" /> : <Text style={{ color: quotePrice.trim() ? "#F4F1EA" : "rgba(0,0,0,0.2)", fontWeight: "800", fontSize: 15 }}>Envoyer le devis</Text>}
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
@@ -315,9 +315,9 @@ export default function ChatScreen() {
       {!isArtist && projectReq?.status === "done" && (
         <View style={{ marginHorizontal: 12, marginTop: 8, backgroundColor: "rgba(76,175,80,0.08)", borderRadius: 14, padding: 14, flexDirection: "row", alignItems: "center", gap: 12, borderWidth: 1, borderColor: "rgba(76,175,80,0.25)" }}>
           <Ionicons name="checkmark-circle" size={22} color="#4CAF50" />
-          <Text style={{ flex: 1, color: "#1A1A1A", fontSize: 13, fontWeight: "600" }}>Projet terminé 🎉</Text>
-          <TouchableOpacity onPress={() => setShowReview(true)} style={{ backgroundColor: "#B8903E", borderRadius: 10, paddingHorizontal: 12, paddingVertical: 8 }}>
-            <Text style={{ color: "#FFF", fontWeight: "700", fontSize: 12 }}>Laisser un avis</Text>
+          <Text style={{ flex: 1, color: "#F4F1EA", fontSize: 13, fontWeight: "600" }}>Projet terminé 🎉</Text>
+          <TouchableOpacity onPress={() => setShowReview(true)} style={{ backgroundColor: "#C9A24B", borderRadius: 10, paddingHorizontal: 12, paddingVertical: 8 }}>
+            <Text style={{ color: "#F4F1EA", fontWeight: "700", fontSize: 12 }}>Laisser un avis</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -336,7 +336,7 @@ export default function ChatScreen() {
       {/* Messages */}
       {loading ? (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <ActivityIndicator color="#B8903E" />
+          <ActivityIndicator color="#C9A24B" />
         </View>
       ) : (
         <FlatList
@@ -350,7 +350,7 @@ export default function ChatScreen() {
             if (item.type === "day") {
               return (
                 <View style={{ alignItems: "center", marginVertical: 12 }}>
-                  <View style={{ backgroundColor: "rgba(0,0,0,0.07)", borderRadius: 10, paddingHorizontal: 12, paddingVertical: 4 }}>
+                  <View style={{ backgroundColor: "rgba(244,241,234,0.08)", borderRadius: 10, paddingHorizontal: 12, paddingVertical: 4 }}>
                     <Text style={{ color: "#6B6B7A", fontSize: 11, fontWeight: "600" }}>{item.label}</Text>
                   </View>
                 </View>
@@ -376,14 +376,14 @@ export default function ChatScreen() {
                   <View>
                     <View style={{
                       paddingHorizontal: 14, paddingVertical: 10,
-                      backgroundColor: isOwn ? "#B8903E" : "rgba(255,255,255,0.95)",
+                      backgroundColor: isOwn ? "#C9A24B" : "#17171A",
                       borderRadius: 18,
                       borderBottomRightRadius: isOwn ? (isLast ? 4 : 18) : 18,
                       borderBottomLeftRadius: !isOwn ? (isLast ? 4 : 18) : 18,
                       borderTopRightRadius: isOwn ? (isFirst ? 18 : 6) : 18,
                       borderTopLeftRadius: !isOwn ? (isFirst ? 18 : 6) : 18,
                       shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3,
-                      borderWidth: isOwn ? 0 : 0.5, borderColor: "rgba(0,0,0,0.07)",
+                      borderWidth: isOwn ? 0 : 0.5, borderColor: "rgba(244,241,234,0.08)",
                     }}>
                       <Text style={{ color: isOwn ? "#FFFFFF" : "#1A1A1A", fontSize: 15, lineHeight: 22 }}>{m.body}</Text>
                     </View>
@@ -402,15 +402,15 @@ export default function ChatScreen() {
 
       {/* Quick replies panel (artiste seulement) */}
       {isArtist && showQuickReplies && (
-        <View style={{ backgroundColor: "#F5F3EE", borderTopWidth: 0.5, borderTopColor: "rgba(0,0,0,0.08)", paddingVertical: 10 }}>
+        <View style={{ backgroundColor: "#17171A", borderTopWidth: 0.5, borderTopColor: "rgba(244,241,234,0.08)", paddingVertical: 10 }}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 12, gap: 8, flexDirection: "row" }}>
             {quickReplies.map((r, i) => (
               <TouchableOpacity
                 key={i}
                 onPress={() => { setBody(r); setShowQuickReplies(false); }}
-                style={{ backgroundColor: "#FFFFFF", borderRadius: 20, paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(0,0,0,0.1)", maxWidth: 260 }}
+                style={{ backgroundColor: "#17171A", borderRadius: 20, paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(244,241,234,0.1)", maxWidth: 260 }}
               >
-                <Text style={{ color: "#1A1A1A", fontSize: 13 }} numberOfLines={1}>{r}</Text>
+                <Text style={{ color: "#F4F1EA", fontSize: 13 }} numberOfLines={1}>{r}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -418,31 +418,31 @@ export default function ChatScreen() {
       )}
 
       {/* Input */}
-      <BlurView intensity={70} tint="light" style={{ borderTopWidth: 0.5, borderTopColor: "rgba(0,0,0,0.08)", paddingHorizontal: 12, paddingVertical: 10, paddingBottom: Platform.OS === "ios" ? 30 : 12 }}>
+      <BlurView intensity={70} tint="dark" style={{ borderTopWidth: 0.5, borderTopColor: "rgba(244,241,234,0.08)", paddingHorizontal: 12, paddingVertical: 10, paddingBottom: Platform.OS === "ios" ? 30 : 12 }}>
         <View style={{ flexDirection: "row", alignItems: "flex-end", gap: 8 }}>
           {isArtist && (
             <TouchableOpacity
               onPress={() => setShowQuickReplies((v) => !v)}
-              style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: showQuickReplies ? "#B8903E" : "rgba(0,0,0,0.06)", alignItems: "center", justifyContent: "center" }}
+              style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: showQuickReplies ? "#C9A24B" : "rgba(244,241,234,0.06)", alignItems: "center", justifyContent: "center" }}
             >
-              <Ionicons name="flash" size={16} color={showQuickReplies ? "#FFF" : "#6B6B7A"} />
+              <Ionicons name="flash" size={16} color={showQuickReplies ? "#F4F1EA" : "#6B6B7A"} />
             </TouchableOpacity>
           )}
           <TextInput
             value={body}
             onChangeText={setBody}
             placeholder="Message…"
-            placeholderTextColor="rgba(0,0,0,0.25)"
+            placeholderTextColor="rgba(244,241,234,0.28)"
             multiline
             returnKeyType="send"
             onSubmitEditing={handleSend}
             blurOnSubmit
-            style={{ flex: 1, backgroundColor: "rgba(255,255,255,0.9)", borderRadius: 22, paddingHorizontal: 16, paddingVertical: 10, color: "#1A1A1A", fontSize: 15, maxHeight: 120, borderWidth: 0.5, borderColor: "rgba(0,0,0,0.1)" }}
+            style={{ flex: 1, backgroundColor: "rgba(244,241,234,0.08)", borderRadius: 22, paddingHorizontal: 16, paddingVertical: 10, color: "#F4F1EA", fontSize: 15, maxHeight: 120, borderWidth: 0.5, borderColor: "rgba(244,241,234,0.1)" }}
           />
           <TouchableOpacity
             onPress={handleSend}
             disabled={!body.trim() || sending}
-            style={{ width: 42, height: 42, borderRadius: 21, backgroundColor: body.trim() ? "#B8903E" : "rgba(0,0,0,0.08)", alignItems: "center", justifyContent: "center" }}
+            style={{ width: 42, height: 42, borderRadius: 21, backgroundColor: body.trim() ? "#C9A24B" : "rgba(244,241,234,0.08)", alignItems: "center", justifyContent: "center" }}
           >
             {sending ? <ActivityIndicator size="small" color="#fff" /> : <Ionicons name="arrow-up" size={20} color={body.trim() ? "#FFFFFF" : "rgba(0,0,0,0.2)"} />}
           </TouchableOpacity>
@@ -480,15 +480,15 @@ function ProjectTimeline({ status }: { status: ProjectStatus }) {
             <View style={{ alignItems: "center", width: 44 }}>
               <View style={{
                 width: 10, height: 10, borderRadius: 5,
-                backgroundColor: reached ? "#B8903E" : "rgba(0,0,0,0.12)",
+                backgroundColor: reached ? "#C9A24B" : "rgba(0,0,0,0.12)",
                 borderWidth: i === currentIdx ? 2.5 : 0, borderColor: "rgba(184,144,62,0.3)",
               }} />
-              <Text style={{ color: reached ? "#B8903E" : "#9A9AA5", fontSize: 9, fontWeight: reached ? "700" : "500", marginTop: 3 }}>
+              <Text style={{ color: reached ? "#C9A24B" : "#9A9AA5", fontSize: 9, fontWeight: reached ? "700" : "500", marginTop: 3 }}>
                 {step.label}
               </Text>
             </View>
             {i < TIMELINE_STEPS.length - 1 && (
-              <View style={{ flex: 1, height: 2, borderRadius: 1, backgroundColor: i < currentIdx ? "#B8903E" : "rgba(0,0,0,0.08)", marginHorizontal: -14, marginBottom: 12 }} />
+              <View style={{ flex: 1, height: 2, borderRadius: 1, backgroundColor: i < currentIdx ? "#C9A24B" : "rgba(244,241,234,0.08)", marginHorizontal: -14, marginBottom: 12 }} />
             )}
           </View>
         );

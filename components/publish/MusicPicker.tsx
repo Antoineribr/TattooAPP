@@ -93,10 +93,10 @@ export function MusicPicker({ selected, onSelect }: Props) {
       {selected?.url ? (
         <View style={{
           flexDirection: "row", alignItems: "center", gap: 10,
-          backgroundColor: "#FFFFFF", borderRadius: 12, padding: 12, marginBottom: 20,
+          backgroundColor: "#17171A", borderRadius: 12, padding: 12, marginBottom: 20,
         }}>
-          <Ionicons name="musical-notes" size={20} color="#B8903E" />
-          <Text style={{ flex: 1, color: "#1A1A1A", fontSize: 13 }} numberOfLines={1}>{selected.name}</Text>
+          <Ionicons name="musical-notes" size={20} color="#C9A24B" />
+          <Text style={{ flex: 1, color: "#F4F1EA", fontSize: 13 }} numberOfLines={1}>{selected.name}</Text>
           <TouchableOpacity onPress={() => onSelect({ name: "", url: null })}>
             <Ionicons name="close-circle" size={20} color="#6B6B7A" />
           </TouchableOpacity>
@@ -106,21 +106,21 @@ export function MusicPicker({ selected, onSelect }: Props) {
           onPress={() => setOpen(true)}
           style={{
             flexDirection: "row", alignItems: "center", gap: 10,
-            backgroundColor: "#FFFFFF", borderRadius: 12, padding: 14, marginBottom: 20,
-            borderWidth: 1, borderColor: "rgba(0,0,0,0.1)",
+            backgroundColor: "#17171A", borderRadius: 12, padding: 14, marginBottom: 20,
+            borderWidth: 1, borderColor: "rgba(244,241,234,0.1)",
           }}
         >
           <Ionicons name="musical-notes-outline" size={20} color="#6B6B7A" />
-          <Text style={{ color: "#6B6B7A", fontSize: 14 }}>Ajouter une musique</Text>
+          <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14 }}>Ajouter une musique</Text>
           <View style={{ flex: 1 }} />
           <Ionicons name="chevron-forward" size={16} color="#6B6B7A" />
         </TouchableOpacity>
       )}
 
       <Modal visible={open} animationType="slide" presentationStyle="pageSheet" onRequestClose={() => { stopRef.current?.(); setOpen(false); }}>
-        <View style={{ flex: 1, backgroundColor: "#F5F3EE" }}>
-          <View style={{ flexDirection: "row", alignItems: "center", padding: 20, paddingTop: 24, borderBottomWidth: 1, borderBottomColor: "#FFFFFF" }}>
-            <Text style={{ flex: 1, color: "#1A1A1A", fontSize: 18, fontWeight: "700" }}>Choisir une musique</Text>
+        <View style={{ flex: 1, backgroundColor: "#0A0A0B" }}>
+          <View style={{ flexDirection: "row", alignItems: "center", padding: 20, paddingTop: 24, borderBottomWidth: 1, borderBottomColor: "#17171A" }}>
+            <Text style={{ flex: 1, color: "#F4F1EA", fontSize: 18, fontWeight: "700" }}>Choisir une musique</Text>
             <TouchableOpacity onPress={() => { stopRef.current?.(); setOpen(false); }}>
               <Ionicons name="close" size={24} color="#6B6B7A" />
             </TouchableOpacity>
@@ -135,48 +135,48 @@ export function MusicPicker({ selected, onSelect }: Props) {
                 placeholder="Artiste, titre…"
                 placeholderTextColor="#6B6B7A"
                 style={{
-                  flex: 1, backgroundColor: "#FFFFFF", borderRadius: 12,
-                  paddingHorizontal: 14, paddingVertical: 11, color: "#1A1A1A", fontSize: 15,
+                  flex: 1, backgroundColor: "#17171A", borderRadius: 12,
+                  paddingHorizontal: 14, paddingVertical: 11, color: "#F4F1EA", fontSize: 15,
                 }}
                 returnKeyType="search"
               />
               <TouchableOpacity
                 onPress={searchMusic}
-                style={{ backgroundColor: "#B8903E", borderRadius: 12, paddingHorizontal: 16, justifyContent: "center" }}
+                style={{ backgroundColor: "#C9A24B", borderRadius: 12, paddingHorizontal: 16, justifyContent: "center" }}
               >
-                <Ionicons name="search" size={18} color="#F5F3EE" />
+                <Ionicons name="search" size={18} color="#0A0A0B" />
               </TouchableOpacity>
             </View>
-            <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 8 }}>
+            <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 8 }}>
               Aperçu 30s via Apple Music · ▶ pour écouter
             </Text>
           </View>
 
-          {loading && <ActivityIndicator color="#B8903E" style={{ marginTop: 40 }} />}
+          {loading && <ActivityIndicator color="#C9A24B" style={{ marginTop: 40 }} />}
 
           <FlatList
             data={results}
             keyExtractor={(t) => t.trackId.toString()}
             contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 40 }}
             renderItem={({ item }) => (
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "#FFFFFF" }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "#17171A" }}>
                 <Image source={{ uri: item.artworkUrl60 }} style={{ width: 48, height: 48, borderRadius: 8 }} />
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: "#1A1A1A", fontWeight: "600", fontSize: 14 }} numberOfLines={1}>{item.trackName}</Text>
-                  <Text style={{ color: "#6B6B7A", fontSize: 12, marginTop: 2 }}>{item.artistName}</Text>
+                  <Text style={{ color: "#F4F1EA", fontWeight: "600", fontSize: 14 }} numberOfLines={1}>{item.trackName}</Text>
+                  <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 12, marginTop: 2 }}>{item.artistName}</Text>
                 </View>
                 <TouchableOpacity onPress={() => togglePreview(item)} style={{ padding: 6 }}>
                   <Ionicons
                     name={playingId === item.trackId ? "pause-circle" : "play-circle-outline"}
                     size={30}
-                    color={playingId === item.trackId ? "#B8903E" : "#6B6B7A"}
+                    color={playingId === item.trackId ? "#C9A24B" : "#6B6B7A"}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => handleSelect(item)}
-                  style={{ backgroundColor: "#B8903E", borderRadius: 8, paddingHorizontal: 12, paddingVertical: 6 }}
+                  style={{ backgroundColor: "#C9A24B", borderRadius: 8, paddingHorizontal: 12, paddingVertical: 6 }}
                 >
-                  <Text style={{ color: "#F5F3EE", fontWeight: "700", fontSize: 13 }}>Choisir</Text>
+                  <Text style={{ color: "#0A0A0B", fontWeight: "700", fontSize: 13 }}>Choisir</Text>
                 </TouchableOpacity>
               </View>
             )}

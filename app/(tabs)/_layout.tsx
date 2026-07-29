@@ -12,7 +12,7 @@ export default function TabsLayout() {
   const isDesktopWeb = Platform.OS === "web" && width >= 700;
 
   return (
-    <View style={{ flex: 1, flexDirection: isDesktopWeb ? "row" : "column", backgroundColor: isDesktopWeb ? "#0D0D0F" : "#F5F3EE" }}>
+    <View style={{ flex: 1, flexDirection: isDesktopWeb ? "row" : "column", backgroundColor: "#0D0D0F" }}>
       {isDesktopWeb && <DesktopSidebar isArtist={isArtist} />}
       <View style={{ flex: 1 }}>
         <Tabs

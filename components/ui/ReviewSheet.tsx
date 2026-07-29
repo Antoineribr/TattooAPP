@@ -44,16 +44,16 @@ export function ReviewSheet({ visible, artistId, artistName, projectRequestId, o
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <Pressable style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.5)" }} onPress={onClose} />
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined}>
-        <View style={{ backgroundColor: "#F5F3EE", borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, paddingBottom: Platform.OS === "ios" ? 44 : 28 }}>
-          <View style={{ width: 36, height: 4, borderRadius: 2, backgroundColor: "rgba(0,0,0,0.1)", alignSelf: "center", marginBottom: 20 }} />
-          <Text style={{ color: "#1A1A1A", fontSize: 20, fontWeight: "800", marginBottom: 4 }}>Laisser un avis</Text>
-          <Text style={{ color: "#6B6B7A", fontSize: 14, marginBottom: 24 }}>Pour {artistName}</Text>
+        <View style={{ backgroundColor: "#0A0A0B", borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, paddingBottom: Platform.OS === "ios" ? 44 : 28 }}>
+          <View style={{ width: 36, height: 4, borderRadius: 2, backgroundColor: "rgba(244,241,234,0.1)", alignSelf: "center", marginBottom: 20 }} />
+          <Text style={{ color: "#F4F1EA", fontSize: 20, fontWeight: "800", marginBottom: 4 }}>Laisser un avis</Text>
+          <Text style={{ color: "rgba(244,241,234,0.55)", fontSize: 14, marginBottom: 24 }}>Pour {artistName}</Text>
 
           {/* Étoiles */}
           <View style={{ flexDirection: "row", justifyContent: "center", gap: 10, marginBottom: 24 }}>
             {[1, 2, 3, 4, 5].map((s) => (
               <TouchableOpacity key={s} onPress={() => setRating(s)} hitSlop={8}>
-                <Ionicons name={s <= rating ? "star" : "star-outline"} size={38} color={s <= rating ? "#B8903E" : "rgba(0,0,0,0.15)"} />
+                <Ionicons name={s <= rating ? "star" : "star-outline"} size={38} color={s <= rating ? "#C9A24B" : "rgba(244,241,234,0.15)"} />
               </TouchableOpacity>
             ))}
           </View>
@@ -65,16 +65,16 @@ export function ReviewSheet({ visible, artistId, artistName, projectRequestId, o
             placeholderTextColor="#6B6B7A"
             multiline
             numberOfLines={4}
-            style={{ backgroundColor: "#FFFFFF", color: "#1A1A1A", borderRadius: 14, padding: 14, fontSize: 15, minHeight: 100, textAlignVertical: "top", borderWidth: 1, borderColor: "rgba(0,0,0,0.1)", marginBottom: 16 }}
+            style={{ backgroundColor: "#17171A", color: "#F4F1EA", borderRadius: 14, padding: 14, fontSize: 15, minHeight: 100, textAlignVertical: "top", borderWidth: 1, borderColor: "rgba(244,241,234,0.1)", marginBottom: 16 }}
           />
 
           <TouchableOpacity
             onPress={submit}
             disabled={rating === 0 || loading}
-            style={{ backgroundColor: rating > 0 ? "#B8903E" : "rgba(0,0,0,0.08)", borderRadius: 14, paddingVertical: 16, alignItems: "center" }}
+            style={{ backgroundColor: rating > 0 ? "#C9A24B" : "rgba(244,241,234,0.08)", borderRadius: 14, paddingVertical: 16, alignItems: "center" }}
           >
             {loading ? <ActivityIndicator color="#FFF" /> : (
-              <Text style={{ color: rating > 0 ? "#FFF" : "rgba(0,0,0,0.2)", fontWeight: "800", fontSize: 15 }}>
+              <Text style={{ color: rating > 0 ? "#FFF" : "rgba(244,241,234,0.18)", fontWeight: "800", fontSize: 15 }}>
                 {rating === 0 ? "Sélectionne une note" : "Publier l'avis"}
               </Text>
             )}
